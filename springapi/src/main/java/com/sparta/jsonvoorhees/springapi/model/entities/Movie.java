@@ -4,7 +4,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Document("movies")
-public class Movies {
+public class Movie {
 
   private String id;
   private String awards;

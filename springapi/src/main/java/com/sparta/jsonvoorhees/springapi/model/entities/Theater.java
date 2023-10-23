@@ -3,7 +3,7 @@ package com.sparta.jsonvoorhees.springapi.model.entities;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("theaters")
-public class Theaters {
+public class Theater {
 
   private String id;
   private String location;

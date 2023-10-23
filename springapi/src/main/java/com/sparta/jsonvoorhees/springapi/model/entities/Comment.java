@@ -3,13 +3,15 @@ package com.sparta.jsonvoorhees.springapi.model.entities;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("users")
-public class Users {
+@Document("comments")
+public class Comment {
 
   private String id;
+  private java.sql.Date date;
   private String email;
+  private String movieId;
   private String name;
-  private String password;
+  private String text;
 
 
   public String getId() {
@@ -18,6 +20,15 @@ public class Users {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+
+  public java.sql.Date getDate() {
+    return date;
+  }
+
+  public void setDate(java.sql.Date date) {
+    this.date = date;
   }
 
 
@@ -30,6 +41,15 @@ public class Users {
   }
 
 
+  public String getMovieId() {
+    return movieId;
+  }
+
+  public void setMovieId(String movieId) {
+    this.movieId = movieId;
+  }
+
+
   public String getName() {
     return name;
   }
@@ -39,12 +59,12 @@ public class Users {
   }
 
 
-  public String getPassword() {
-    return password;
+  public String getText() {
+    return text;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
+  public void setText(String text) {
+    this.text = text;
   }
 
 }

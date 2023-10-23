@@ -4,7 +4,7 @@ package com.sparta.jsonvoorhees.springapi.model.entities;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("sessions")
-public class Sessions {
+public class Session {
 
   private String id;
   private String jwt;

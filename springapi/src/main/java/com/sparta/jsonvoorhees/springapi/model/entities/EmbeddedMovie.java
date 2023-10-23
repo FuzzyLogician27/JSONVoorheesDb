@@ -3,7 +3,7 @@ package com.sparta.jsonvoorhees.springapi.model.entities;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("embedded_movies")
-public class EmbeddedMovies {
+public class EmbeddedMovie {
 
   private String id;
   private long awards_Nominations;
