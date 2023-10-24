@@ -39,7 +39,7 @@ public class TheaterWebController {
 
     @PostMapping("/web/createTheater")
     public String createTheater(@ModelAttribute("theaterToCreate") Theater theater) {
-        serviceLayer.saveTheater(theater);
+        serviceLayer.addTheater(theater);
         return "create-success";
     }
 
@@ -52,7 +52,7 @@ public class TheaterWebController {
     @PostMapping("/web/updateTheater")
     public String updateTheater(@ModelAttribute("theaterToEdit") Theater theater) {
         //Theater existingTheater = serviceLayer.getTheaterById(theater.getId()).get();
-        serviceLayer.saveTheater(theater);
+        serviceLayer.updateTheater(theater);
         return "edit-success";
     }
 

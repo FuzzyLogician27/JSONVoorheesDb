@@ -40,7 +40,7 @@ public class UserWebController {
 
     @PostMapping("/web/createUser")
     public String createUser(@ModelAttribute("userToCreate") User user) {
-        serviceLayer.saveUser(user);
+        serviceLayer.addUser(user);
         return "create-success";
     }
 
