@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<h1>User</h1>
+<span th:if="${user==null}">Film not found</span>
+<span th:unless="${user==null}">
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+        <tr>
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.email}"></td>
+        </tr>
+    </table>
+</div>
+<br/>
+<!--
+    <h2>Comments</h2>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Text</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+            <tr th:each="comment : ${comments}">
+                <td th:text="${comment.id}"></td>
+                <td th:text="${comment.text}"></td>
+                <td th:text="${comment.date}"></td>
+            </tr>
+    </table>
+</div> -->
+        </span>
+</body>
+</html>

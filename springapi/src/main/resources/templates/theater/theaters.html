@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Theaters</title>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<h1>Theaters</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Location</th>
+        <th>Theater Id</th>
+    </tr>
+    </thead>
+    <tr th:each="theater : ${theaters}">
+        <td th:text="${theater.id}"></td>
+        <td th:text="${theater.location}"></td>
+        <td th:text="${theater.theaterId}"></td>
+    </tr>
+</table>
+</body>
+</html>
