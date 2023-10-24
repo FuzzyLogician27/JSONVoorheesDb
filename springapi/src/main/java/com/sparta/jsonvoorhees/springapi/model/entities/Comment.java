@@ -1,14 +1,21 @@
 package com.sparta.jsonvoorhees.springapi.model.entities;
 
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import  com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.*;
 
 @Document("comments")
 public class Comment {
 
   private String id;
-  private java.sql.Date date;
+  private java.util.Date date;
   private String email;
+@Field("movie_id")
   private String movieId;
   private String name;
   private String text;
@@ -23,11 +30,11 @@ public class Comment {
   }
 
 
-  public java.sql.Date getDate() {
+  public java.util.Date getDate() {
     return date;
   }
 
-  public void setDate(java.sql.Date date) {
+  public void setDate(java.util.Date date) {
     this.date = date;
   }
 

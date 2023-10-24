@@ -2,6 +2,7 @@ package com.sparta.jsonvoorhees.springapi.model.repositories;
 
 import com.sparta.jsonvoorhees.springapi.model.entities.Comment;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -16,7 +17,11 @@ public interface CommentRepository extends MongoRepository<Comment, String> {
 
     List<Comment> findCommentsByEmail(String email);
     List<Comment> findCommentsByDate(Date date);
-    List<Comment> findCommentsByMovieId(String movieId);
+
+
     List<Comment> findCommentsByNameContains(String name);
 
+
+    @Query("{movie_id: ObjectId('?0')}")
+    List<Comment> findCommentsByMovieId(String movie_id);
 }

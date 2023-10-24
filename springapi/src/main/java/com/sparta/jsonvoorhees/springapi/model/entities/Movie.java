@@ -2,6 +2,8 @@ package com.sparta.jsonvoorhees.springapi.model.entities;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 
 @Document("movies")
 public class Movie {
@@ -47,7 +49,7 @@ public class Movie {
   private String writers;
   private long year;
   private String tomatoes_Website;
-
+  private List<Comment> comments;
 
   public String getId() {
     return id;
