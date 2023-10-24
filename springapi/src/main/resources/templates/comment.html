@@ -22,7 +22,7 @@
         </tr>
         </thead>
         <tr th:each="comment : ${comments}">
-            <td th:text="${comment.getCommentId()}"></td>
+            <td th:text="${comment.commentId}"></td>
             <td th:text="${comment.getText()}"></td>
             <td th:text="${comment.getDate()}"></td>
             <td th:text="${comment.getUser()}"></td>

@@ -80,10 +80,10 @@ public class ServiceLayer {
 
         for (Comment comment: commentRepository.findAll()){
             MovieCommentsDTO dto = new MovieCommentsDTO();
-            if (comment.getMovieId().toString() == movieById.get().getId()) {
+            if (comment.getMovieId().toString().equals(movieById.get().getId())) {
                 System.out.println("found");
                 dto.setUser(comment.getName());
-                dto.setCommentId(comment.getId().toString());
+                dto.setCommentId(comment.getId());
                 dto.setEmail(comment.getEmail());
                 dto.setText(comment.getText());
                 dto.setDate(comment.getDate());

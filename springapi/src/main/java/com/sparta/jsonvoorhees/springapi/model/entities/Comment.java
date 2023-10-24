@@ -15,7 +15,7 @@ import org.bson.types.ObjectId;
 public class Comment {
 
   @Id
-  private ObjectId id;
+  private String id;
   private java.util.Date date;
   private String email;
 
@@ -27,11 +27,11 @@ public class Comment {
   private String text;
 
 
-  public ObjectId getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(ObjectId id) {
+  public void setId(String id) {
     this.id = id;
   }
 

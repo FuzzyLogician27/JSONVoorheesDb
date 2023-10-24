@@ -5,7 +5,7 @@ import org.bson.types.ObjectId;
 import java.util.Date;
 
 public class MovieCommentsDTO {
-    private String commentId;
+    public String commentId;
     private java.util.Date date;
     private String email;
     private String movieId;
