@@ -35,7 +35,7 @@ public class MovieWebController {
 
     @PostMapping("/web/createMovie")
     public String createMovie(@ModelAttribute("movieToCreate") Movie movie) {
-        serviceLayer.addMovie(movie);
+        serviceLayer.saveMovie(movie);
         return "create-success";
     }
 
@@ -53,7 +53,7 @@ public class MovieWebController {
         existingMovie.setGenres(movie.getGenres());
         existingMovie.setRated(movie.getRated());
         existingMovie.setYear(movie.getYear());
-        serviceLayer.updateMovie(existingMovie.getId(), existingMovie);
+        serviceLayer.saveMovie(existingMovie);
         return "edit-success";
     }
 
