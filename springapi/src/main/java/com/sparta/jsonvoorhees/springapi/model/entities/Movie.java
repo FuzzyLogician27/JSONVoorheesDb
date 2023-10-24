@@ -1,5 +1,6 @@
 package com.sparta.jsonvoorhees.springapi.model.entities;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Movie {
 
   @Id
-  private String id;
+  private ObjectId id;
   private String awards;
   private long awards_Nominations;
   private String awards_Text;
@@ -51,11 +52,11 @@ public class Movie {
   private String tomatoes_Website;
 
 
-  public String getId() {
+  public ObjectId getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(ObjectId id) {
     this.id = id;
   }
 

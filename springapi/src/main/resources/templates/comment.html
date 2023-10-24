@@ -16,6 +16,8 @@
             <th>ID</th>
             <th>Text</th>
             <th>Date</th>
+            <th>Name</th>
+            <th>Email</th>
             <th>Movie ID</th>
         </tr>
         </thead>
@@ -23,6 +25,8 @@
             <td th:text="${comment.id}"></td>
             <td th:text="${comment.text}"></td>
             <td th:text="${comment.date}"></td>
+            <td th:text="${comment.name}"></td>
+            <td th:text="${comment.email}"></td>
             <td th:text="${comment.movieId}"></td>
         </tr>
     </table>

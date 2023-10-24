@@ -1,9 +1,15 @@
 package com.sparta.jsonvoorhees.springapi.model.entities;
 
-
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
 @Document("comments")
 public class Comment {
@@ -12,7 +18,11 @@ public class Comment {
   private String id;
   private java.util.Date date;
   private String email;
-  private String movieId;
+
+  @JsonProperty("movie_id")
+  @BsonIgnore
+  private ObjectId movie_id;
+
   private String name;
   private String text;
 
@@ -44,12 +54,12 @@ public class Comment {
   }
 
 
-  public String getMovieId() {
-    return movieId;
+  public ObjectId getMovieId() {
+    return movie_id;
   }
 
-  public void setMovieId(String movieId) {
-    this.movieId = movieId;
+  public void setMovieId(ObjectId movieId) {
+    this.movie_id = movieId;
   }
 
 

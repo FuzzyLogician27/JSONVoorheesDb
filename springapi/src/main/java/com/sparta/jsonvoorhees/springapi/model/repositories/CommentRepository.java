@@ -1,7 +1,7 @@
 package com.sparta.jsonvoorhees.springapi.model.repositories;
 
 import com.sparta.jsonvoorhees.springapi.model.entities.Comment;
-import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,11 +20,10 @@ public interface CommentRepository extends MongoRepository<Comment, String> {
     List<Comment> findCommentsByEmail(String email);
     List<Comment> findCommentsByDate(Date date);
 
+    //@Query(value = "select * from authors where full_Name like ?1%",nativeQuery = true)
     //@Query(value="{movieId: 573a1391f29313caabcd7a34}")
     //@Query("{'movieId' : ?0}")
-    //List<Comment> findByMovie(Movie movie);
-
-    List<Comment> findCommentsByMovieId(String movieId);
+    List<Comment> findCommentByMovieId(ObjectId movieId);
     List<Comment> findCommentsByNameContains(String name);
 
 }

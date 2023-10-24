@@ -3,6 +3,7 @@ package com.sparta.jsonvoorhees.springapi.controller;
 import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
 import com.sparta.jsonvoorhees.springapi.model.repositories.CommentRepository;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +28,9 @@ public class WebController {
     }
 
     @GetMapping("/web/movie/{id}")
-    public String getMovieById(Model model, @PathVariable String id) {
+    public String getMovieById(Model model, @PathVariable ObjectId id) {
         model.addAttribute("movie", serviceLayer.getMovieById(id).get());
-        model.addAttribute("comments",serviceLayer.getCommentsByMovie(id));
+        //model.addAttribute("comments",serviceLayer.getCommentsByMovie(id));
         return "movie";
     }
 

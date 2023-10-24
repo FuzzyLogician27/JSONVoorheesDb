@@ -53,7 +53,7 @@ class SpringapiApplicationTests {
 	@DisplayName("test films page")
 	void testFilmsPage() throws Exception {
 		Movie movie = new Movie();
-		movie.setId("1");
+		//movie.setId("1");
 		movie.setTitle("Best Film Ever");
 		Mockito.when(movieRepository.findAll()).thenReturn(new ArrayList<>(List.of(movie)));
 

@@ -2,6 +2,7 @@ package com.sparta.jsonvoorhees.springapi.service;
 
 import com.sparta.jsonvoorhees.springapi.model.entities.*;
 import com.sparta.jsonvoorhees.springapi.model.repositories.*;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,16 +63,11 @@ public class ServiceLayer {
     //    return popularAuthors;
     //}
 
-    public List<Comment> getCommentsByMovie(String movieId)
+    public List<Comment> getCommentsByMovie(ObjectId movieId)
     {
         //System.out.println(commentRepository.findByMovieId(movieId).size());
-        return commentRepository.findCommentsByMovieId(movieId);
+        return commentRepository.findCommentByMovieId(movieId);
 
-        //ArrayList<Comment> movieComments = new ArrayList<>();
-        //for(Comment comment : commentRepository.findCommentsByMovieId(movieId)) {
-        //    movieComments.add(comment);
-        //}
-        //return movieComments;
     }
 
     public List<Comment> getCommentsByUser(String name)
@@ -85,7 +81,7 @@ public class ServiceLayer {
     }
 
     //region Basic Getters
-    public Optional<Movie> getMovieById(String movieId)
+    public Optional<Movie> getMovieById(ObjectId movieId)
     {
         return movieRepository.findMovieById(movieId);
     }
