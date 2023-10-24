@@ -1,4 +1,4 @@
-package com.sparta.jsonvoorhees.springapi.model.controller;
+package com.sparta.jsonvoorhees.springapi.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
