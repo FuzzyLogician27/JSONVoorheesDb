@@ -21,13 +21,13 @@
             <th>Movie ID</th>
         </tr>
         </thead>
-        <tr th:each="comment : ${comments}">
-            <td th:text="${comment.id}"></td>
-            <td th:text="${comment.text}"></td>
-            <td th:text="${comment.date}"></td>
-            <td th:text="${comment.name}"></td>
-            <td th:text="${comment.email}"></td>
-            <td th:text="${comment.movieId}"></td>
+        <tr>
+            <td th:text="${comments.id}"></td>
+            <td th:text="${comments.text}"></td>
+            <td th:text="${comments.date}"></td>
+            <td th:text="${comments.name}"></td>
+            <td th:text="${comments.email}"></td>
+            <td th:text="${comments.movieId}"></td>
         </tr>
     </table>
 </div>
