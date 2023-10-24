@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Movie</title>
+    <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
 <h1>Movie</h1>
@@ -25,20 +26,22 @@
             <td th:text="${movie.fullplot}"></td>
         </tr>
     </table>
-
+</div>
+<br/>
+<div>
     <table>
         <thead>
-        <tr>
-            <th>Id</th>
-            <th>Text</th>
-            <th>Date</th>
-        </tr>
+            <tr>
+                <th>Id</th>
+                <th>Text</th>
+                <th>Date</th>
+            </tr>
         </thead>
-        <tr th:each="comment : ${comments}">
-            <td th:text="${comment.id}"></td>
-            <td th:text="${comment.text}"></td>
-            <td th:text="${comment.date}"></td>
-        </tr>
+            <tr th:each="comment : ${comments}">
+                <td th:text="${comment.id}"></td>
+                <td th:text="${comment.text}"></td>
+                <td th:text="${comment.date}"></td>
+            </tr>
     </table>
 </div>
         </span>

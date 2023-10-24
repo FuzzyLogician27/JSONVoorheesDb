@@ -1,10 +1,12 @@
 package com.sparta.jsonvoorhees.springapi.model.entities;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("embedded_movies")
 public class EmbeddedMovie {
 
+  @Id
   private String id;
   private long awards_Nominations;
   private String awards_Text;

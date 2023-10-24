@@ -52,9 +52,26 @@ public class ServiceLayer {
         return scheduleRepository.findSchedulesByTheaterId(theaterId);
     }
 
+    //public List<Author> findAuthorsWithMoreThanOneBook() {
+    //    ArrayList<Author> popularAuthors = new ArrayList<>();
+    //    for(Author author: authorRepository.findAll()) {
+    //        if(author.getBookSet().size() > 1) {
+    //            popularAuthors.add(author);
+    //        }
+    //    }
+    //    return popularAuthors;
+    //}
+
     public List<Comment> getCommentsByMovie(String movieId)
     {
+        //System.out.println(commentRepository.findByMovieId(movieId).size());
         return commentRepository.findCommentsByMovieId(movieId);
+
+        //ArrayList<Comment> movieComments = new ArrayList<>();
+        //for(Comment comment : commentRepository.findCommentsByMovieId(movieId)) {
+        //    movieComments.add(comment);
+        //}
+        //return movieComments;
     }
 
     public List<Comment> getCommentsByUser(String name)

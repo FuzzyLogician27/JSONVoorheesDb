@@ -1,13 +1,16 @@
 package com.sparta.jsonvoorhees.springapi.model.entities;
 
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("comments")
 public class Comment {
 
+  @Id
   private String id;
-  private java.sql.Date date;
+  private java.util.Date date;
   private String email;
   private String movieId;
   private String name;
@@ -23,11 +26,11 @@ public class Comment {
   }
 
 
-  public java.sql.Date getDate() {
+  public java.util.Date getDate() {
     return date;
   }
 
-  public void setDate(java.sql.Date date) {
+  public void setDate(java.util.Date date) {
     this.date = date;
   }
 

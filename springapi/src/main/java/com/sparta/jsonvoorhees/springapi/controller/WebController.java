@@ -1,8 +1,8 @@
 package com.sparta.jsonvoorhees.springapi.controller;
 
+import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
+import com.sparta.jsonvoorhees.springapi.model.repositories.CommentRepository;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
-import com.sparta.jsonvoorhees.springapi.service.VoorheesWebService;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class WebController {
     private final ServiceLayer serviceLayer;
 
-    public WebController(ServiceLayer serviceLayer) {
+    private final CommentRepository commentRepository;
+
+    public WebController(ServiceLayer serviceLayer, CommentRepository commentRepository) {
         this.serviceLayer = serviceLayer;
+        this.commentRepository = commentRepository;
     }
 
     @GetMapping("/web/movies")
@@ -48,6 +51,13 @@ public class WebController {
         model.addAttribute("user",serviceLayer.getUserById(id).get());
         model.addAttribute("comments",serviceLayer.getCommentsByUser(id));
         return "user";
+    }
+
+    @GetMapping("/web/comment/{id}")
+    public String getCommentsById(Model model, @PathVariable String id) {
+        //model.addAttribute("comments", serviceLayer.getCommentsByMovie(id));
+        model.addAttribute("comments", serviceLayer.getCommentById(id).get());
+        return "comment";
     }
 
 
