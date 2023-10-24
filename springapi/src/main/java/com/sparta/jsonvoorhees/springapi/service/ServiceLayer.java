@@ -113,29 +113,28 @@ public class ServiceLayer {
 
     //region Savers
     //@TODO: Look into having these return something to indicate success
-    //These appear to return the object that is saved?
 
-    public void updateComment(Comment newComment)
+    public void saveComment(Comment newComment)
     {
         commentRepository.save(newComment);
     }
 
-    public void updateMovie(Movie newMovie)
+    public void saveMovie(Movie newMovie)
     {
         movieRepository.save(newMovie);
     }
 
-    public void updateSchedule(Schedule newSchedule)
+    public void saveSchedule(Schedule newSchedule)
     {
         scheduleRepository.save(newSchedule);
     }
 
-    public void updateTheater(Theater newTheater)
+    public void saveTheater(Theater newTheater)
     {
         theaterRepository.save(newTheater);
     }
 
-    public void updateUser(User newUser)
+    public void saveUser(User newUser)
     {
         userRepository.save(newUser);
     }
@@ -159,88 +158,6 @@ public class ServiceLayer {
             }
         }
         return selectedComments;
-    }
-    //endregion
-
-    //region Deleters
-    public void deleteCommentById(String id)
-    {
-        commentRepository.deleteById(id);
-    }
-
-    public void deleteMovieById(String id)
-    {
-        movieRepository.deleteById(id);
-    }
-
-    public void deleteScheduleById(String id)
-    {
-        scheduleRepository.deleteById(id);
-    }
-
-    public void deleteTheaterById(String id)
-    {
-        theaterRepository.deleteById(id);
-    }
-
-    //@Todo This is still up for debate
-    public void deleteUserById(String id)
-    {
-        userRepository.deleteById(id);
-    }
-    //endregion
-
-    //region Creators
-    //Some of these are the same as the savers, as a save with new data adds it
-
-    public void addComment(Comment newComment)
-    {
-        commentRepository.save(newComment);
-    }
-
-    public void addMovie(Movie newMovie)
-    {
-        movieRepository.save(newMovie);
-    }
-
-    public void addSchedule(Schedule newSchedule)
-    {
-        scheduleRepository.save(newSchedule);
-    }
-
-    public void addTheater(Theater newTheater)
-    {
-        theaterRepository.save(newTheater);
-    }
-
-    public void addUser(User newUser)
-    {
-        userRepository.save(newUser);
-    }
-
-    public void addComments(List<Comment> newComments)
-    {
-        commentRepository.insert(newComments);
-    }
-
-    public void addMovies(List<Movie> newMovies)
-    {
-        movieRepository.insert(newMovies);
-    }
-
-    public void addSchedules(List<Schedule> newSchedules)
-    {
-        scheduleRepository.insert(newSchedules);
-    }
-
-    public void addTheaters(List<Theater> newTheaters)
-    {
-        theaterRepository.insert(newTheaters);
-    }
-
-    public void addUsers(List<User> newUsers)
-    {
-        userRepository.insert(newUsers);
     }
     //endregion
 }
