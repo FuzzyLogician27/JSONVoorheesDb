@@ -1,6 +1,7 @@
 package com.sparta.jsonvoorhees.springapi.service;
 
 import com.sparta.jsonvoorhees.springapi.model.entities.*;
+import com.sparta.jsonvoorhees.springapi.model.entities.dtos.MovieCommentsDTO;
 import com.sparta.jsonvoorhees.springapi.model.repositories.*;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,16 +64,34 @@ public class ServiceLayer {
     //    return popularAuthors;
     //}
 
-    public List<Comment> getCommentsByMovie(ObjectId movieId)
-    {
-        //System.out.println(commentRepository.findByMovieId(movieId).size());
-        return commentRepository.findCommentByMovieId(movieId);
+//    public List<Comment> getCommentsByMovie(String movieId)
+//    {
+//
+//        return commentRepository.findCommentByMovieId(movieId);
+//
+//    }
 
-    }
-
-    public List<Comment> getCommentsByUser(String name)
+    public List<MovieCommentsDTO> getCommentsByMovie(String name)
     {
-        return commentRepository.findCommentsByNameContains(name);
+        ArrayList<MovieCommentsDTO> filmComments = new ArrayList<>();
+
+        Optional<Movie> movieById = movieRepository.findMovieById(name);
+        System.out.println(movieById.get().getId());
+
+        for (Comment comment: commentRepository.findAll()){
+            MovieCommentsDTO dto = new MovieCommentsDTO();
+            if (comment.getMovieId().toString() == movieById.get().getId()) {
+                System.out.println("found");
+                dto.setUser(comment.getName());
+                dto.setCommentId(comment.getId().toString());
+                dto.setEmail(comment.getEmail());
+                dto.setText(comment.getText());
+                dto.setDate(comment.getDate());
+                dto.setMovieName(movieById.get().getTitle());
+                dto.setMovieId(movieById.get().getId());
+            }
+        }
+        return filmComments;
     }
 
     public List<Theater> getAllTheaters()
@@ -81,7 +100,7 @@ public class ServiceLayer {
     }
 
     //region Basic Getters
-    public Optional<Movie> getMovieById(ObjectId movieId)
+    public Optional<Movie> getMovieById(String movieId)
     {
         return movieRepository.findMovieById(movieId);
     }
@@ -102,7 +121,7 @@ public class ServiceLayer {
         return userRepository.findUserById(userId);
     }
 
-    public Optional<Comment> getCommentById(String commentId)
+    public Optional<Comment> getCommentById(ObjectId commentId)
     {
         return commentRepository.findCommentById(commentId);
     }

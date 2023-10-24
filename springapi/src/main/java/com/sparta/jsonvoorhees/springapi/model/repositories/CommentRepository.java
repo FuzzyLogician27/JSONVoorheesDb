@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface CommentRepository extends MongoRepository<Comment, String> {
 
-    Optional<Comment> findCommentById(String id);
+    Optional<Comment> findCommentById(ObjectId id);
 
     List<Comment> findCommentsByEmail(String email);
     List<Comment> findCommentsByDate(Date date);
@@ -23,7 +23,7 @@ public interface CommentRepository extends MongoRepository<Comment, String> {
     //@Query(value = "select * from authors where full_Name like ?1%",nativeQuery = true)
     //@Query(value="{movieId: 573a1391f29313caabcd7a34}")
     //@Query("{'movieId' : ?0}")
-    List<Comment> findCommentByMovieId(ObjectId movieId);
+    List<Comment> findCommentByMovieId(String movieId);
     List<Comment> findCommentsByNameContains(String name);
 
 }

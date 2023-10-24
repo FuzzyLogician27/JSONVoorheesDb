@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Movie {
 
   @Id
-  private ObjectId id;
+  private String id;
   private String awards;
   private long awards_Nominations;
   private String awards_Text;
@@ -52,11 +52,11 @@ public class Movie {
   private String tomatoes_Website;
 
 
-  public ObjectId getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(ObjectId id) {
+  public void setId(String id) {
     this.id = id;
   }
 

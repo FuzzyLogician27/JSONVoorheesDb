@@ -27,12 +27,12 @@ public class WebController {
         return "movies";
     }
 
-    @GetMapping("/web/movie/{id}")
-    public String getMovieById(Model model, @PathVariable ObjectId id) {
-        model.addAttribute("movie", serviceLayer.getMovieById(id).get());
-        //model.addAttribute("comments",serviceLayer.getCommentsByMovie(id));
-        return "movie";
-    }
+//    @GetMapping("/web/movie/{id}")
+//    public String getMovieById(Model model, @PathVariable String id) {
+//        model.addAttribute("movie", serviceLayer.getMovieById(id).get());
+//        //model.addAttribute("comments",serviceLayer.getCommentsByMovie(id));
+//        return "movie";
+//    }
 
     @GetMapping("/web/theaters")
     public String getAllTheaters(Model model) {
@@ -47,17 +47,17 @@ public class WebController {
         return "theater";
     }
 
-    @GetMapping("/web/user/{id}")
-    public String getUserById(Model model, @PathVariable String id) {
-        model.addAttribute("user",serviceLayer.getUserById(id).get());
-        model.addAttribute("comments",serviceLayer.getCommentsByUser(id));
-        return "user";
-    }
+//    @GetMapping("/web/user/{id}")
+//    public String getUserById(Model model, @PathVariable String id) {
+//        model.addAttribute("user",serviceLayer.getUserById(id).get());
+//        model.addAttribute("comments",serviceLayer.getCommentsByUser(id));
+//        return "user";
+//    }
 
-    @GetMapping("/web/comment/{id}")
+    @GetMapping("/web/movie/{id}")
     public String getCommentsById(Model model, @PathVariable String id) {
-        //model.addAttribute("comments", serviceLayer.getCommentsByMovie(id));
-        model.addAttribute("comments", serviceLayer.getCommentById(id).get());
+        model.addAttribute("comments", serviceLayer.getCommentsByMovie(id));
+        //model.addAttribute("comments", serviceLayer.getCommentById(id).get());
         return "comment";
     }
 
