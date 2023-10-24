@@ -1,10 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Movie</title>
 </head>
 <body>
 <h1>Movie</h1>
+<span th:if="${movie==null}">Film not found</span>
+<span th:unless="${movie==null}">
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tr>
+            <td th:text="${movie.id}"></td>
+            <td th:text="${movie.title}"></td>
+            <td th:text="${movie.year}"></td>
+            <td th:text="${movie.fullplot}"></td>
+        </tr>
+    </table>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Text</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tr th:each="comment : ${comments}">
+            <td th:text="${comment.id}"></td>
+            <td th:text="${comment.text}"></td>
+            <td th:text="${comment.date}"></td>
+        </tr>
+    </table>
+</div>
+        </span>
 </body>
 </html>
