@@ -49,43 +49,51 @@ public class ServiceLayer {
 
     public List<Schedule> getSchedulesForTheaters(String theaterId)
     {
-        return null;
+        return scheduleRepository.findSchedulesByTheaterId(theaterId);
     }
 
     public List<Comment> getCommentsByMovie(String movieId)
     {
-        return null;
+        return commentRepository.findCommentsByMovieId(movieId);
     }
 
-    public List<Comment> getCommentsByUser(String userId)
+    public List<Comment> getCommentsByUser(String name)
     {
-        return null;
+        return commentRepository.findCommentsByNameContains(name);
     }
 
     public List<Theater> getAllTheaters()
     {
-        return null;
+        return theaterRepository.findAll();
     }
 
     //region Basic Getters
     public Optional<Movie> getMovieById(String movieId)
     {
-        return null;
+        return movieRepository.findMovieById(movieId);
     }
 
     public Optional<Theater> getTheaterById(String theaterId)
     {
-        return null;
+        //@TODO: Check this one
+        return theaterRepository.findTheaterByTheaterId(Long.valueOf(theaterId));
     }
 
     public Optional<Schedule> getScheduleById(String scheduleId)
     {
-        return null;
+        return scheduleRepository.findScheduleById(scheduleId);
     }
 
     public Optional<User> getUserById(String userId)
     {
-        return null;
+        return userRepository.findUserById(userId);
+    }
+
+    public Optional<Comment> getCommentById(String commentId)
+    {
+        return commentRepository.findCommentById(commentId);
     }
     //endregion
+
+
 }
