@@ -1,52 +1,40 @@
 package com.sparta.jsonvoorhees.springapi.model.entities;
 
+import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Awards;
+import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Imdb;
+import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Tomatoes;
+import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.TomatoesReview;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 
 @Document("movies")
 public class Movie {
 
+  @Id
   private String id;
-  private String awards;
-  private long awards_Nominations;
-  private String awards_Text;
-  private long awards_Wins;
+  private Awards awards;
   private String cast;
   private String countries;
   private String directors;
   private String fullplot;
   private String genres;
-  private String imdb;
-  private long imdb_Id;
-  private double imdb_Rating;
-  private long imdb_Votes;
+  private Imdb imdb;
   private String languages;
   private String lastupdated;
+  @Field("num_mflix_comments")
   private long numMflixComments;
   private String plot;
   private String poster;
   private String rated;
-  private java.sql.Date released;
+  private java.util.Date released;
   private long runtime;
   private String title;
-  private String tomatoes;
-  private String tomatoes_Critic;
-  private long tomatoes_Critic_Meter;
-  private long tomatoes_Critic_NumReviews;
-  private double tomatoes_Critic_Rating;
-  private java.sql.Date tomatoes_Dvd;
-  private long tomatoes_Fresh;
-  private java.sql.Date tomatoes_LastUpdated;
-  private String tomatoes_Production;
-  private long tomatoes_Rotten;
-  private String tomatoes_Viewer;
-  private long tomatoes_Viewer_Meter;
-  private long tomatoes_Viewer_NumReviews;
-  private double tomatoes_Viewer_Rating;
+  private Tomatoes tomatoes;
   private String type;
   private String writers;
-  private long year;
-  private String tomatoes_Website;
+  private String year;
 
 
   public String getId() {
@@ -58,41 +46,21 @@ public class Movie {
   }
 
 
-  public String getAwards() {
+  public Awards getAwards() {
     return awards;
   }
 
-  public void setAwards(String awards) {
+  public void setAwards(Awards awards) {
     this.awards = awards;
   }
 
-
-  public long getAwards_Nominations() {
-    return awards_Nominations;
+  public Tomatoes getTomatoes() {
+    return tomatoes;
   }
 
-  public void setAwards_Nominations(long awards_Nominations) {
-    this.awards_Nominations = awards_Nominations;
+  public void setTomatoes(Tomatoes tomatoes) {
+    this.tomatoes = tomatoes;
   }
-
-
-  public String getAwards_Text() {
-    return awards_Text;
-  }
-
-  public void setAwards_Text(String awards_Text) {
-    this.awards_Text = awards_Text;
-  }
-
-
-  public long getAwards_Wins() {
-    return awards_Wins;
-  }
-
-  public void setAwards_Wins(long awards_Wins) {
-    this.awards_Wins = awards_Wins;
-  }
-
 
   public String getCast() {
     return cast;
@@ -139,41 +107,13 @@ public class Movie {
   }
 
 
-  public String getImdb() {
+  public Imdb getImdb() {
     return imdb;
   }
 
-  public void setImdb(String imdb) {
+  public void setImdb(Imdb imdb) {
     this.imdb = imdb;
   }
-
-
-  public long getImdb_Id() {
-    return imdb_Id;
-  }
-
-  public void setImdb_Id(long imdb_Id) {
-    this.imdb_Id = imdb_Id;
-  }
-
-
-  public double getImdb_Rating() {
-    return imdb_Rating;
-  }
-
-  public void setImdb_Rating(double imdb_Rating) {
-    this.imdb_Rating = imdb_Rating;
-  }
-
-
-  public long getImdb_Votes() {
-    return imdb_Votes;
-  }
-
-  public void setImdb_Votes(long imdb_Votes) {
-    this.imdb_Votes = imdb_Votes;
-  }
-
 
   public String getLanguages() {
     return languages;
@@ -229,11 +169,11 @@ public class Movie {
   }
 
 
-  public java.sql.Date getReleased() {
+  public java.util.Date getReleased() {
     return released;
   }
 
-  public void setReleased(java.sql.Date released) {
+  public void setReleased(java.util.Date released) {
     this.released = released;
   }
 
@@ -245,8 +185,6 @@ public class Movie {
   public void setRuntime(long runtime) {
     this.runtime = runtime;
   }
-
-
   public String getTitle() {
     return title;
   }
@@ -254,133 +192,6 @@ public class Movie {
   public void setTitle(String title) {
     this.title = title;
   }
-
-
-  public String getTomatoes() {
-    return tomatoes;
-  }
-
-  public void setTomatoes(String tomatoes) {
-    this.tomatoes = tomatoes;
-  }
-
-
-  public String getTomatoes_Critic() {
-    return tomatoes_Critic;
-  }
-
-  public void setTomatoes_Critic(String tomatoes_Critic) {
-    this.tomatoes_Critic = tomatoes_Critic;
-  }
-
-
-  public long getTomatoes_Critic_Meter() {
-    return tomatoes_Critic_Meter;
-  }
-
-  public void setTomatoes_Critic_Meter(long tomatoes_Critic_Meter) {
-    this.tomatoes_Critic_Meter = tomatoes_Critic_Meter;
-  }
-
-
-  public long getTomatoes_Critic_NumReviews() {
-    return tomatoes_Critic_NumReviews;
-  }
-
-  public void setTomatoes_Critic_NumReviews(long tomatoes_Critic_NumReviews) {
-    this.tomatoes_Critic_NumReviews = tomatoes_Critic_NumReviews;
-  }
-
-
-  public double getTomatoes_Critic_Rating() {
-    return tomatoes_Critic_Rating;
-  }
-
-  public void setTomatoes_Critic_Rating(double tomatoes_Critic_Rating) {
-    this.tomatoes_Critic_Rating = tomatoes_Critic_Rating;
-  }
-
-
-  public java.sql.Date getTomatoes_Dvd() {
-    return tomatoes_Dvd;
-  }
-
-  public void setTomatoes_Dvd(java.sql.Date tomatoes_Dvd) {
-    this.tomatoes_Dvd = tomatoes_Dvd;
-  }
-
-
-  public long getTomatoes_Fresh() {
-    return tomatoes_Fresh;
-  }
-
-  public void setTomatoes_Fresh(long tomatoes_Fresh) {
-    this.tomatoes_Fresh = tomatoes_Fresh;
-  }
-
-
-  public java.sql.Date getTomatoes_LastUpdated() {
-    return tomatoes_LastUpdated;
-  }
-
-  public void setTomatoes_LastUpdated(java.sql.Date tomatoes_LastUpdated) {
-    this.tomatoes_LastUpdated = tomatoes_LastUpdated;
-  }
-
-
-  public String getTomatoes_Production() {
-    return tomatoes_Production;
-  }
-
-  public void setTomatoes_Production(String tomatoes_Production) {
-    this.tomatoes_Production = tomatoes_Production;
-  }
-
-
-  public long getTomatoes_Rotten() {
-    return tomatoes_Rotten;
-  }
-
-  public void setTomatoes_Rotten(long tomatoes_Rotten) {
-    this.tomatoes_Rotten = tomatoes_Rotten;
-  }
-
-
-  public String getTomatoes_Viewer() {
-    return tomatoes_Viewer;
-  }
-
-  public void setTomatoes_Viewer(String tomatoes_Viewer) {
-    this.tomatoes_Viewer = tomatoes_Viewer;
-  }
-
-
-  public long getTomatoes_Viewer_Meter() {
-    return tomatoes_Viewer_Meter;
-  }
-
-  public void setTomatoes_Viewer_Meter(long tomatoes_Viewer_Meter) {
-    this.tomatoes_Viewer_Meter = tomatoes_Viewer_Meter;
-  }
-
-
-  public long getTomatoes_Viewer_NumReviews() {
-    return tomatoes_Viewer_NumReviews;
-  }
-
-  public void setTomatoes_Viewer_NumReviews(long tomatoes_Viewer_NumReviews) {
-    this.tomatoes_Viewer_NumReviews = tomatoes_Viewer_NumReviews;
-  }
-
-
-  public double getTomatoes_Viewer_Rating() {
-    return tomatoes_Viewer_Rating;
-  }
-
-  public void setTomatoes_Viewer_Rating(double tomatoes_Viewer_Rating) {
-    this.tomatoes_Viewer_Rating = tomatoes_Viewer_Rating;
-  }
-
 
   public String getType() {
     return type;
@@ -400,21 +211,11 @@ public class Movie {
   }
 
 
-  public long getYear() {
+  public String getYear() {
     return year;
   }
 
-  public void setYear(long year) {
+  public void setYear(String year) {
     this.year = year;
   }
-
-
-  public String getTomatoes_Website() {
-    return tomatoes_Website;
-  }
-
-  public void setTomatoes_Website(String tomatoes_Website) {
-    this.tomatoes_Website = tomatoes_Website;
-  }
-
 }

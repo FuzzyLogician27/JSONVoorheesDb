@@ -1,11 +1,13 @@
 package com.sparta.jsonvoorhees.springapi.model.entities;
 
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("sessions")
 public class Session {
 
+  @Id
   private String id;
   private String jwt;
   private String userId;

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Theater</title>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<h1>Theater</h1>
+<span th:if="${theater==null}">Theater not found</span>
+<span th:unless="${theater==null}">
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Location</th>
+            <th>Theater Id</th>
+        </tr>
+        </thead>
+        <tr>
+            <td th:text="${theater.id}"></td>
+            <td th:text="${theater.location}"></td>
+            <td th:text="${theater.theaterId}"></td>
+        </tr>
+    </table>
+</div>
+
+<h2>Schedule</h2>
+
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Movie ID</th>
+            <th>Theater ID</th>
+        </tr>
+        </thead>
+        <tr th:each="schedule : ${schedules}">
+            <td th:text="${schedule.id}"></td>
+            <td th:text="${schedule.date}"></td>
+            <td th:text="${schedule.movieId}"></td>
+            <td th:text="${schedule.theaterId}"></td>
+        </tr>
+    </table>
+</div>
+</span>
+</body>
+
+</html>

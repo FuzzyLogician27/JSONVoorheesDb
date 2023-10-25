@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Theater</title>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<form th:action="@{/web/createTheater}" th:object="${theaterToCreate}" method="post">
+    <label for="location">Location</label>
+    <input type="text" id="location" name="id" th:field="*{location}"/><br/>
+
+    <label for="theaterId">Theater ID</label>
+    <input type="text" id="theaterId" name="id" th:field="*{theaterId}"/><br/>
+
+    <input class="inputSubmit" style="margin: 10px auto 10px" type="submit" value="Create"/>
+
+</form>
+</body>
+</html>

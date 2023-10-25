@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie</title>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<h1>Movie</h1>
+<span th:if="${movie==null}">Film not found</span>
+<span th:unless="${movie==null}">
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Genre</th>
+            <th>Rating</th>
+            <th>Year</th>
+        </tr>
+        </thead>
+        <tr>
+            <td th:text="${movie.id}"></td>
+            <td th:text="${movie.title}"></td>
+            <td th:text="${movie.fullplot}"></td>
+            <td th:text="${movie.genres}"></td>
+            <td th:text="${movie.rated}"></td>
+            <td th:text="${movie.year}"></td>
+        </tr>
+    </table>
+</div>
+<br/>
+
+    <h2>Comments</h2>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Text</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+            <tr th:each="comment : ${comments}">
+                <td th:text="${comment.id}"></td>
+                <td th:text="${comment.text}"></td>
+                <td th:text="${comment.date}"></td>
+            </tr>
+    </table>
+</div>
+        </span>
+</body>
+</html>
