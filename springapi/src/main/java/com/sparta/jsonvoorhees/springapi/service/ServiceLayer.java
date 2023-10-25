@@ -140,8 +140,8 @@ public class ServiceLayer implements IServiceLayer {
     //endregion
 
     //region Savers
-    //@TODO: Look into having these return something to indicate success
-    //These appear to return the object that is saved?
+    //These DO return the object that is saved
+    //This can be either a new object if it doesn't exist, or the existing one if it's an update
 
     public Comment updateComment(Comment newComment)
     {

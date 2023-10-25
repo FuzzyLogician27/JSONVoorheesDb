@@ -44,7 +44,7 @@ public interface IServiceLayer {
     public List<Theater> getAllTheaters();
     public Page<Theater> getAllTheaters(Pageable pageRequest);
 
-    public Comment updateComment(String id, Comment newComment);
+    public Comment updateComment(Comment newComment);
 
     public Movie updateMovie(Movie newMovie);
 
