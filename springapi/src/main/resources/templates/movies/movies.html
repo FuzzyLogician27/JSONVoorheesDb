@@ -7,6 +7,17 @@
 </head>
 <body>
 <h1>Movies</h1>
+
+<form th:action="@{/web/movies(page='page',pageSize='pageSize')}">
+
+    <label for="pageSize">Show</label>
+    <input type="number" id="pageSize" name="pageSize" min="1", th:value="${movies.size}" size="2">
+    <label for="page">Page </label>
+    <input type="number" id="page" name="page" min="1" th:max="${movies.totalPages}" th:value="${movies.number} + 1" size="4">
+    <input type="submit" value="Go">
+    <label th:text="'of '+${movies.totalPages}"></label>
+</form>
+
 <a href="movie/create">Create New Movie</a>
 <table>
     <thead>
