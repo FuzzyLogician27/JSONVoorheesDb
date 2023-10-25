@@ -12,6 +12,7 @@ public class Schedule {
   private String movieId;
   private String theaterId;
 
+  public Schedule() {}
 
   public String getId() {
     return id;

@@ -1,6 +1,8 @@
 package com.sparta.jsonvoorhees.springapi.controller;
 
+import com.sparta.jsonvoorhees.springapi.model.entities.Comment;
 import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
+import com.sparta.jsonvoorhees.springapi.model.entities.Schedule;
 import com.sparta.jsonvoorhees.springapi.model.entities.Theater;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Address;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Geo;
@@ -31,7 +33,18 @@ public class TheaterWebController {
     public String getTheaterById(Model model, @PathVariable String id) {
         model.addAttribute("theater",serviceLayer.getTheaterById(id).get());
         model.addAttribute("schedules",serviceLayer.getSchedulesForTheaters(id));
+
+        Schedule schedule = new Schedule();
+        schedule.setTheaterId(id);
+        model.addAttribute("scheduleToCreate",schedule);
         return "theater/theater";
+    }
+
+    @PostMapping("/web/theater/createSchedule/{theaterId}")
+    public String createSchedule(Model model, @PathVariable String theaterId, @ModelAttribute("scheduleToCreate") Schedule schedule) {
+        model.addAttribute("theater", serviceLayer.getTheaterById(theaterId));
+        serviceLayer.addSchedule(schedule);
+        return "theater/schedule-added";
     }
 
     @GetMapping("/web/theater/create")

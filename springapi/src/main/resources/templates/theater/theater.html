@@ -48,7 +48,33 @@
         </tr>
     </table>
 </div>
-</span>
+        <div>
+        <br/>
+        <button id="toggleButton" class="btn">Toggle Schedule Form</button>
+        <form id="displayForm" th:action="@{'/web/theater/createSchedule/' + ${theater.id}}" th:object="${scheduleToCreate}" method="post">
+
+            <input type="hidden" id="theaterId" name="id" th:field="*{theaterId}"/>
+            <input type="hidden" id="movieId" name="id" th:field="*{movieId}"/>
+
+            <label for="date">Date</label>
+            <input type="text" id="date" name="id" th:field="*{date}"/><br/>
+
+            <input class="inputSubmit" style="margin: 10px auto 10px" type="submit" value="Create"/>
+        </form>
+    </div>
+        </span>
+<script>
+    const toggleButton = document.getElementById('toggleButton');
+    const myForm = document.getElementById('displayForm');
+
+    toggleButton.addEventListener('click', function () {
+        if (myForm.style.display === 'none') {
+            myForm.style.display = 'table'; // Show the table
+        } else {
+            myForm.style.display = 'none'; // Hide the table
+        }
+    });
+</script>
 </body>
 
 </html>
