@@ -4,8 +4,6 @@ import com.sparta.jsonvoorhees.springapi.exceptions.MovieBodyNotFoundException;
 import com.sparta.jsonvoorhees.springapi.exceptions.MovieNotFoundException;
 import com.sparta.jsonvoorhees.springapi.exceptions.MovieTitleNotFoundException;
 import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
-import com.sparta.jsonvoorhees.springapi.model.repositories.MovieRepository;
-import com.sparta.jsonvoorhees.springapi.service.ApiLibraryService;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

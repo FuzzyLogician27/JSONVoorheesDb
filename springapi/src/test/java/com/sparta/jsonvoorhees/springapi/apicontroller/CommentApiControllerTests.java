@@ -1,6 +1,7 @@
 package com.sparta.jsonvoorhees.springapi.apicontroller;
 
 import com.sparta.jsonvoorhees.springapi.controller.CommentApiController;
+import com.sparta.jsonvoorhees.springapi.exceptions.*;
 import com.sparta.jsonvoorhees.springapi.model.entities.Comment;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,8 +65,10 @@ public class CommentApiControllerTests {
 //                .exchange()
 //                .expectStatus()
 //                .isEqualTo(200);
+
         String invalidCommentId = "invalidCommentId";
-        Mockito.when(serviceLayer.getCommentById(invalidCommentId)).thenReturn(Optional.of(CommentNotFoundException));
+        var commentToReturn = new CommentNotFoundException(invalidCommentId);
+        Mockito.when(serviceLayer.getCommentById(invalidCommentId)).thenReturn(Optional.of(commentToReturn));
 
         testClient
                 .get()

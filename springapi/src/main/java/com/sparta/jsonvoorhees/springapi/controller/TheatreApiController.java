@@ -39,9 +39,7 @@ public class TheatreApiController {
         return serviceLayer.addTheater(theater);
     }
 
-    //@Todo Discuss this and its service layer implementation with team
-    // uses Long id is this okay?
-    //Todo 1)Why No path variable for patching 2)why long here but string everywhere else?
+
     @DeleteMapping("/api/theaters/{id}")
     public String deleteTheater(@PathVariable String id) {
         return serviceLayer.deleteTheaterById(id);
