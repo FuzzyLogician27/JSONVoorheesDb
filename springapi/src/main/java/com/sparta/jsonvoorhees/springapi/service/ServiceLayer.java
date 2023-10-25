@@ -3,6 +3,8 @@ package com.sparta.jsonvoorhees.springapi.service;
 import com.sparta.jsonvoorhees.springapi.model.entities.*;
 import com.sparta.jsonvoorhees.springapi.model.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServiceLayer {
+public class ServiceLayer implements IServiceLayer {
     private final CommentRepository commentRepository;
     private final MovieRepository movieRepository;
     private final TheaterRepository theaterRepository;
@@ -30,6 +32,8 @@ public class ServiceLayer {
         this.userRepository = userRepository;
     }
 
+    //region Getters
+
     public List<Movie> getAllMoviesWithTitle(String title) {
         List<Movie> fullMovieList = movieRepository.findAll();
         if (title == null) {
@@ -44,6 +48,13 @@ public class ServiceLayer {
             }
             return filteredMovies;
         }
+    }
+    public Page<Movie> getAllMoviesWithTitle(String title, Pageable pageRequest) {
+        if (title == null)
+           return movieRepository.findAll(pageRequest);
+        else
+            return movieRepository.findMoviesByTitleContainsIgnoreCase(title, pageRequest);
+
     }
 
     public List<Schedule> getSchedulesForTheaters(String theaterId)
@@ -71,7 +82,7 @@ public class ServiceLayer {
     public Optional<Theater> getTheaterById(String theaterId)
     {
         //@TODO: Check this one
-        return theaterRepository.findTheaterByTheaterId(Long.valueOf(theaterId));
+        return theaterRepository.findTheaterById(theaterId);
     }
 
     public Optional<Schedule> getScheduleById(String scheduleId)
@@ -91,40 +102,54 @@ public class ServiceLayer {
 
     public List<User> getAllUsers()
     {
-        return userRepository.findAll();
+        return  userRepository.findAll();
+    }
+    public Page<User> getAllUsers(Pageable pageRequest )
+    {
+
+        return userRepository.findAll(pageRequest);
     }
     
     public List<Schedule> getAllSchedules()
     {
         return scheduleRepository.findAll();
     }
-    
+    public Page<Schedule> getAllSchedules(Pageable pageRequest)
+    {
+        return scheduleRepository.findAll(pageRequest);
+    }
+
     public List<Comment> getAllComments()
     {
         return commentRepository.findAll();
+    }
+    public Page<Comment> getAllComments(Pageable pageRequest)
+    {
+        return commentRepository.findAll(pageRequest);
     }
 
     public List<Theater> getAllTheaters()
     {
         return theaterRepository.findAll();
     }
+    public Page<Theater> getAllTheaters(Pageable pageRequest)
+    {
+        return theaterRepository.findAll(pageRequest);
+    }
 
     //endregion
 
     //region Savers
-    //@TODO: Look into having these return something to indicate success
-    //These appear to return the object that is saved?
+    //These DO return the object that is saved
+    //This can be either a new object if it doesn't exist, or the existing one if it's an update
 
-    public Comment updateComment(String id, Comment newComment)
+    public Comment updateComment(Comment newComment)
     {
         // Save creates new entity if it doesn't exist, updates existing one if it does
-        Comment comment = commentRepository.findCommentById(id).get();
-        comment.setText(newComment.getText());
-        //Set date to today because it updated NOW?
-        return commentRepository.save(comment);
+        return commentRepository.save(newComment);
     }
 
-    public Movie updateMovie(String id, Movie newMovie)
+    public Movie updateMovie(Movie newMovie)
     {
         return movieRepository.save(newMovie);
     }
@@ -187,14 +212,27 @@ public class ServiceLayer {
         return "Movie Deleted";
     }
 
-    public void deleteScheduleById(String id)
+    public String deleteScheduleById(String id)
     {
+        if (scheduleRepository.findScheduleById(id).isEmpty()) {
+            //Exception
+            return "Movie not Found";
+        }
         scheduleRepository.deleteById(id);
+        return "Schedule Deleted";
     }
 
-    public void deleteTheaterById(String id)
+    //@Todo Discuss this with team, having to delete by the object itself
+    //Theater id is a Long...? Check this
+    public String deleteTheaterById(String id)
     {
-        theaterRepository.deleteById(id);
+        Theater theaterToDelete = theaterRepository.findTheaterById(id).get();
+        if (theaterRepository.findTheaterById(id).isEmpty()) {
+            //Throw Exception
+            return "Theater Not Found";
+        }
+        theaterRepository.delete(theaterToDelete);
+        return "Theater Deleted";
     }
 
     //@Todo This is still up for debate

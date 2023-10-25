@@ -1,5 +1,9 @@
 package com.sparta.jsonvoorhees.springapi.controller;
 
+import com.sparta.jsonvoorhees.springapi.exceptions.CommentBodyNotFoundException;
+import com.sparta.jsonvoorhees.springapi.exceptions.CommentNotFoundException;
+import com.sparta.jsonvoorhees.springapi.exceptions.MovieNotFoundException;
+import com.sparta.jsonvoorhees.springapi.exceptions.UserNotFoundException;
 import com.sparta.jsonvoorhees.springapi.model.entities.Comment;
 import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
 import com.sparta.jsonvoorhees.springapi.model.entities.User;
@@ -20,33 +24,57 @@ public class CommentApiController {
     }
 
     @GetMapping("/api/comments/getAllCommentsByMovieId/{movieId}")
-    public List<Comment> getAllCommentsByMovieId(@PathVariable String movieId) {
+    public List<Comment> getAllCommentsByMovieId(@PathVariable String movieId) throws MovieNotFoundException {
+        Optional<Movie> movieById = serviceLayer.getMovieById(movieId);
+        if (movieById.isEmpty()){
+            throw new MovieNotFoundException(movieId);
+        }
         return serviceLayer.getCommentsByMovie(movieId);
     }
 
     @GetMapping("/api/comments/getAllCommentsByUserId/{userId}")
-    public List<Comment> getAllCommentsByUserId(@PathVariable String userId) {
+    public List<Comment> getAllCommentsByUserId(@PathVariable String userId) throws UserNotFoundException{
+        Optional<User> userById = serviceLayer.getUserById(userId);
+        if (userById.isEmpty()){
+            throw new UserNotFoundException(userId);
+        }
         return serviceLayer.getCommentsByUser(userId);
     }
 
     @GetMapping("/api/comments/getComment/{id}")
-    public Optional<Comment> getCommentById(@PathVariable String id) {
-        return serviceLayer.getCommentById(id);
+    public Optional<Comment> getCommentById(@PathVariable String id) throws CommentNotFoundException
+    {
+        Optional<Comment> commentById = serviceLayer.getCommentById(id);
+        if (commentById.isEmpty()){
+            throw new CommentNotFoundException(id);
+        }
+        return commentById;
     }
 
     @PostMapping("/api/comments")
-    public Comment createComment(@RequestBody Comment comment) {
+    public Comment createComment(@RequestBody Comment comment) throws CommentBodyNotFoundException {
+        if(comment.getText().isEmpty()) {
+            throw new CommentBodyNotFoundException();
+        }
         return serviceLayer.addComment(comment);
     }
 
     @DeleteMapping("/api/comments/{id}")
-    public String deleteComment(@PathVariable String id) {
+    public String deleteComment(@PathVariable String id) throws CommentNotFoundException{
+        Optional<Comment> commentById = serviceLayer.getCommentById(id);
+        if (commentById.isEmpty()){
+            throw new CommentNotFoundException(id);
+        }
         return serviceLayer.deleteCommentById(id);
     }
 
     @PatchMapping("/api/comments/{id}")
-    public Comment updateComment(@RequestBody Comment comment, @PathVariable String id) {
-        return serviceLayer.updateComment(id, comment);
+    public Comment updateComment(@RequestBody Comment comment, @PathVariable String id) throws CommentNotFoundException {
+        Optional<Comment> commentById = serviceLayer.getCommentById(id);
+        if (commentById.isEmpty()){
+            throw new CommentNotFoundException(id);
+        }
+        return serviceLayer.updateComment(comment);
     }
 
 }

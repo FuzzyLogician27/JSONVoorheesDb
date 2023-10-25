@@ -6,6 +6,8 @@ public class Geo {
     private String type;
     private ArrayList<Double> coordinates;
 
+    public Geo() {}
+
     public Geo(String type, ArrayList<Double> coordinates) {
         this.type = type;
         this.coordinates=coordinates;

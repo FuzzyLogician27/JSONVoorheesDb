@@ -7,19 +7,25 @@
 </head>
 <body>
 <h1>Theaters</h1>
-
+<a href="theater/create">Create New Theater</a>
 <table>
     <thead>
     <tr>
         <th>ID</th>
-        <th>Location</th>
+        <th>Address</th>
+        <th>Geo</th>
         <th>Theater Id</th>
+        <th>Edit</th>
+        <th>Delete</th>
     </tr>
     </thead>
     <tr th:each="theater : ${theaters}">
         <td th:text="${theater.id}"></td>
-        <td th:text="${theater.location}"></td>
+        <td th:text="${theater.getLocation().address}"></td>
+        <td th:text="${theater.getLocation().geo}"></td>
         <td th:text="${theater.theaterId}"></td>
+        <td><a th:href="@{/web/theater/edit/{id}(id=${theater.id})}">Edit</a></td>
+        <td><a th:href="@{/web/theater/delete/{id}(id=${theater.id})}">Delete</a></td>
     </tr>
 </table>
 </body>

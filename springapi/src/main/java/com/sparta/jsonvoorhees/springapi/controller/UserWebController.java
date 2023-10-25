@@ -23,19 +23,19 @@ public class UserWebController {
         User user = serviceLayer.getUserById(id).get();
         model.addAttribute("user",user);
         //model.addAttribute("comments",serviceLayer.getCommentsByEmail(user.email)); - implement later
-        return "/users/user";
+        return "users/user";
     }
 
     @GetMapping("/web/users")
     public String getAllUsers(Model model) {
         model.addAttribute("users", serviceLayer.getAllUsers());
-        return "/users/users";
+        return "users/users";
     }
 
     @GetMapping("/web/user/create")
     public String getCreateForm(Model model) {
         model.addAttribute("userToCreate",new User());
-        return "/users/user-create-form";
+        return "users/user-create-form";
     }
 
     @PostMapping("/web/createUser")
@@ -47,7 +47,7 @@ public class UserWebController {
     @GetMapping("/web/user/delete/{id}")
     public String getDeleteForm(Model model, @PathVariable String id) {
         model.addAttribute("userToDelete", serviceLayer.getUserById(id).orElse(null));
-        return "/users/user-delete-form";
+        return "users/user-delete-form";
     }
 
     @PostMapping("/web/deleteUser")
