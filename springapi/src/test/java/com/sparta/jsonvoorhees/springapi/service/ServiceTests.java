@@ -9,10 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -20,7 +17,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class ApiLibraryServiceTests {
+public class ServiceTests {
     @Mock
     private static MovieRepository movieRepository;
     @Mock
@@ -50,6 +47,7 @@ public class ApiLibraryServiceTests {
         assertEquals(serviceLayer.getAllUsers(), new ArrayList<User>());
     }
 
+    //Region TestGets
     @Test
     public void testGetUser()
     {
@@ -63,5 +61,36 @@ public class ApiLibraryServiceTests {
 
         assertEquals(dummyUser,testUserToRetrieve);
     }
+
+    @Test
+    public void testGetTheater()
+    {
+        Theater dummyTheater = new Theater();
+        dummyTheater.setTheaterId(9999);
+        Address dummyAddress = new Address("Somewhere","Someplace","Nowhere","Maybe");
+        var coordinates = new ArrayList<Double>();
+        coordinates.add(0,(double)0);
+        Geo dummyGeo = new Geo("Point",coordinates);
+        Location dummyLocation = new Location(dummyAddress,dummyGeo);
+        dummyTheater.setLocation(dummyLocation);
+
+        Mockito.when(theaterRepository.findTheaterByTheaterId(9999L)).thenReturn(Optional.of(dummyTheater));
+
+        Theater testTheaterToRetrieve = serviceLayer.getTheaterById("9999").get();
+
+        assertEquals(dummyTheater,testTheaterToRetrieve);
+    }
+
+    @Test
+    public void testGetSchedules()
+    {
+        Schedule dummySchedule = new Schedule();
+        dummySchedule.setMovieId("1010");
+        dummySchedule.setTheaterId("0101");
+        dummySchedule.setId("0000");
+
+    }
+    //Endregion
+
     //Endregion
 }
