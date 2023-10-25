@@ -192,9 +192,17 @@ public class ServiceLayer {
         scheduleRepository.deleteById(id);
     }
 
-    public void deleteTheaterById(String id)
+    //@Todo Discuss this with team, having to delete by the object itself
+    //Theater id is a Long...? Check this
+    public String deleteTheaterById(String id)
     {
-        theaterRepository.deleteById(id);
+        Theater theaterToDelete = theaterRepository.findTheaterById(id).get();
+        if (theaterRepository.findTheaterById(id).isEmpty()) {
+            //Throw Exception
+            return "Theater Not Found";
+        }
+        theaterRepository.delete(theaterToDelete);
+        return "Theater Deleted";
     }
 
     //@Todo This is still up for debate
