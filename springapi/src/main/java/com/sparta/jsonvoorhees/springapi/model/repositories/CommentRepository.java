@@ -23,7 +23,7 @@ public interface CommentRepository extends MongoRepository<Comment, String> {
     //@Query(value="{movieId: 573a1391f29313caabcd7a34}")
     //@Query("{'movieId' : ?0}")
     //List<Comment> findByMovie(Movie movie);
-
+    @Query("{movie_id: ObjectId('?0')}")
     List<Comment> findCommentsByMovieId(String movieId);
     List<Comment> findCommentsByNameContains(String name);
 

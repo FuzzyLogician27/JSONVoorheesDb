@@ -2,6 +2,7 @@ package com.sparta.jsonvoorhees.springapi.model.entities;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 
 @Document("movies")
@@ -24,6 +25,7 @@ public class Movie {
   private long imdb_Votes;
   private String languages;
   private String lastupdated;
+  @Field("num_mflix_comments")
   private long numMflixComments;
   private String plot;
   private String poster;

@@ -4,6 +4,7 @@ package com.sparta.jsonvoorhees.springapi.model.entities;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document("comments")
 public class Comment {
@@ -12,6 +13,7 @@ public class Comment {
   private String id;
   private java.util.Date date;
   private String email;
+  @Field("movie_id")
   private String movieId;
   private String name;
   private String text;
