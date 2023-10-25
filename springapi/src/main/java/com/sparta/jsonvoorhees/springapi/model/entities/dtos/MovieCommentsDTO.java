@@ -21,8 +21,8 @@ public class MovieCommentsDTO {
         this.commentId = commentId;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return date.toString();
     }
 
     public void setDate(Date date) {
