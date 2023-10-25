@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServiceLayer {
+public class ServiceLayer implements IServiceLayer {
     private final CommentRepository commentRepository;
     private final MovieRepository movieRepository;
     private final TheaterRepository theaterRepository;
@@ -143,7 +143,7 @@ public class ServiceLayer {
     //@TODO: Look into having these return something to indicate success
     //These appear to return the object that is saved?
 
-    public Comment updateComment(String id, Comment newComment)
+    public Comment updateComment(Comment newComment)
     {
         // Save creates new entity if it doesn't exist, updates existing one if it does
         return commentRepository.save(newComment);
