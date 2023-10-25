@@ -2,6 +2,8 @@ package com.sparta.jsonvoorhees.springapi.model.repositories;
 
 
 import com.sparta.jsonvoorhees.springapi.model.entities.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +18,6 @@ public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findUserByName(String name);
 
     List<User> findUsersByNameContaining(String name);
+    Page<User> findUsersByNameContaining(String name, Pageable pageable);
 
 }

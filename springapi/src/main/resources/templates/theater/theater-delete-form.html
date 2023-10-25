@@ -6,17 +6,36 @@
     <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
-<form th:action="@{/web/deleteTheater}" th:object="${theaterToDelete}" method="post">
-    <label for="id">ID</label>
+<div>
+    <table class="container">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Address</th>
+            <th>Geo</th>
+            <th>Theater ID</th>
+        </tr>
+        </thead>
+        <tr>
+            <td th:text="${theaterToDelete.id}"></td>
+            <td th:text="${theaterToDelete.getLocation().address}"></td>
+            <td th:text="${theaterToDelete.getLocation().geo}"></td>
+            <td th:text="${theaterToDelete.theaterId}"></td>
+        </tr>
+    </table>
+</div>
+<form id="delete-form" th:action="@{/web/deleteTheater}" th:object="${theaterToDelete}" method="post">
     <input type="hidden" id="id" name="id" th:field="*{id}"/>
 
-    <label for="location">Location</label>
-    <input type="text" id="location" name="id" th:field="*{location}"/><br/>
-
-    <label for="theaterId">Theater ID</label>
-    <input type="text" id="theaterId" name="id" th:field="*{theaterId}"/><br/>
-
-    <input style="margin: 10px auto 10px" type="submit" value="Delete"/>
+    <input type="hidden" name="_method" value="DELETE">
+    <input class="btn" style="margin: 10px 45% 10px;" type="submit" value="Delete"/>
 </form>
+<script>
+    document.getElementById("delete-form").onsubmit = function(event) {
+        if (!confirm("Are you sure you want to delete this resource?")) {
+            event.preventDefault(); // Prevent the form from being submitted
+        }
+    };
+</script>
 </body>
 </html>

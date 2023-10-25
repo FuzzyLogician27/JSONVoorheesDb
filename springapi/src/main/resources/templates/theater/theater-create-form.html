@@ -7,11 +7,21 @@
 </head>
 <body>
 <form th:action="@{/web/createTheater}" th:object="${theaterToCreate}" method="post">
-    <label for="location">Location</label>
-    <input type="text" id="location" name="id" th:field="*{location}"/><br/>
-
     <label for="theaterId">Theater ID</label>
     <input type="text" id="theaterId" name="id" th:field="*{theaterId}"/><br/>
+
+    <h4>Location Address</h4>
+    <label for="location.address.street">Street</label>
+    <input type="text" id="location.address.street" name="id" th:field="*{location.address.street1}"/><br/>
+
+    <label for="location.address.city">City</label>
+    <input type="text" id="location.address.city" name="id" th:field="*{location.address.city}"/><br/>
+
+    <label for="location.address.state">State</label>
+    <input type="text" id="location.address.state" name="id" th:field="*{location.address.state}"/><br/>
+
+    <label for="location.address.zipcode">Zip Code</label>
+    <input type="text" id="location.address.zipcode" name="id" th:field="*{location.address.zipcode}"/><br/>
 
     <input class="inputSubmit" style="margin: 10px auto 10px" type="submit" value="Create"/>
 

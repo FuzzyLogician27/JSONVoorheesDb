@@ -4,6 +4,8 @@ public class Location {
     private Address address;
     private Geo geo;
 
+    public Location() {}
+
     public Location(Address address, Geo geo) {
         this.address = address;
         this.geo = geo;
@@ -23,5 +25,13 @@ public class Location {
 
     public void setGeo(Geo geo) {
         this.geo = geo;
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "address=" + address +
+                ", geo=" + geo +
+                '}';
     }
 }

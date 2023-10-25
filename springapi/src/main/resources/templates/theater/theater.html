@@ -14,13 +14,15 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>Location</th>
+            <th>Address</th>
+            <th>Geo</th>
             <th>Theater Id</th>
         </tr>
         </thead>
         <tr>
             <td th:text="${theater.id}"></td>
-            <td th:text="${theater.location}"></td>
+            <td th:text="${theater.getLocation().address}"></td>
+            <td th:text="${theater.getLocation().geo}"></td>
             <td th:text="${theater.theaterId}"></td>
         </tr>
     </table>
