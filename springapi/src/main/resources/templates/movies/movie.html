@@ -13,7 +13,7 @@
 <span th:if="${movie==null}">Film not found</span>
 <span th:unless="${movie==null}">
 
-<img th:src="${movie.poster}" alt="poster of movie">
+<img style="width: 200px; height: 300px;" th:src="${movie.poster}" alt="poster of movie">
 <div>
     <table>
         <thead>
@@ -75,6 +75,8 @@
         </form>
 </div>
 
+    <span th:if="${movie.awards==null}">No Awards Data</span>
+<span th:unless="${movie.awards==null}">
 <h2>Awards</h2>
 <div>
      <table>
@@ -92,7 +94,10 @@
         </tr>
     </table>
 </div>
+</span>
 
+    <span th:if="${movie.imdb==null}">No IMDB Data</span>
+<span th:unless="${movie.imdb==null}">
 <h2>IMDB</h2>
 <div>
     <table>
@@ -109,29 +114,55 @@
     </table>
 </div>
 <br/>
+</span>
 
+    <span th:if="${movie.tomatoes==null}">No Tomatoes Data</span>
+<span th:unless="${movie.tomatoes==null}">
 <h2>Tomatoes</h2>
 <div>
     <div>
-        <table>
-        <thead>
-        <tr>
-            <th>Viewer Rating</th>
-            <th>Viewer Meter</th>
-            <th>Viewer Number of Reviews</th>
-        </tr>
-        </thead>
-        <tr>
-            <td th:text="${movie.tomatoes.viewer.rating}"></td>
-            <td th:text="${movie.tomatoes.viewer.meter}"></td>
-            <td th:text="${movie.tomatoes.viewer.numReviews}"></td>
-        </tr>
-        </table>
+            <span th:if="${movie.tomatoes.viewer==null}">No Tomatoes Viewer Data</span>
+        <span th:unless="${movie.tomatoes.viewer==null}">
+            <table>
+            <thead>
+            <tr>
+                <th>Viewer Rating</th>
+                <th>Viewer Meter</th>
+                <th>Viewer Number of Reviews</th>
+            </tr>
+            </thead>
+            <tr>
+                <td th:text="${movie.tomatoes.viewer.rating}"></td>
+                <td th:text="${movie.tomatoes.viewer.meter}"></td>
+                <td th:text="${movie.tomatoes.viewer.numReviews}"></td>
+            </tr>
+            </table>
+        </span>
     </div>
+    <br/>
+    <div>
+            <span th:if="${movie.tomatoes.critic==null}">No Tomatoes Critic Data</span>
+        <span th:unless="${movie.tomatoes.critic==null}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Critic Rating</th>
+                    <th>Critic Meter</th>
+                    <th>Critic Number of Reviews</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td th:text="${movie.tomatoes.critic.rating}"></td>
+                    <td th:text="${movie.tomatoes.critic.meter}"></td>
+                    <td th:text="${movie.tomatoes.critic.numReviews}"></td>
+                </tr>
+            </table>
+        </span>
+    </div>
+<br/>
     <table>
         <thead>
         <tr>
-            <th>Critic</th>
             <th>Dvd</th>
             <th>Fresh</th>
             <th>Rotten</th>
@@ -141,7 +172,6 @@
         </tr>
         </thead>
         <tr>
-            <td th:text="${movie.tomatoes.critic}"></td>
             <td th:text="${movie.tomatoes.dvd}"></td>
             <td th:text="${movie.tomatoes.fresh}"></td>
             <td th:text="${movie.tomatoes.rotten}"></td>
@@ -151,8 +181,10 @@
         </tr>
     </table>
 </div>
+    </span>
+
 <br/>
-        </span>
+</span>
 <script>
     const toggleButton = document.getElementById('toggleButton');
     const myForm = document.getElementById('displayForm');
