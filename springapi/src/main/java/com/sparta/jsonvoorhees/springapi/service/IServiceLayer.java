@@ -25,6 +25,7 @@ public interface IServiceLayer {
     public Optional<Movie> getMovieById(String movieId);
 
     public Optional<Theater> getTheaterById(String theaterId);
+    public Optional<Theater> getTheaterByTheaterId(Long theaterId);
 
     public Optional<Schedule> getScheduleById(String scheduleId);
 

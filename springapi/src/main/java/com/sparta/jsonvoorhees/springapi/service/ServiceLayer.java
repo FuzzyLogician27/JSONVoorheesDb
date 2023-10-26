@@ -85,6 +85,12 @@ public class ServiceLayer implements IServiceLayer {
         return theaterRepository.findTheaterById(theaterId);
     }
 
+    public Optional<Theater> getTheaterByTheaterId(Long theaterId)
+    {
+        //@TODO: Check this one
+        return theaterRepository.findTheaterByTheaterId(theaterId);
+    }
+
     public Optional<Schedule> getScheduleById(String scheduleId)
     {
         return scheduleRepository.findScheduleById(scheduleId);
