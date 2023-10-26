@@ -11,8 +11,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 
+import java.awt.*;
+import java.awt.print.Pageable;
 import java.util.*;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -330,7 +334,6 @@ public class ServiceLayerTest {
 
         assertEquals("Comment Deleted",response);
     }
-
     @Test
     public void TestDeleteMovie()
     {
@@ -341,7 +344,6 @@ public class ServiceLayerTest {
 
         assertEquals("Movie Deleted",response);
     }
-
     @Test
     public void TestDeleteSchedule()
     {
@@ -352,7 +354,6 @@ public class ServiceLayerTest {
 
         assertEquals("Schedule Deleted",response);
     }
-
     @Test
     public void TestDeleteTheater()
     {
@@ -363,7 +364,6 @@ public class ServiceLayerTest {
 
         assertEquals("Theater Deleted",response);
     }
-
     @Test
     public void TestDeleteUser()
     {
@@ -375,11 +375,34 @@ public class ServiceLayerTest {
         var result = serviceLayer.getUserById("0000");
         assertFalse(result.isPresent());
     }
-    //endregion
+    @Test
+    public void TestDeleteCommentBad()
+    {
+        String response = serviceLayer.deleteCommentById("0000");
+        assertEquals("Comment Not Found",response);
+    }
+    @Test
+    public void TestDeleteMovieBad()
+    {
+        String response = serviceLayer.deleteMovieById("0000");
+        assertEquals("Movie Not Found",response);
+    }
+    @Test
+    public void TestDeleteScheduleBad()
+    {
+        String response = serviceLayer.deleteScheduleById("0000");
+        assertEquals("Schedule Not Found",response);
+    }
+    @Test
+    public void TestDeleteTheaterBad()
+    {
+        String response = serviceLayer.deleteTheaterById("0000");
+        assertEquals("Theater Not Found",response);
+    }
 
-    //Still to do:
-    //bad path deletes, getCommentsWithSpecifiedWords, getAll Theaters/Comments/Schedules/Users,
-    //getTheaterByTheaterId, getCommentsByUser, getCommentsByMovie, getSchedulesForTheaters, getAllMoviesWithTitle
+    //No TestDeleteUserBad as it doesn't have any error checking in
+
+    //endregion
 
     //region BulkAdds
     @Test
@@ -461,6 +484,110 @@ public class ServiceLayerTest {
 
         var result = serviceLayer.getAllComments();
         assertEquals(result,objsToAdd);
+    }
+    //endregion
+
+    //region BulkGets
+    //getAll Theaters(Both)/Comments(Both)/Schedules(Both)/Users(Page only)
+
+
+    //endregion
+
+    //region ExtraComments
+    //getCommentsByUser, getCommentsByMovie,getCommentsWithSpecifiedWords
+
+
+
+    //endregion
+
+    //region TheaterExtras
+    @Test
+    public void getTheaterByTheaterId()
+    {
+        Theater testTheater = createTestTheater(); //9999
+        Mockito.when(theaterRepository.findTheaterByTheaterId(9999L)).thenReturn(Optional.of(testTheater));
+
+        var result = serviceLayer.getTheaterByTheaterId(9999l).get();
+        assertEquals(result,testTheater);
+    }
+    @Test
+    public void getSchedulesForTheaters()
+    {
+        ArrayList<Schedule> schedules = null;
+
+        for (int i = 0; i < 5; i++) {
+            Schedule dummySchedule = new Schedule();
+            dummySchedule.setMovieId(String.valueOf(i));
+            dummySchedule.setTheaterId("0000");
+            dummySchedule.setId("0000");
+            schedules.add(dummySchedule);
+        }
+        Mockito.when(scheduleRepository.findSchedulesByTheaterId(isA(String.class))).thenReturn(schedules);
+
+        var result = serviceLayer.getSchedulesForTheaters("0000");
+
+        assertEquals(result,schedules);
+    }
+    //endregion
+
+    //region MovieSpecialGetters
+    @Test
+    public void getAllMoviesWithTitleNotProvided()
+    {
+        var objsToAdd = new ArrayList<Movie>();
+        for (int i = 0; i < 5; i++) {
+            objsToAdd.add(createRandomTestMovie());
+        }
+
+        Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);
+
+        var result = serviceLayer.getAllMoviesWithTitle(null);
+        assertEquals(result,objsToAdd);
+    }
+    @Test
+    public void getAllMoviesWithTitleProvided()
+    {
+        var objsToAdd = new ArrayList<Movie>();
+        for (int i = 0; i < 5; i++) {
+            objsToAdd.add(createRandomTestMovie());
+        }
+        Movie actualMovie = createTestMovie();//"A grand adventure in mongo"
+        objsToAdd.add(actualMovie);
+
+        Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);
+
+        var result = serviceLayer.getAllMoviesWithTitle("A grand adventure in mongo");
+        assertEquals(result,objsToAdd);
+    }
+    @Test
+    public void getAllMoviesWithTitleProvidedPageable()
+    {
+        var objsToAdd = new ArrayList<Movie>();
+        for (int i = 0; i < 5; i++) {
+            objsToAdd.add(createRandomTestMovie());
+        }
+        Movie actualMovie = createTestMovie();//"A grand adventure in mongo"
+        objsToAdd.add(actualMovie);
+
+        var pageRequest = PageRequest.of(1,10);
+        Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);
+
+        var result = serviceLayer.getAllMoviesWithTitle("A grand adventure in mongo",pageRequest);
+        assertEquals(result.getContent(),objsToAdd);
+    }
+    @Test
+    public void getAllMoviesWithTitleNotProvidedPagable()
+    {
+        var objsToAdd = new ArrayList<Movie>();
+        for (int i = 0; i < 5; i++) {
+            objsToAdd.add(createRandomTestMovie());
+        }
+
+        Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);
+        var pageRequest = PageRequest.of(1,10);
+
+        var result = serviceLayer.getAllMoviesWithTitle(null,pageRequest);
+        assertEquals(result.getContent(),objsToAdd);
     }
     //endregion
 }

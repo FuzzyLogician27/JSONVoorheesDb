@@ -209,7 +209,7 @@ public class ServiceLayer implements IServiceLayer {
     {
         if (movieRepository.findMovieById(id).isEmpty()) {
             //Exception
-            return "Movie not Found";
+            return "Movie Not Found";
         }
         movieRepository.deleteById(id);
         return "Movie Deleted";
@@ -219,7 +219,7 @@ public class ServiceLayer implements IServiceLayer {
     {
         if (scheduleRepository.findScheduleById(id).isEmpty()) {
             //Exception
-            return "Movie not Found";
+            return "Schedule Not Found";
         }
         scheduleRepository.deleteById(id);
         return "Schedule Deleted";
@@ -229,12 +229,11 @@ public class ServiceLayer implements IServiceLayer {
     //Theater id is a Long...? Check this
     public String deleteTheaterById(String id)
     {
-        Theater theaterToDelete = theaterRepository.findTheaterById(id).get();
         if (theaterRepository.findTheaterById(id).isEmpty()) {
             //Throw Exception
             return "Theater Not Found";
         }
-        theaterRepository.delete(theaterToDelete);
+        theaterRepository.deleteById(id);
         return "Theater Deleted";
     }
 
