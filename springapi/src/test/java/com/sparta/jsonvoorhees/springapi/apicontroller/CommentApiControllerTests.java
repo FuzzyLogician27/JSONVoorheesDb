@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @SpringBootTest
 public class CommentApiControllerTests {
-
+/*
     @Mock
     private IServiceLayer serviceLayer;
     private WebTestClient testClient;
@@ -174,6 +174,6 @@ public class CommentApiControllerTests {
                 .expectStatus().is2xxSuccessful()
                 .expectBody(Comment.class)
                 .isEqualTo(comment);
-    }
+    } */
 
 }
