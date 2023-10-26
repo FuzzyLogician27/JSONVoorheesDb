@@ -29,6 +29,7 @@ public class MovieWebController {
                                @RequestParam(name="page", required = false) Optional<Integer> page,
                                @RequestParam(name="pageSize", required = false) Optional<Integer> pageSize) {
 
+
         model.addAttribute("movies", serviceLayer.getAllMoviesWithTitle(title,
                 PageRequest.of(
                         page.orElse(1)-1,

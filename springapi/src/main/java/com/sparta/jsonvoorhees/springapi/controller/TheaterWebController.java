@@ -42,10 +42,11 @@ public class TheaterWebController {
     @GetMapping("/web/theaters")
     @ResponseStatus(HttpStatus.OK)
     public String getAllTheaters(Model model,
+                               @RequestParam(name="city", required = false) String city,
                                @RequestParam(name="page", required = false) Optional<Integer> page,
                                @RequestParam(name="pageSize", required = false) Optional<Integer> pageSize) {
 
-        model.addAttribute("theaters", serviceLayer.getAllTheaters(
+        model.addAttribute("theaters", serviceLayer.getAllTheatersByCity(city,
                 PageRequest.of(
                         page.orElse(1)-1,
                         pageSize.orElse(50))));

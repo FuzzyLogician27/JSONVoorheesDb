@@ -16,6 +16,11 @@
     <input type="number" id="page" name="page" min="1" th:max="${theaters.totalPages}" th:value="${theaters.number} + 1" size="4">
     <input type="submit" value="Go">
     <label th:text="'of '+${theaters.totalPages}"></label>
+</form> <br/>
+<form method="get" th:action="@{/web/theaters(city = 'city')}">
+    <label for="city">Search by City</label>
+    <input type="text" id="city" name="city" value="" />
+    <input type="submit" value="Search" />
 </form>
 <a href="theater/create">Create New Theater</a>
 <table>
