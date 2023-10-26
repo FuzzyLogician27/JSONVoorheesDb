@@ -69,8 +69,12 @@ public class MovieApiController {
     }
 
     @GetMapping("/api/movies/getMovies/filter")
-    public Page<Movie> filterBooks(@RequestParam(name = "query", required = false) String query, @ParameterObject Pageable pageable) {
-        return serviceLayer.getAllMoviesWithTitle(query, pageable);
+    public Page<Movie> filterBooks(@RequestParam(name = "query", required = false) String query, @ParameterObject Pageable pageable) throws MovieTitleNotFoundException {
+        Page<Movie> allMoviesWithTitle = serviceLayer.getAllMoviesWithTitle(query, pageable);
+        if (allMoviesWithTitle.isEmpty()) {
+            throw new MovieTitleNotFoundException(query);
+        }
+        return allMoviesWithTitle;
     }
 
 }
