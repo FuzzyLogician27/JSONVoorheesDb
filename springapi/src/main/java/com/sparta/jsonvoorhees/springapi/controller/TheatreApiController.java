@@ -1,9 +1,7 @@
 package com.sparta.jsonvoorhees.springapi.controller;
 
 import com.sparta.jsonvoorhees.springapi.exceptions.*;
-import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
 import com.sparta.jsonvoorhees.springapi.model.entities.Theater;
-import com.sparta.jsonvoorhees.springapi.model.entities.User;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,12 +34,22 @@ public class TheatreApiController {
 
     @PostMapping("/api/theaters")
     public Theater createTheater(@RequestBody Theater theater) throws TheaterBodyNotFoundException, TheaterExistsException {
+        String theaterIdString = "" + theater.getTheaterId();
+        if (theaterIdString.isEmpty()){
+            throw new TheaterBodyNotFoundException();
+        } else if (serviceLayer.getTheaterByTheaterId(theater.getTheaterId()).isPresent()) {
+            throw new TheaterExistsException(theaterIdString);
+        }
         return serviceLayer.addTheater(theater);
     }
 
 
     @DeleteMapping("/api/theaters/{id}")
-    public String deleteTheater(@PathVariable String id) {
+    public String deleteTheater(@PathVariable String id) throws TheaterNotFoundException{
+        Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
+        if (theaterById.isEmpty()){
+            throw new TheaterNotFoundException(id);
+        }
         return serviceLayer.deleteTheaterById(id);
     }
 
