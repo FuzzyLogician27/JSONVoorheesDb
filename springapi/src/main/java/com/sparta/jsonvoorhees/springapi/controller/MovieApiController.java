@@ -4,12 +4,14 @@ import com.sparta.jsonvoorhees.springapi.exceptions.MovieBodyNotFoundException;
 import com.sparta.jsonvoorhees.springapi.exceptions.MovieNotFoundException;
 import com.sparta.jsonvoorhees.springapi.exceptions.MovieTitleNotFoundException;
 import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
-import com.sparta.jsonvoorhees.springapi.model.repositories.MovieRepository;
-import com.sparta.jsonvoorhees.springapi.service.ApiLibraryService;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +66,15 @@ public class MovieApiController {
             throw new MovieNotFoundException(id);
         }
         return serviceLayer.updateMovie(movie);
+    }
+
+    @GetMapping("/api/movies/getMovies/filter")
+    public Page<Movie> filterBooks(@RequestParam(name = "query", required = false) String query, @ParameterObject Pageable pageable) throws MovieTitleNotFoundException {
+        Page<Movie> allMoviesWithTitle = serviceLayer.getAllMoviesWithTitle(query, pageable);
+        if (allMoviesWithTitle.isEmpty()) {
+            throw new MovieTitleNotFoundException(query);
+        }
+        return allMoviesWithTitle;
     }
 
 }

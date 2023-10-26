@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServiceLayer {
+public class ServiceLayer implements IServiceLayer {
     private final CommentRepository commentRepository;
     private final MovieRepository movieRepository;
     private final TheaterRepository theaterRepository;
@@ -85,6 +85,12 @@ public class ServiceLayer {
         return theaterRepository.findTheaterById(theaterId);
     }
 
+    public Optional<Theater> getTheaterByTheaterId(Long theaterId)
+    {
+        //@TODO: Check this one
+        return theaterRepository.findTheaterByTheaterId(theaterId);
+    }
+
     public Optional<Schedule> getScheduleById(String scheduleId)
     {
         return scheduleRepository.findScheduleById(scheduleId);
@@ -137,8 +143,8 @@ public class ServiceLayer {
     //endregion
 
     //region Savers
-    //@TODO: Look into having these return something to indicate success
-    //These appear to return the object that is saved?
+    //These DO return the object that is saved
+    //This can be either a new object if it doesn't exist, or the existing one if it's an update
 
     public Comment updateComment(Comment newComment)
     {

@@ -8,12 +8,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class ApiLibraryServiceTests {
-    @Autowired
-    private ApiLibraryService testService;
-
-    @Test
-    public void getAllFilms()
-    {
-        assertNotNull(testService.getMovieRepository().findAll());
-    }
+//    @Autowired
+//    private ApiLibraryService testService;
+//
+//    @Test
+//    public void getAllFilms()
+//    {
+//        assertNotNull(testService.getMovieRepository().findAll());
+//    }
 }

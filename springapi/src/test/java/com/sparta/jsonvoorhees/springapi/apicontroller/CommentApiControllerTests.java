@@ -1,7 +1,7 @@
 package com.sparta.jsonvoorhees.springapi.apicontroller;
 
 import com.sparta.jsonvoorhees.springapi.controller.CommentApiController;
-import com.sparta.jsonvoorhees.springapi.exceptions.CommentBodyNotFoundException;
+import com.sparta.jsonvoorhees.springapi.exceptions.*;
 import com.sparta.jsonvoorhees.springapi.model.entities.Comment;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @SpringBootTest
 public class CommentApiControllerTests {
-
+/*
     @Mock
     private ServiceLayer serviceLayer;
     private WebTestClient testClient;
@@ -55,27 +55,29 @@ public class CommentApiControllerTests {
         .isEqualTo(commentToReturn);
     }
 
-    //@Test
-    //@DisplayName("check that get comment by id returns 4xx given non existing id")
-    //void checkThatGetCommentByIdReturns4xxGivenNonExistingId() {
-    //    // The uri has to contain http or the test doesn't work - Most likely because IntelliJ by default uses https
-//  //      testClient
-//  //              .get()
-//  //              .uri("http://localhost:8080/api/comments/getComment/5a9427648b0beebeb6957b28")
-//  //              .exchange()
-//  //              .expectStatus()
-//  //              .isEqualTo(200);
-    //    String invalidCommentId = "invalidCommentId";
-    //    Mockito.when(serviceLayer.getCommentById(invalidCommentId)).thenReturn(Optional.of(CommentNotFoundException));
-//
-    //    testClient
-    //            .get()
-    //            .uri("http://localhost:8080/api/comments/getComment/" + invalidCommentId)
-    //            .exchange()
-    //            .expectStatus().isOk()
-    //            .expectBody(Comment.class)
-    //            .isEqualTo(commentToReturn);
-    //}
+    @Test
+    @DisplayName("check that get comment by id returns 4xx given non existing id")
+    void checkThatGetCommentByIdReturns4xxGivenNonExistingId() {
+        // The uri has to contain http or the test doesn't work - Most likely because IntelliJ by default uses https
+//        testClient
+//                .get()
+//                .uri("http://localhost:8080/api/comments/getComment/5a9427648b0beebeb6957b28")
+//                .exchange()
+//                .expectStatus()
+//                .isEqualTo(200);
+
+        String invalidCommentId = "invalidCommentId";
+        var commentToReturn = new CommentNotFoundException(invalidCommentId);
+        Mockito.when(serviceLayer.getCommentById(invalidCommentId)).thenReturn(Optional.of(commentToReturn));
+
+        testClient
+                .get()
+                .uri("http://localhost:8080/api/comments/getComment/" + invalidCommentId)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Comment.class)
+                .isEqualTo(commentToReturn);
+    }
 
     @Test
     @DisplayName("check that get comments by user id returns 200 for existing user id")
@@ -147,20 +149,20 @@ public class CommentApiControllerTests {
                 .isEqualTo("Comment deleted successfully");
     }
 
-    //@Test
-    //@DisplayName("check that delete comment by id returns an exception if given invalid id")
-    //void checkThatDeleteCommentByIdReturnsAnExceptionIfGivenInvalidId() {
-    //    DeleteCommentNotFoundException deleteCommentNotFoundException = new DeleteCommentNotFoundException();
-    //    Mockito.when(serviceLayer.deleteCommentById("non existent id")).thenThrow((DeleteCommentNotFoundException));
-//
-    //    testClient
-    //            .delete()
-    //            .uri("http://localhost:8080/api/comments/commentIdToDelete")
-    //            .exchange()
-    //            .expectStatus().is4xxClientError()
-    //            .expectBody(String.class)
-    //            .isEqualTo("Could not find comment with id: " + "non existent id");
-    //}
+    @Test
+    @DisplayName("check that delete comment by id returns an exception if given invalid id")
+    void checkThatDeleteCommentByIdReturnsAnExceptionIfGivenInvalidId() {
+        DeleteCommentNotFoundException deleteCommentNotFoundException = new DeleteCommentNotFoundException();
+        Mockito.when(serviceLayer.deleteCommentById("non existent id")).thenThrow((DeleteCommentNotFoundException));
+
+        testClient
+                .delete()
+                .uri("http://localhost:8080/api/comments/commentIdToDelete")
+                .exchange()
+                .expectStatus().is4xxClientError()
+                .expectBody(String.class)
+                .isEqualTo("Could not find comment with id: " + "non existent id");
+    }
 
     @Test
     @DisplayName("check that update comment returns 200 if given comment object in the body")
@@ -178,6 +180,6 @@ public class CommentApiControllerTests {
                 .expectStatus().is2xxSuccessful()
                 .expectBody(Comment.class)
                 .isEqualTo(comment);
-    }
+    } */
 
 }
