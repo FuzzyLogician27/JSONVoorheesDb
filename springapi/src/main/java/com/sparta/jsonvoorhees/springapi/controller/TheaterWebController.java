@@ -1,5 +1,8 @@
 package com.sparta.jsonvoorhees.springapi.controller;
 
+import com.sparta.jsonvoorhees.springapi.exceptions.TheaterBodyNotFoundException;
+import com.sparta.jsonvoorhees.springapi.exceptions.TheaterExistsException;
+import com.sparta.jsonvoorhees.springapi.exceptions.TheaterNotFoundException;
 import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
 import com.sparta.jsonvoorhees.springapi.model.entities.Theater;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Address;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.Optional;
 
 @Controller
 public class TheaterWebController {
@@ -28,7 +33,11 @@ public class TheaterWebController {
     }
 
     @GetMapping("/web/theater/{id}")
-    public String getTheaterById(Model model, @PathVariable String id) {
+    public String getTheaterById(Model model, @PathVariable String id) throws TheaterNotFoundException {
+        Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
+        if (theaterById.isEmpty()){
+            throw new TheaterNotFoundException(id);
+        }
         model.addAttribute("theater",serviceLayer.getTheaterById(id).get());
         model.addAttribute("schedules",serviceLayer.getSchedulesForTheaters(id));
         return "theater/theater";
@@ -44,7 +53,13 @@ public class TheaterWebController {
     }
 
     @PostMapping("/web/createTheater")
-    public String createTheater(@ModelAttribute("theaterToCreate") Theater theater) {
+    public String createTheater(@ModelAttribute("theaterToCreate") Theater theater) throws TheaterBodyNotFoundException, TheaterExistsException {
+        String theaterIdString = "" + theater.getTheaterId();
+        if (theaterIdString.isEmpty()){ //todo just check for 0
+            throw new TheaterBodyNotFoundException();
+        } else if (serviceLayer.getTheaterByTheaterId(theater.getTheaterId()).isPresent()) {
+            throw new TheaterExistsException(theaterIdString);
+        }
         serviceLayer.addTheater(theater);
         return "create-success";
     }
