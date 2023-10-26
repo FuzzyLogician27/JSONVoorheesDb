@@ -6,8 +6,16 @@
     <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
-<h1>Theaters</h1>
-<a href="/web/home">Back to home</a>
+<div id="homeContainer">
+    <img src="/images/ghost1-19.gif" alt="ghost right">
+    <h1>Theaters</h1>
+    <img src="/images/ghost1-19_flip.gif" alt="ghost left">
+</div>
+
+
+<div class="center">
+<a class="button" href="/web/home">Back to home</a>
+    <div id="searchForm">
 <form th:action="@{/web/theaters(page='page',pageSize='pageSize')}">
 
     <label for="pageSize">Show</label>
@@ -22,14 +30,15 @@
     <input type="text" id="city" name="city" value="" />
     <input type="submit" value="Search" />
 </form>
-<a href="theater/create">Create New Theater</a>
+    </div>
+<a class="button" href="theater/create">Create New Theater</a>
+</div>
 <table>
     <thead>
     <tr>
-        <th>ID</th>
+        <th>Theater Id</th>
         <th>Address</th>
         <th>Geo</th>
-        <th>Theater Id</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
@@ -37,15 +46,19 @@
     <tr th:each="theater : ${theaters}">
         <td>
             <a th:href="@{'/web/theater/' + ${theater.id}}">
-                <th:block th:text="${theater.id}"></th:block>
+                <th:block th:text="${theater.theaterId}"></th:block>
             </a>
         </td>
         <td th:text="${theater.getLocation().address}"></td>
         <td th:text="${theater.getLocation().geo}"></td>
-        <td th:text="${theater.theaterId}"></td>
         <td><a th:href="@{/web/theater/edit/{id}(id=${theater.id})}">Edit</a></td>
         <td><a th:href="@{/web/theater/delete/{id}(id=${theater.id})}">Delete</a></td>
     </tr>
 </table>
+
+<div class="center">
+    <img src="/images/bat-line.gif" alt="bat line">
+</div>
+
 </body>
 </html>

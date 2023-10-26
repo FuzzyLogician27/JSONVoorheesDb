@@ -50,7 +50,7 @@ public class TheaterWebController {
                 PageRequest.of(
                         page.orElse(1)-1,
                         pageSize.orElse(50))));
-        return "/theater/theaters";
+        return "theater/theaters";
     }
 
     @GetMapping("/web/theater/{id}")
