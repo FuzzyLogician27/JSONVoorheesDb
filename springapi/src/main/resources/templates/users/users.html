@@ -8,8 +8,9 @@
 <body>
 
 <div id="homeContainer">
-    <img>
+    <img src="/images/friday.gif" alt="friday">
     <h1>All Users</h1>
+    <img src="/images/friday.gif" alt="friday">
 </div>
 <div class="center">
     <a class="button" href="/web/home">Back to home</a>
@@ -47,7 +48,7 @@
             </a>
         </td>
         <td th:text="${user.email}"></td>
-        <td><a th:href="@{/web/users/delete/{id}(id=${user.id})}">Delete</a></td>
+        <td><a th:href="@{/web/user/delete/{id}(id=${user.id})}">Delete</a></td>
     </tr>
 </table>
 

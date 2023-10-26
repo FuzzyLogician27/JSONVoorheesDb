@@ -5,7 +5,30 @@
     <title>Create Movie</title>
     <link href="/css/style.css" rel="stylesheet">
 </head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    input[type=text], select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+
+    label {
+        padding: 12px 12px 12px 0;
+        display: inline-block;
+    }
+</style>
 <body>
+<h1>Update Movie</h1>
+<div class="center">
+    <a class="button" href="/web/movies">Back to all movies</a>
+</div>
+<div class="container"  style="margin-top: 20px">
 <form th:action="@{/web/updateMovie}" th:object="${movieToEdit}" method="post">
     <input type="hidden" id="id" name="id" th:field="*{id}"/>
 
@@ -30,5 +53,10 @@
     <input class="inputSubmit" style="margin: 10px auto 10px" type="submit" value="Update"/>
 
 </form>
+</div>
+<br/>
+<div class="center">
+    <img src="/images/bat-line.gif" alt="bat line">
+</div>
 </body>
 </html>

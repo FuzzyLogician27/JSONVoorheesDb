@@ -5,26 +5,80 @@
     <title>Create Theater</title>
     <link href="/css/style.css" rel="stylesheet">
 </head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    input[type=text], select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+
+    label {
+        padding: 12px 12px 12px 0;
+        display: inline-block;
+    }
+</style>
 <body>
+<h1>Create a Theater</h1>
+<a class="button" href="/web/theaters">Back to all theaters</a>
+
+<div class="container" style="margin-top: 20px">
 <form th:action="@{/web/createTheater}" th:object="${theaterToCreate}" method="post">
-    <label for="theaterId">Theater ID</label>
-    <input type="text" id="theaterId" name="id" th:field="*{theaterId}"/><br/>
-
+    <div class="row">
+        <div class="col-25">
+            <label for="theaterId">Theater ID</label>
+        </div>
+        <div class="col-75">
+            <input type="text" id="theaterId" name="id" th:field="*{theaterId}"/><br/>
+        </div>
+    </div>
+    <br/>
     <h4>Location Address</h4>
+    <div class="row">
+        <div class="col-25">
     <label for="location.address.street">Street</label>
+        </div>
+        <div class="col-75">
     <input type="text" id="location.address.street" name="id" th:field="*{location.address.street1}"/><br/>
-
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-25">
     <label for="location.address.city">City</label>
+        </div>
+        <div class="col-75">
     <input type="text" id="location.address.city" name="id" th:field="*{location.address.city}"/><br/>
-
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-25">
     <label for="location.address.state">State</label>
+        </div>
+        <div class="col-75">
     <input type="text" id="location.address.state" name="id" th:field="*{location.address.state}"/><br/>
-
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-25">
     <label for="location.address.zipcode">Zip Code</label>
+        </div>
+        <div class="col-75">
     <input type="text" id="location.address.zipcode" name="id" th:field="*{location.address.zipcode}"/><br/>
-
-    <input class="inputSubmit" style="margin: 10px auto 10px" type="submit" value="Create"/>
-
+        </div>
+    </div>
+    <div class="row">
+    <input class="inputSubmit" style="margin: 10px auto 10px; float: right" type="submit" value="Create"/>
+    </div>
 </form>
+</div>
+<br/>
+<div class="center">
+    <img src="/images/bat-line.gif" alt="bat line">
+</div>
 </body>
 </html>
