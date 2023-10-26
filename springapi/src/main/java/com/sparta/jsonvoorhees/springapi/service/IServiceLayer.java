@@ -65,7 +65,7 @@ public interface IServiceLayer {
 
     public String deleteTheaterById(String id);
 
-    public void deleteUserById(String id);
+    public String deleteUserById(String id);
 
     public Comment addComment(Comment newComment);
 
