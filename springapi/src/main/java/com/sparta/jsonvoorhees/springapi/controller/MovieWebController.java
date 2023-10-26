@@ -1,5 +1,7 @@
 package com.sparta.jsonvoorhees.springapi.controller;
 
+import com.sparta.jsonvoorhees.springapi.exceptions.MovieBodyNotFoundException;
+import com.sparta.jsonvoorhees.springapi.exceptions.MovieNotFoundException;
 import com.sparta.jsonvoorhees.springapi.model.entities.Comment;
 import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
@@ -35,8 +37,12 @@ public class MovieWebController {
     }
 
     @GetMapping("/web/movie/{id}")
-    public String getMovieById(Model model, @PathVariable String id) {
-        model.addAttribute("movie", serviceLayer.getMovieById(id).get());
+    public String getMovieById(Model model, @PathVariable String id) throws MovieNotFoundException {
+        Optional<Movie> movieById = serviceLayer.getMovieById(id);
+        if (movieById.isEmpty()){
+            throw new MovieNotFoundException(id);
+        }
+        model.addAttribute("movie", movieById.get());
         model.addAttribute("comments",serviceLayer.getCommentsByMovie(id));
 
         Comment comment = new Comment();
@@ -46,9 +52,14 @@ public class MovieWebController {
         return "movies/movie";
     }
 
-    @PostMapping("/web/movie/createComment/{movieId}")
-    public String createComment(Model model, @PathVariable String movieId, @ModelAttribute("commentToCreate") Comment comment) {
-        model.addAttribute("movie", serviceLayer.getMovieById(movieId).get());
+    @PostMapping("/web/movie/createComment/{id}")
+    public String createComment(Model model, @PathVariable String id,
+                                @ModelAttribute("commentToCreate") Comment comment) throws MovieNotFoundException{
+        Optional<Movie> movieById = serviceLayer.getMovieById(id);
+        if (movieById.isEmpty()){
+            throw new MovieNotFoundException(id);
+        }
+        model.addAttribute("movie", movieById.get());
         comment.setDate(Date.from(Instant.now()));
         serviceLayer.addComment(comment);
         return "movies/comment-added";
@@ -61,14 +72,21 @@ public class MovieWebController {
     }
 
     @PostMapping("/web/createMovie")
-    public String createMovie(@ModelAttribute("movieToCreate") Movie movie) {
+    public String createMovie(@ModelAttribute("movieToCreate") Movie movie) throws MovieBodyNotFoundException {
+        if(movie.getTitle().isEmpty()) {
+            throw new MovieBodyNotFoundException();
+        }
         serviceLayer.addMovie(movie);
         return "create-success";
     }
 
     @GetMapping("/web/movie/edit/{id}")
-    public String getEditForm(Model model, @PathVariable String id) {
-        model.addAttribute("movieToEdit", serviceLayer.getMovieById(id).orElse(null));
+    public String getEditForm(Model model, @PathVariable String id) throws MovieNotFoundException{
+        Optional<Movie> movieById = serviceLayer.getMovieById(id);
+        if (movieById.isEmpty()){
+            throw new MovieNotFoundException(id);
+        }
+        model.addAttribute("movieToEdit", movieById.get());
         return "movies/movie-edit-form";
     }
 
@@ -85,8 +103,12 @@ public class MovieWebController {
     }
 
     @GetMapping("/web/movie/delete/{id}")
-    public String getDeleteForm(Model model, @PathVariable String id) {
-        model.addAttribute("movieToDelete", serviceLayer.getMovieById(id).orElse(null));
+    public String getDeleteForm(Model model, @PathVariable String id) throws MovieNotFoundException{
+        Optional<Movie> movieById = serviceLayer.getMovieById(id);
+        if (movieById.isEmpty()){
+            throw new MovieNotFoundException(id);
+        }
+        model.addAttribute("movieToDelete", movieById.get());
         return "movies/movie-delete-form";
     }
 
