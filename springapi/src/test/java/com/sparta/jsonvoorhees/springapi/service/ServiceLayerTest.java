@@ -4,6 +4,7 @@ import com.sparta.jsonvoorhees.springapi.model.entities.*;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.*;
 import com.sparta.jsonvoorhees.springapi.model.repositories.*;
 
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -83,6 +84,8 @@ public class ServiceLayerTest {
         dummyComment.setId("0000");
         dummyComment.setEmail("name@domain.com");
         dummyComment.setText("(╯°□°）╯︵ ┻━┻");
+        dummyComment.setName("Joe Bloggs");
+        dummyComment.setMovieId(new ObjectId("000000000000000000000000"));
         return dummyComment;
     }
 
@@ -488,16 +491,87 @@ public class ServiceLayerTest {
     //endregion
 
     //region BulkGets
-    //getAll Theaters(Both)/Comments(Both)/Schedules(Both)/Users(Page only)
-
-
+    @Test
+    public void testGetAllTheatersNonPaged()
+    {
+        assertEquals(serviceLayer.getAllTheaters(), new ArrayList<Theater>());
+    }
+    @Test
+    public void testGetAllCommentsNonPaged()
+    {
+        assertEquals(serviceLayer.getAllComments(), new ArrayList<Comment>());
+    }
+    @Test
+    public void testGetAllSchedulesNonPaged()
+    {
+        assertEquals(serviceLayer.getAllSchedules(), new ArrayList<Schedule>());
+    }
+    @Test
+    public void testGetAllTheatersPaged()
+    {
+        assertEquals(serviceLayer.getAllTheaters(PageRequest.of(0,20)), new ArrayList<Theater>());
+    }
+    @Test
+    public void testGetAllCommentsPaged()
+    {
+        assertEquals(serviceLayer.getAllComments(PageRequest.of(0,20)), new ArrayList<Comment>());
+    }
+    @Test
+    public void testGetAllSchedulesPaged()
+    {
+        assertEquals(serviceLayer.getAllSchedules(PageRequest.of(0,20)), new ArrayList<Schedule>());
+    }
+    @Test
+    public void testGetAllUsersPaged()
+    {
+        assertEquals(serviceLayer.getAllUsers(PageRequest.of(0,20)), new ArrayList<Schedule>());
+    }
     //endregion
 
     //region ExtraComments
-    //getCommentsByUser, getCommentsByMovie,getCommentsWithSpecifiedWords
+    //getCommentsWithSpecifiedWords
+    @Test
+    public void testGetCommentsByUser()
+    {
+        var comments = new ArrayList<Comment>();
 
+        comments.add(createTestComment()); //Joe Bloggs
 
+        Mockito.when(commentRepository.findCommentsByNameContains("Joe Bloggs")).thenReturn(comments);
+        var result = serviceLayer.getCommentsByUser("Joe Bloggs");
 
+        assertEquals(result,comments);
+    }
+    @Test
+    public void testGetCommentsByMovie()
+    {
+        var comments = new ArrayList<Comment>();
+
+        comments.add(createTestComment()); //0000
+
+        Mockito.when(commentRepository.findCommentsByMovieId(isA(String.class))).thenReturn(comments);
+        var result = serviceLayer.getCommentsByMovie("0000");
+
+        assertEquals(result,comments);
+    }
+
+    @Test
+    public void testGetCommentsWithSpecifiedWords()
+    {
+        ArrayList<String> searchTerms = new ArrayList<String>();
+        searchTerms.add("(╯°□°）╯︵ ┻━┻");
+
+        var comments = new ArrayList<Comment>();
+        var expectedComment = comments.add(createTestComment()); //"(╯°□°）╯︵ ┻━┻"
+        for (int i = 0; i < 5; i++) {
+            comments.add(createRandomTestComment());
+        }
+        Mockito.when(commentRepository.findAll()).thenReturn(comments);
+
+        var result = serviceLayer.getCommentsWithSpecifiedWords(searchTerms);
+
+        assertEquals(result.get(0),expectedComment);
+    }
     //endregion
 
     //region TheaterExtras
@@ -513,7 +587,7 @@ public class ServiceLayerTest {
     @Test
     public void getSchedulesForTheaters()
     {
-        ArrayList<Schedule> schedules = null;
+        ArrayList<Schedule> schedules = new ArrayList<Schedule>();
 
         for (int i = 0; i < 5; i++) {
             Schedule dummySchedule = new Schedule();
@@ -569,7 +643,7 @@ public class ServiceLayerTest {
         Movie actualMovie = createTestMovie();//"A grand adventure in mongo"
         objsToAdd.add(actualMovie);
 
-        var pageRequest = PageRequest.of(1,10);
+        var pageRequest = PageRequest.of(0,10);
         Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);
 
         var result = serviceLayer.getAllMoviesWithTitle("A grand adventure in mongo",pageRequest);
@@ -584,7 +658,7 @@ public class ServiceLayerTest {
         }
 
         Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);
-        var pageRequest = PageRequest.of(1,10);
+        var pageRequest = PageRequest.of(0,10);
 
         var result = serviceLayer.getAllMoviesWithTitle(null,pageRequest);
         assertEquals(result.getContent(),objsToAdd);
