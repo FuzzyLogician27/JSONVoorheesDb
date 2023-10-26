@@ -34,7 +34,7 @@ public class CommentApiController {
         return serviceLayer.getCommentsByMovie(movieId);
     }
 
-    @GetMapping("/api/comments/{userId}")
+    @GetMapping("/api/comments/user/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public List<Comment> getAllCommentsByUserId(@PathVariable String userId) throws UserNotFoundException{
         Optional<User> userById = serviceLayer.getUserById(userId);
