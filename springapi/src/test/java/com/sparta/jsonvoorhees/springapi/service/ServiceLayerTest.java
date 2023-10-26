@@ -11,14 +11,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.*;
 
 @SpringBootTest
-public class ServiceTests {
+public class ServiceLayerTest {
     @Mock
     private static MovieRepository movieRepository;
     @Mock
@@ -163,7 +162,7 @@ public class ServiceTests {
     {
         Theater dummyTheater = createTestTheater();
 
-        Mockito.when(theaterRepository.findTheaterByTheaterId(9999L)).thenReturn(Optional.of(dummyTheater));
+        Mockito.when(theaterRepository.findTheaterById("9999")).thenReturn(Optional.of(dummyTheater));
 
         Theater testTheaterToRetrieve = serviceLayer.getTheaterById("9999").get();
 
@@ -174,10 +173,7 @@ public class ServiceTests {
     {
         Schedule dummySchedule = createTestSchedule();
 
-        var returnSchedule = new ArrayList<Schedule>();
-        returnSchedule.add(dummySchedule);
-
-        Mockito.when(scheduleRepository.findSchedulesByTheaterId("0101")).thenReturn(returnSchedule);
+        Mockito.when(scheduleRepository.findScheduleById("0000")).thenReturn(Optional.of(dummySchedule));
 
         Schedule testScheduleToRetrieve = serviceLayer.getScheduleById("0000").get();
 
@@ -209,7 +205,72 @@ public class ServiceTests {
     //endregion
 
     //region Test Update
-    
+    @Test
+    public void testUpdateUser()
+    {
+        User testUser = createTestUser();
+
+        Mockito.when(userRepository.save(isA(User.class)))
+                .thenReturn(testUser);
+
+        User response = serviceLayer.updateUser(testUser);
+
+        assertEquals(testUser,response);
+    }
+
+
+    @Test
+    public void testUpdateComment()
+    {
+        Comment testComment = createTestComment();
+
+        Mockito.when(commentRepository.save(isA(Comment.class)))
+                .thenReturn(testComment);
+
+        Comment response = serviceLayer.updateComment(testComment);
+
+        assertEquals(testComment,response);
+    }
+
+    @Test
+    public void testUpdateFilm()
+    {
+        Movie testFilm = createTestMovie();
+
+        Mockito.when(movieRepository.save(isA(Movie.class)))
+                .thenReturn(testFilm);
+
+        Movie response = serviceLayer.updateMovie(testFilm);
+
+        assertEquals(testFilm,response);
+    }
+
+    @Test
+    public void testUpdateTheater()
+    {
+        Theater testTheater = createTestTheater();
+
+        Mockito.when(theaterRepository.save(isA(Theater.class)))
+                .thenReturn(testTheater);
+
+        Theater response = serviceLayer.updateTheater(testTheater);
+
+        assertEquals(testTheater,response);
+    }
+
+    @Test
+    public void testUpdateSchedule()
+    {
+        Schedule testSchedule = createTestSchedule();
+
+        Mockito.when(scheduleRepository.save(isA(Schedule.class)))
+                .thenReturn(testSchedule);
+
+        Schedule response = serviceLayer.updateSchedule(testSchedule);
+
+        assertEquals(testSchedule,response);
+    }
+
     //endregion
 
     //region Test Delete
