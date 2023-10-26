@@ -2,10 +2,18 @@ package com.sparta.jsonvoorhees.springapi.controller;
 
 import com.sparta.jsonvoorhees.springapi.model.entities.User;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 public class UserWebController {
@@ -27,10 +35,22 @@ public class UserWebController {
 
     @GetMapping("/web/users")
     @ResponseStatus(HttpStatus.OK)
-    public String getAllUsers(Model model) {
-        model.addAttribute("users", serviceLayer.getAllUsers());
-        return "users/users";
+    public String getAllUsers(Model model,
+                               @RequestParam(name="page", required = false) Optional<Integer> page,
+                               @RequestParam(name="pageSize", required = false) Optional<Integer> pageSize) {
+
+        model.addAttribute("users", serviceLayer.getAllUsers(
+                PageRequest.of(
+                        page.orElse(1)-1,
+                        pageSize.orElse(50))));
+        return "/users/users";
     }
+
+    //@GetMapping("/web/users")
+    //public String getAllUsers(Model model) {
+    //    model.addAttribute("users", serviceLayer.getAllUsers());
+    //    return "users/users";
+    //}
 
     @GetMapping("/web/user/create")
     @ResponseStatus(HttpStatus.OK)

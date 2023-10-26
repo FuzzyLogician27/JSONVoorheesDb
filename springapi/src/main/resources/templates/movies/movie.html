@@ -6,33 +6,45 @@
     <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
-<h1>Movie</h1>
+<a href="/web/movies">Back to all movies</a>
+
+<h1 th:text="${movie.title}"></h1>
+
 <span th:if="${movie==null}">Film not found</span>
 <span th:unless="${movie==null}">
+
+<img style="width: 200px; height: 300px;" th:src="${movie.poster}" alt="poster of movie">
 <div>
     <table>
         <thead>
         <tr>
             <th>ID</th>
-            <th>Title</th>
             <th>Description</th>
+            <th>Directors</th>
             <th>Genre</th>
+            <th>Cast</th>
             <th>Rating</th>
             <th>Year</th>
+            <th>Runtime</th>
+            <th>Languages</th>
+            <th>Countries</th>
         </tr>
         </thead>
         <tr>
             <td th:text="${movie.id}"></td>
-            <td th:text="${movie.title}"></td>
             <td th:text="${movie.fullplot}"></td>
+            <td th:text="${movie.directors}"></td>
             <td th:text="${movie.genres}"></td>
+            <td th:text="${movie.cast}"></td>
             <td th:text="${movie.rated}"></td>
             <td th:text="${movie.year}"></td>
+            <td th:text="${movie.runtime}"></td>
+            <td th:text="${movie.languages}"></td>
+            <td th:text="${movie.countries}"></td>
         </tr>
     </table>
 </div>
 <br/>
-
     <h2>Comments</h2>
 <div>
     <table>
@@ -49,8 +61,6 @@
                 <td th:text="${comment.date}"></td>
             </tr>
     </table>
-</div>
-    <div>
         <br/>
         <button id="toggleButton" class="btn">Toggle Comments Form</button>
         <form id="displayForm" th:action="@{'/web/movie/createComment/' + ${movie.id}}" th:object="${commentToCreate}" method="post">
@@ -63,8 +73,118 @@
 
             <input class="inputSubmit" style="margin: 10px auto 10px" type="submit" value="Create"/>
         </form>
-    </div>
+</div>
+
+    <span th:if="${movie.awards==null}">No Awards Data</span>
+<span th:unless="${movie.awards==null}">
+<h2>Awards</h2>
+<div>
+     <table>
+        <thead>
+        <tr>
+            <th>Text</th>
+            <th>Nominations</th>
+            <th>Wins</th>
+        </tr>
+        </thead>
+        <tr>
+            <td th:text="${movie.awards.text}"></td>
+            <td th:text="${movie.awards.nominations}"></td>
+            <td th:text="${movie.awards.wins}"></td>
+        </tr>
+    </table>
+</div>
+</span>
+
+    <span th:if="${movie.imdb==null}">No IMDB Data</span>
+<span th:unless="${movie.imdb==null}">
+<h2>IMDB</h2>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Rating</th>
+            <th>Votes</th>
+        </tr>
+        </thead>
+        <tr>
+            <td th:text="${movie.imdb.rating}"></td>
+            <td th:text="${movie.imdb.votes}"></td>
+        </tr>
+    </table>
+</div>
+<br/>
+</span>
+
+    <span th:if="${movie.tomatoes==null}">No Tomatoes Data</span>
+<span th:unless="${movie.tomatoes==null}">
+<h2>Tomatoes</h2>
+<div>
+    <div>
+            <span th:if="${movie.tomatoes.viewer==null}">No Tomatoes Viewer Data</span>
+        <span th:unless="${movie.tomatoes.viewer==null}">
+            <table>
+            <thead>
+            <tr>
+                <th>Viewer Rating</th>
+                <th>Viewer Meter</th>
+                <th>Viewer Number of Reviews</th>
+            </tr>
+            </thead>
+            <tr>
+                <td th:text="${movie.tomatoes.viewer.rating}"></td>
+                <td th:text="${movie.tomatoes.viewer.meter}"></td>
+                <td th:text="${movie.tomatoes.viewer.numReviews}"></td>
+            </tr>
+            </table>
         </span>
+    </div>
+    <br/>
+    <div>
+            <span th:if="${movie.tomatoes.critic==null}">No Tomatoes Critic Data</span>
+        <span th:unless="${movie.tomatoes.critic==null}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Critic Rating</th>
+                    <th>Critic Meter</th>
+                    <th>Critic Number of Reviews</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td th:text="${movie.tomatoes.critic.rating}"></td>
+                    <td th:text="${movie.tomatoes.critic.meter}"></td>
+                    <td th:text="${movie.tomatoes.critic.numReviews}"></td>
+                </tr>
+            </table>
+        </span>
+    </div>
+<br/>
+    <table>
+        <thead>
+        <tr>
+            <th>Dvd</th>
+            <th>Fresh</th>
+            <th>Rotten</th>
+            <th>Production</th>
+            <th>Last Updated</th>
+            <th>Website</th>
+        </tr>
+        </thead>
+        <tr>
+            <td th:text="${movie.tomatoes.dvd}"></td>
+            <td th:text="${movie.tomatoes.fresh}"></td>
+            <td th:text="${movie.tomatoes.rotten}"></td>
+            <td th:text="${movie.tomatoes.production}"></td>
+            <td th:text="${movie.tomatoes.lastUpdated}"></td>
+            <td th:text="${movie.tomatoes.website}"></td>
+        </tr>
+    </table>
+</div>
+    </span>
+
+<br/>
+</span>
 <script>
     const toggleButton = document.getElementById('toggleButton');
     const myForm = document.getElementById('displayForm');
