@@ -1,17 +1,28 @@
 package com.sparta.jsonvoorhees.springapi.controller;
 
+import com.sparta.jsonvoorhees.springapi.exceptions.TheaterBodyNotFoundException;
+import com.sparta.jsonvoorhees.springapi.exceptions.TheaterExistsException;
+import com.sparta.jsonvoorhees.springapi.exceptions.TheaterNotFoundException;
+import com.sparta.jsonvoorhees.springapi.model.entities.Comment;
 import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
+import com.sparta.jsonvoorhees.springapi.model.entities.Schedule;
 import com.sparta.jsonvoorhees.springapi.model.entities.Theater;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Address;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Geo;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Location;
+import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.ScheduleVM;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import java.util.Optional;
 
 @Controller
 public class TheaterWebController {
@@ -22,16 +33,48 @@ public class TheaterWebController {
     }
 
     @GetMapping("/web/theaters")
-    public String getAllTheaters(Model model) {
-        model.addAttribute("theaters", serviceLayer.getAllTheaters());
-        return "theater/theaters";
+    public String getAllTheaters(Model model,
+                               @RequestParam(name="page", required = false) Optional<Integer> page,
+                               @RequestParam(name="pageSize", required = false) Optional<Integer> pageSize) {
+
+        model.addAttribute("theaters", serviceLayer.getAllTheaters(
+                PageRequest.of(
+                        page.orElse(1)-1,
+                        pageSize.orElse(50))));
+        return "/theater/theaters";
     }
 
     @GetMapping("/web/theater/{id}")
-    public String getTheaterById(Model model, @PathVariable String id) {
+    public String getTheaterById(Model model, @PathVariable String id) throws TheaterNotFoundException {
+        Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
+        if (theaterById.isEmpty()){
+            throw new TheaterNotFoundException(id);
+        }
         model.addAttribute("theater",serviceLayer.getTheaterById(id).get());
-        model.addAttribute("schedules",serviceLayer.getSchedulesForTheaters(id));
+
+        List<Schedule> schedules = serviceLayer.getSchedulesForTheaters(id);
+        List<ScheduleVM> scheduleVMs = new ArrayList<>();
+        for (Schedule schedule : schedules) {
+            ScheduleVM scheduleVM = new ScheduleVM();
+            scheduleVM.setSchedule(schedule);
+            if (serviceLayer.getMovieById(schedule.getMovieId()).isPresent()) {
+                scheduleVM.setMovie(serviceLayer.getMovieById(schedule.getMovieId()).get());
+            }
+            scheduleVMs.add(scheduleVM);
+        }
+        model.addAttribute("scheduleVMs", scheduleVMs);
+
+        Schedule schedule = new Schedule();
+        schedule.setTheaterId(id);
+        model.addAttribute("scheduleToCreate",schedule);
         return "theater/theater";
+    }
+
+    @PostMapping("/web/theater/createSchedule/{theaterId}")
+    public String createSchedule(Model model, @PathVariable String theaterId, @ModelAttribute("scheduleToCreate") Schedule schedule) {
+        model.addAttribute("theater", serviceLayer.getTheaterById(theaterId));
+        serviceLayer.addSchedule(schedule);
+        return "theater/schedule-added";
     }
 
     @GetMapping("/web/theater/create")
@@ -44,7 +87,13 @@ public class TheaterWebController {
     }
 
     @PostMapping("/web/createTheater")
-    public String createTheater(@ModelAttribute("theaterToCreate") Theater theater) {
+    public String createTheater(@ModelAttribute("theaterToCreate") Theater theater) throws TheaterBodyNotFoundException, TheaterExistsException {
+        String theaterIdString = "" + theater.getTheaterId();
+        if (theaterIdString.isEmpty()){ //todo just check for 0
+            throw new TheaterBodyNotFoundException();
+        } else if (serviceLayer.getTheaterByTheaterId(theater.getTheaterId()).isPresent()) {
+            throw new TheaterExistsException(theaterIdString);
+        }
         serviceLayer.addTheater(theater);
         return "create-success";
     }
