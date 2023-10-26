@@ -11,7 +11,7 @@ public class TheaterExistsAdvice {
 
     @ResponseBody
     @ExceptionHandler(TheaterExistsException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String theaterExistsHandler(TheaterExistsException e){
         return e.getMessage();
     }
