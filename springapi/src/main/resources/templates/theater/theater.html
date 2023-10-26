@@ -36,18 +36,20 @@
     <div>
         <table>
             <thead>
-            <tr>
-                <th>Id</th>
-                <th>Date</th>
-                <th>Movie ID</th>
-                <th>Theater ID</th>
-            </tr>
+                <tr>
+                    <th>Id</th>
+                    <th>Date</th>
+                    <th>Movie ID</th>
+                    <th>Movie Title</th>
+                    <th>Theater ID</th>
+                </tr>
             </thead>
-            <tr th:each="schedule : ${schedules}">
-                <td th:text="${schedule.id}"></td>
-                <td th:text="${schedule.date}"></td>
-                <td th:text="${schedule.movieId}"></td>
-                <td th:text="${schedule.theaterId}"></td>
+            <tr th:each="scheduleVM : ${scheduleVMs}">
+                <td th:text="${scheduleVM.schedule.id}"></td>
+                <td th:text="${scheduleVM.schedule.date}"></td>
+                <td th:text="${scheduleVM.schedule.movieId}"></td>
+                <td th:text="${scheduleVM.movie.title}"></td>
+                <td th:text="${scheduleVM.schedule.theaterId}"></td>
             </tr>
         </table>
     </div>
@@ -78,7 +80,8 @@
             </tr>
     </table>
 </div>
-        </span>
+</span>
+
 <script>
     const toggleButton = document.getElementById('toggleButton');
     const myForm = document.getElementById('displayForm');

@@ -7,6 +7,7 @@ import com.sparta.jsonvoorhees.springapi.model.entities.Theater;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Address;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Geo;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Location;
+import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.ScheduleVM;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class TheaterWebController {
@@ -38,7 +42,18 @@ public class TheaterWebController {
     @GetMapping("/web/theater/{id}")
     public String getTheaterById(Model model, @PathVariable String id) {
         model.addAttribute("theater",serviceLayer.getTheaterById(id).get());
-        model.addAttribute("schedules",serviceLayer.getSchedulesForTheaters(id));
+
+        List<Schedule> schedules = serviceLayer.getSchedulesForTheaters(id);
+        List<ScheduleVM> scheduleVMs = new ArrayList<>();
+        for (Schedule schedule : schedules) {
+            ScheduleVM scheduleVM = new ScheduleVM();
+            scheduleVM.setSchedule(schedule);
+            if (serviceLayer.getMovieById(schedule.getMovieId()).isPresent()) {
+                scheduleVM.setMovie(serviceLayer.getMovieById(schedule.getMovieId()).get());
+            }
+            scheduleVMs.add(scheduleVM);
+        }
+        model.addAttribute("scheduleVMs", scheduleVMs);
 
         Schedule schedule = new Schedule();
         schedule.setTheaterId(id);
