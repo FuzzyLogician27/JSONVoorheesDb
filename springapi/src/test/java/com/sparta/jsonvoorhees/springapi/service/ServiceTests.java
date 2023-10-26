@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.isA;
 
 @SpringBootTest
 public class ServiceTests {
@@ -211,4 +212,61 @@ public class ServiceTests {
     
     //endregion
 
+    //region Test Delete
+    @Test
+    public void TestDeleteComment()
+    {
+        Mockito.when(commentRepository.findCommentById("0000")).thenReturn(Optional.of(new Comment()));
+        Mockito.doNothing().when(commentRepository).deleteById(isA(String.class));
+
+        String response = serviceLayer.deleteCommentById("0000");
+
+        assertEquals("Comment Deleted",response);
+    }
+
+    @Test
+    public void TestDeleteMovie()
+    {
+        Mockito.when(movieRepository.findMovieById("0000")).thenReturn(Optional.of(new Movie()));
+        Mockito.doNothing().when(movieRepository).deleteById(isA(String.class));
+
+        String response = serviceLayer.deleteMovieById("0000");
+
+        assertEquals("Movie Deleted",response);
+    }
+
+    @Test
+    public void TestDeleteSchedule()
+    {
+        Mockito.when(scheduleRepository.findScheduleById("0000")).thenReturn(Optional.of(new Schedule()));
+        Mockito.doNothing().when(scheduleRepository).deleteById(isA(String.class));
+
+        String response = serviceLayer.deleteScheduleById("0000");
+
+        assertEquals("Schedule Deleted",response);
+    }
+
+    @Test
+    public void TestDeleteTheater()
+    {
+        Mockito.when(theaterRepository.findTheaterById("0000")).thenReturn(Optional.of(new Theater()));
+        Mockito.doNothing().when(theaterRepository).deleteById(isA(String.class));
+
+        String response = serviceLayer.deleteTheaterById("0000");
+
+        assertEquals("Theater Deleted",response);
+    }
+
+    @Test
+    public void TestDeleteUser()
+    {
+        Mockito.when(userRepository.findUserById("0000")).thenReturn(Optional.empty());
+        Mockito.doNothing().when(userRepository).deleteById(isA(String.class));
+
+        serviceLayer.deleteUserById("0000");
+
+        var result = serviceLayer.getUserById("0000");
+        assertFalse(result.isPresent());
+    }
+    //endregion
 }
