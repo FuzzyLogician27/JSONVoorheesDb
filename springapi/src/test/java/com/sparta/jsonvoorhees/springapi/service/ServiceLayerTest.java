@@ -509,22 +509,22 @@ public class ServiceLayerTest {
     @Test
     public void testGetAllTheatersPaged()
     {
-        assertEquals(serviceLayer.getAllTheaters(PageRequest.of(0,20)), new ArrayList<Theater>());
+        assertEquals(serviceLayer.getAllTheaters(PageRequest.of(0,20)).getContent(), new ArrayList<Theater>());
     }
     @Test
     public void testGetAllCommentsPaged()
     {
-        assertEquals(serviceLayer.getAllComments(PageRequest.of(0,20)), new ArrayList<Comment>());
+        assertEquals(serviceLayer.getAllComments(PageRequest.of(0,20)).getContent(), new ArrayList<Comment>());
     }
     @Test
     public void testGetAllSchedulesPaged()
     {
-        assertEquals(serviceLayer.getAllSchedules(PageRequest.of(0,20)), new ArrayList<Schedule>());
+        assertEquals(serviceLayer.getAllSchedules(PageRequest.of(0,20)).getContent(), new ArrayList<Schedule>());
     }
     @Test
     public void testGetAllUsersPaged()
     {
-        assertEquals(serviceLayer.getAllUsers(PageRequest.of(0,20)), new ArrayList<Schedule>());
+        assertEquals(serviceLayer.getAllUsers(PageRequest.of(0,20)).getContent(), new ArrayList<Schedule>());
     }
     //endregion
 
@@ -559,10 +559,13 @@ public class ServiceLayerTest {
     public void testGetCommentsWithSpecifiedWords()
     {
         ArrayList<String> searchTerms = new ArrayList<String>();
-        searchTerms.add("(╯°□°）╯︵ ┻━┻");
+        searchTerms.add("Test");
 
         var comments = new ArrayList<Comment>();
-        var expectedComment = comments.add(createTestComment()); //"(╯°□°）╯︵ ┻━┻"
+        var targetComment = new Comment();
+        targetComment.setText("A Test Comment");
+        comments.add(targetComment);
+
         for (int i = 0; i < 5; i++) {
             comments.add(createRandomTestComment());
         }
@@ -570,7 +573,7 @@ public class ServiceLayerTest {
 
         var result = serviceLayer.getCommentsWithSpecifiedWords(searchTerms);
 
-        assertEquals(result.get(0),expectedComment);
+        assertEquals(1, result.size());
     }
     //endregion
 
