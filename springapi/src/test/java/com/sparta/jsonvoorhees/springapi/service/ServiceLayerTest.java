@@ -6,6 +6,7 @@ import com.sparta.jsonvoorhees.springapi.model.repositories.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -78,6 +79,53 @@ public class ServiceLayerTest {
         dummyComment.setId("0000");
         dummyComment.setEmail("name@domain.com");
         dummyComment.setText("(╯°□°）╯︵ ┻━┻");
+        return dummyComment;
+    }
+
+    private static String randomString()
+    {
+        var randomGenerator = new Random();
+        return randomGenerator.ints(97,123).limit(10).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+    }
+
+    private static User createRandomTestUser() {
+
+        User dummyUser = new User();
+        dummyUser.setName(randomString());
+        dummyUser.setEmail(randomString());
+        dummyUser.setId(randomString());
+        return dummyUser;
+    }
+    private static Theater createRandomTestTheater() {
+        Theater dummyTheater = new Theater();
+        dummyTheater.setTheaterId(9999);
+        Address dummyAddress = new Address(randomString(),randomString(),randomString(),randomString());
+        var coordinates = new ArrayList<Double>();
+        coordinates.add(0,(double)0);
+        Geo dummyGeo = new Geo("Point",coordinates);
+        Location dummyLocation = new Location(dummyAddress,dummyGeo);
+        dummyTheater.setLocation(dummyLocation);
+        return dummyTheater;
+    }
+    private static Schedule createRandomTestSchedule() {
+        Schedule dummySchedule = new Schedule();
+        dummySchedule.setMovieId(randomString());
+        dummySchedule.setTheaterId(randomString());
+        dummySchedule.setId(randomString());
+        return dummySchedule;
+    }
+    private static Movie createRandomTestMovie() {
+        Movie dummyMovie = new Movie();
+        dummyMovie.setTitle(randomString());
+        dummyMovie.setPlot(randomString());
+        dummyMovie.setId(randomString());
+        return dummyMovie;
+    }
+    private static Comment createRandomTestComment() {
+        Comment dummyComment = new Comment();
+        dummyComment.setId(randomString());
+        dummyComment.setEmail(randomString());
+        dummyComment.setText(randomString());
         return dummyComment;
     }
     //endregion
@@ -217,8 +265,6 @@ public class ServiceLayerTest {
 
         assertEquals(testUser,response);
     }
-
-
     @Test
     public void testUpdateComment()
     {
@@ -328,6 +374,93 @@ public class ServiceLayerTest {
 
         var result = serviceLayer.getUserById("0000");
         assertFalse(result.isPresent());
+    }
+    //endregion
+
+    //Still to do:
+    //AddMultiples, bad path deletes, getCommentsWithSpecifiedWords, getAll Theaters/Comments/Schedules/Users,
+    //getTheaterByTheaterId, getCommentsByUser, getCommentsByMovie, getSchedulesForTheaters, getAllMoviesWithTitle
+
+    //region BulkAdds
+    @Test
+    public void TestAddUsers()
+    {
+        var objsToAdd = new ArrayList<User>();
+        for (int i = 0; i < 5; i++) {
+            objsToAdd.add(createRandomTestUser());
+        }
+
+        Mockito.when(userRepository.insert(objsToAdd)).thenReturn(objsToAdd);
+        Mockito.when(userRepository.findAll()).thenReturn(objsToAdd);
+
+        serviceLayer.addUsers(objsToAdd);
+
+        var result = serviceLayer.getAllUsers();
+        assertEquals(result,objsToAdd);
+    }
+    @Test
+    public void TestAddTheaters()
+    {
+        var objsToAdd = new ArrayList<Theater>();
+        for (int i = 0; i < 5; i++) {
+            objsToAdd.add(createTestTheater());
+        }
+
+        Mockito.when(theaterRepository.insert(objsToAdd)).thenReturn(objsToAdd);
+        Mockito.when(theaterRepository.findAll()).thenReturn(objsToAdd);
+
+        serviceLayer.addTheaters(objsToAdd);
+
+        var result = serviceLayer.getAllTheaters();
+        assertEquals(result,objsToAdd);
+    }
+    @Test
+    public void TestAddSchedules()
+    {
+        var objsToAdd = new ArrayList<Schedule>();
+        for (int i = 0; i < 5; i++) {
+            objsToAdd.add(createRandomTestSchedule());
+        }
+
+        Mockito.when(scheduleRepository.insert(objsToAdd)).thenReturn(objsToAdd);
+        Mockito.when(scheduleRepository.findAll()).thenReturn(objsToAdd);
+
+        serviceLayer.addSchedules(objsToAdd);
+
+        var result = serviceLayer.getAllSchedules();
+        assertEquals(result,objsToAdd);
+    }
+    @Test
+    public void TestAddMovies()
+    {
+        var objsToAdd = new ArrayList<Movie>();
+        for (int i = 0; i < 5; i++) {
+            objsToAdd.add(createRandomTestMovie());
+        }
+
+        Mockito.when(movieRepository.insert(objsToAdd)).thenReturn(objsToAdd);
+        Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);
+
+        serviceLayer.addMovies(objsToAdd);
+
+        var result = serviceLayer.getAllSchedules();
+        assertEquals(result,objsToAdd);
+    }
+    @Test
+    public void TestAddComments()
+    {
+        var objsToAdd = new ArrayList<Comment>();
+        for (int i = 0; i < 5; i++) {
+            objsToAdd.add(createRandomTestComment());
+        }
+
+        Mockito.when(commentRepository.insert(objsToAdd)).thenReturn(objsToAdd);
+        Mockito.when(commentRepository.findAll()).thenReturn(objsToAdd);
+
+        serviceLayer.addComments(objsToAdd);
+
+        var result = serviceLayer.getAllSchedules();
+        assertEquals(result,objsToAdd);
     }
     //endregion
 }
