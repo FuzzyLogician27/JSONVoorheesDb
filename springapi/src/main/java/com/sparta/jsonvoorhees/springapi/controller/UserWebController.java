@@ -28,10 +28,11 @@ public class UserWebController {
 
     @GetMapping("/web/users")
     public String getAllUsers(Model model,
+                               @RequestParam(name="name", required = false) String name,
                                @RequestParam(name="page", required = false) Optional<Integer> page,
                                @RequestParam(name="pageSize", required = false) Optional<Integer> pageSize) {
 
-        model.addAttribute("users", serviceLayer.getAllUsers(
+        model.addAttribute("users", serviceLayer.getAllUsersByName(name,
                 PageRequest.of(
                         page.orElse(1)-1,
                         pageSize.orElse(50))));

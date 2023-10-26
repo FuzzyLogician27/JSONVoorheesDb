@@ -16,6 +16,11 @@
     <input type="number" id="page" name="page" min="1" th:max="${movies.totalPages}" th:value="${movies.number} + 1" size="4">
     <input type="submit" value="Go">
     <label th:text="'of '+${movies.totalPages}"></label>
+</form> <br/>
+<form method="get" th:action="@{/web/movies(title = 'title')}">
+    <label for="title">Search by Title</label>
+    <input type="text" id="title" name="title" value="" />
+    <input type="submit" value="Search" />
 </form>
 
 <a href="movie/create">Create New Movie</a>

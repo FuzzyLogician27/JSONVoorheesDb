@@ -112,8 +112,17 @@ public class ServiceLayer implements IServiceLayer {
     }
     public Page<User> getAllUsers(Pageable pageRequest )
     {
-
         return userRepository.findAll(pageRequest);
+    }
+
+    public List<User> getAllUsersByName(String name) {
+        return userRepository.findUsersByNameContainingIgnoreCase(name);
+    }
+    public Page<User> getAllUsersByName(String name, Pageable pageRequest ) {
+        if (name == null)
+            return userRepository.findAll(pageRequest);
+        else
+            return userRepository.findUsersByNameContainingIgnoreCase(name, pageRequest);
     }
     
     public List<Schedule> getAllSchedules()
@@ -138,6 +147,13 @@ public class ServiceLayer implements IServiceLayer {
     public Page<Theater> getAllTheaters(Pageable pageRequest)
     {
         return theaterRepository.findAll(pageRequest);
+    }
+    public Page<Theater> getAllTheatersByCity(String city, Pageable pageRequest)
+    {
+        if (city == null)
+            return theaterRepository.findAll(pageRequest);
+        else
+            return theaterRepository.findTheatersByLocationAddressCityContains(city, pageRequest);
     }
 
     //endregion
