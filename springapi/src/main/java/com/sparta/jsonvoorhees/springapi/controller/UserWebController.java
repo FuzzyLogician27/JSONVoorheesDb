@@ -4,6 +4,12 @@ import com.sparta.jsonvoorhees.springapi.exceptions.UserBodyNotFoundException;
 import com.sparta.jsonvoorhees.springapi.exceptions.UserNotFoundException;
 import com.sparta.jsonvoorhees.springapi.model.entities.User;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +27,7 @@ public class UserWebController {
     }
 
     @GetMapping("/web/user/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public String getUserById(Model model, @PathVariable String id) throws UserNotFoundException {
         Optional<User> userById = serviceLayer.getUserById(id);
         if (userById.isEmpty()){
@@ -32,11 +39,13 @@ public class UserWebController {
     }
 
     @GetMapping("/web/users")
+    @ResponseStatus(HttpStatus.OK)
     public String getAllUsers(Model model,
+                               @RequestParam(name="name", required = false) String name,
                                @RequestParam(name="page", required = false) Optional<Integer> page,
                                @RequestParam(name="pageSize", required = false) Optional<Integer> pageSize) {
 
-        model.addAttribute("users", serviceLayer.getAllUsers(
+        model.addAttribute("users", serviceLayer.getAllUsersByName(name,
                 PageRequest.of(
                         page.orElse(1)-1,
                         pageSize.orElse(50))));
@@ -44,12 +53,14 @@ public class UserWebController {
     }
 
     @GetMapping("/web/user/create")
+    @ResponseStatus(HttpStatus.OK)
     public String getCreateForm(Model model) {
         model.addAttribute("userToCreate",new User());
         return "users/user-create-form";
     }
 
     @PostMapping("/web/createUser")
+    @ResponseStatus(HttpStatus.CREATED)
     public String createUser(@ModelAttribute("userToCreate") User user) throws UserBodyNotFoundException {
         if (user.getName().isEmpty() || user.getEmail().isEmpty() || user.getPassword().isEmpty()){
             throw new UserBodyNotFoundException();
@@ -59,6 +70,7 @@ public class UserWebController {
     }
 
     @GetMapping("/web/user/delete/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public String getDeleteForm(Model model, @PathVariable String id) throws UserNotFoundException{
         Optional<User> userById = serviceLayer.getUserById(id);
         if (userById.isEmpty()){
@@ -69,6 +81,7 @@ public class UserWebController {
     }
 
     @PostMapping("/web/deleteUser")
+    @ResponseStatus(HttpStatus.OK)
     public String deleteUser(@ModelAttribute("userToDelete") User user) {
         serviceLayer.deleteUserById(user.getId());
         return "delete-success";

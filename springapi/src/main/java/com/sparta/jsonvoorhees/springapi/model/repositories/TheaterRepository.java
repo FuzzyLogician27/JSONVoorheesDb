@@ -3,6 +3,7 @@ package com.sparta.jsonvoorhees.springapi.model.repositories;
 
 import com.sparta.jsonvoorhees.springapi.model.entities.Theater;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -16,8 +17,7 @@ public interface TheaterRepository extends MongoRepository<Theater, String> {
     Optional<Theater> findTheaterById(String id);
     Optional<Theater> findTheaterByLocation(String location);
     Optional<Theater> findTheaterByTheaterId(Long id);
-
-    List<Theater> findTheatersByLocation_Address_City(String city);
-    List<Theater> findTheatersByLocation_Address_State(String state);
+    List<Theater> findTheatersByLocationAddressCityContainsIgnoreCase(String city);
+    Page<Theater> findTheatersByLocationAddressCityContainsIgnoreCase(String city, Pageable pageable);
 
 }

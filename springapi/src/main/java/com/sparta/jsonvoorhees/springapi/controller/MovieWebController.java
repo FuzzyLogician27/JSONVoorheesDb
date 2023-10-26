@@ -6,6 +6,7 @@ import com.sparta.jsonvoorhees.springapi.model.entities.Comment;
 import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
 import org.bson.types.ObjectId;
+import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,10 +25,12 @@ public class MovieWebController {
     }
 
     @GetMapping("/web/movies")
+    @ResponseStatus(HttpStatus.OK)
     public String getAllMovies(Model model,
                                @RequestParam(name = "title", required = false) String title,
                                @RequestParam(name="page", required = false) Optional<Integer> page,
                                @RequestParam(name="pageSize", required = false) Optional<Integer> pageSize) {
+
 
         model.addAttribute("movies", serviceLayer.getAllMoviesWithTitle(title,
                 PageRequest.of(
@@ -37,6 +40,7 @@ public class MovieWebController {
     }
 
     @GetMapping("/web/movie/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public String getMovieById(Model model, @PathVariable String id) throws MovieNotFoundException {
         Optional<Movie> movieById = serviceLayer.getMovieById(id);
         if (movieById.isEmpty()){
@@ -53,6 +57,7 @@ public class MovieWebController {
     }
 
     @PostMapping("/web/movie/createComment/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     public String createComment(Model model, @PathVariable String id,
                                 @ModelAttribute("commentToCreate") Comment comment) throws MovieNotFoundException{
         Optional<Movie> movieById = serviceLayer.getMovieById(id);
@@ -66,12 +71,14 @@ public class MovieWebController {
     }
 
     @GetMapping("/web/movie/create")
+    @ResponseStatus(HttpStatus.OK)
     public String getCreateForm(Model model) {
         model.addAttribute("movieToCreate",new Movie());
         return "movies/movie-create-form";
     }
 
     @PostMapping("/web/createMovie")
+    @ResponseStatus(HttpStatus.CREATED)
     public String createMovie(@ModelAttribute("movieToCreate") Movie movie) throws MovieBodyNotFoundException {
         if(movie.getTitle().isEmpty()) {
             throw new MovieBodyNotFoundException();
@@ -81,6 +88,7 @@ public class MovieWebController {
     }
 
     @GetMapping("/web/movie/edit/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public String getEditForm(Model model, @PathVariable String id) throws MovieNotFoundException{
         Optional<Movie> movieById = serviceLayer.getMovieById(id);
         if (movieById.isEmpty()){
@@ -91,6 +99,7 @@ public class MovieWebController {
     }
 
     @PostMapping("/web/updateMovie")
+    @ResponseStatus(HttpStatus.CREATED)
     public String updateMovie(@ModelAttribute("movieToEdit") Movie movie) {
         Movie existingMovie = serviceLayer.getMovieById(movie.getId()).get();
         existingMovie.setTitle(movie.getTitle());
@@ -103,6 +112,7 @@ public class MovieWebController {
     }
 
     @GetMapping("/web/movie/delete/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public String getDeleteForm(Model model, @PathVariable String id) throws MovieNotFoundException{
         Optional<Movie> movieById = serviceLayer.getMovieById(id);
         if (movieById.isEmpty()){
@@ -113,6 +123,7 @@ public class MovieWebController {
     }
 
     @PostMapping("/web/deleteMovie")
+    @ResponseStatus(HttpStatus.OK)
     public String deleteMovie(@ModelAttribute("movieToDelete") Movie movie) {
         serviceLayer.deleteMovieById(movie.getId());
         return "delete-success";

@@ -12,6 +12,12 @@ import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Geo;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Location;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.ScheduleVM;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,11 +39,13 @@ public class TheaterWebController {
     }
 
     @GetMapping("/web/theaters")
+    @ResponseStatus(HttpStatus.OK)
     public String getAllTheaters(Model model,
+                               @RequestParam(name="city", required = false) String city,
                                @RequestParam(name="page", required = false) Optional<Integer> page,
                                @RequestParam(name="pageSize", required = false) Optional<Integer> pageSize) {
 
-        model.addAttribute("theaters", serviceLayer.getAllTheaters(
+        model.addAttribute("theaters", serviceLayer.getAllTheatersByCity(city,
                 PageRequest.of(
                         page.orElse(1)-1,
                         pageSize.orElse(50))));
@@ -45,6 +53,7 @@ public class TheaterWebController {
     }
 
     @GetMapping("/web/theater/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public String getTheaterById(Model model, @PathVariable String id) throws TheaterNotFoundException {
         Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
         if (theaterById.isEmpty()){
@@ -83,6 +92,7 @@ public class TheaterWebController {
     }
 
     @GetMapping("/web/theater/create")
+    @ResponseStatus(HttpStatus.OK)
     public String getCreateForm(Model model) {
         Location location = new Location(new Address(null,null,null,null),
                 new Geo(null,null));
@@ -93,6 +103,7 @@ public class TheaterWebController {
     }
 
     @PostMapping("/web/createTheater")
+    @ResponseStatus(HttpStatus.OK)
     public String createTheater(@ModelAttribute("theaterToCreate") Theater theater) throws TheaterBodyNotFoundException,
             TheaterExistsException {
         String theaterIdString = "" + theater.getTheaterId();
@@ -106,6 +117,7 @@ public class TheaterWebController {
     }
 
     @GetMapping("/web/theater/edit/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public String getEditForm(Model model, @PathVariable String id) throws TheaterNotFoundException{
         Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
         if (theaterById.isEmpty()){
@@ -116,6 +128,7 @@ public class TheaterWebController {
     }
 
     @PostMapping("/web/updateTheater")
+    @ResponseStatus(HttpStatus.CREATED)
     public String updateTheater(@ModelAttribute("theaterToEdit") Theater theater) {
         Theater existingTheater = serviceLayer.getTheaterById(theater.getId()).get();
         existingTheater.setId(theater.getId());
@@ -127,6 +140,7 @@ public class TheaterWebController {
     }
 
     @GetMapping("/web/theater/delete/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public String getDeleteForm(Model model, @PathVariable String id) throws TheaterNotFoundException{
         Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
         if (theaterById.isEmpty()){
@@ -137,6 +151,7 @@ public class TheaterWebController {
     }
 
     @PostMapping("/web/deleteTheater")
+    @ResponseStatus(HttpStatus.OK)
     public String deleteTheater(@ModelAttribute("theaterToDelete") Theater theater) {
         serviceLayer.deleteTheaterById(theater.getId());
         return "delete-success";
