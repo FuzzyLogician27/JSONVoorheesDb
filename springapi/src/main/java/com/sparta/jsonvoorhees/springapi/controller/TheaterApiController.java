@@ -19,13 +19,13 @@ public class TheaterApiController {
         this.serviceLayer = serviceLayer;
     }
 
-    @GetMapping("/api/theatres")
+    @GetMapping("/api/theaters")
     @ResponseStatus(HttpStatus.OK)
     public List<Theater> getAllTheatres() {
         return serviceLayer.getAllTheaters();
     }
 
-    @GetMapping("/api/theatres/{id}")
+    @GetMapping("/api/theaters/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<Theater> getTheaterById(@PathVariable String id) throws TheaterNotFoundException {
         Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
