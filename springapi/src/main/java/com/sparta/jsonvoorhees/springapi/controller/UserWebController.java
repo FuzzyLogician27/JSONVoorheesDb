@@ -47,12 +47,6 @@ public class UserWebController {
         return "/users/users";
     }
 
-    //@GetMapping("/web/users")
-    //public String getAllUsers(Model model) {
-    //    model.addAttribute("users", serviceLayer.getAllUsers());
-    //    return "users/users";
-    //}
-
     @GetMapping("/web/user/create")
     @ResponseStatus(HttpStatus.OK)
     public String getCreateForm(Model model) {

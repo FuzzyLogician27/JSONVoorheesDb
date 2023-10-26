@@ -153,7 +153,7 @@ public class ServiceLayer implements IServiceLayer {
         if (city == null)
             return theaterRepository.findAll(pageRequest);
         else
-            return theaterRepository.findTheatersByLocationAddressCityContains(city, pageRequest);
+            return theaterRepository.findTheatersByLocationAddressCityContainsIgnoreCase(city, pageRequest);
     }
 
     //endregion

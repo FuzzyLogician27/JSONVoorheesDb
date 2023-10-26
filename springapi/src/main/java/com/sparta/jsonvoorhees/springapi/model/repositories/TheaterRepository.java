@@ -17,7 +17,7 @@ public interface TheaterRepository extends MongoRepository<Theater, String> {
     Optional<Theater> findTheaterById(String id);
     Optional<Theater> findTheaterByLocation(String location);
     Optional<Theater> findTheaterByTheaterId(Long id);
-    List<Theater> findTheatersByLocationAddressCityContains(String city);
-    Page<Theater> findTheatersByLocationAddressCityContains(String city, Pageable pageable);
+    List<Theater> findTheatersByLocationAddressCityContainsIgnoreCase(String city);
+    Page<Theater> findTheatersByLocationAddressCityContainsIgnoreCase(String city, Pageable pageable);
 
 }
