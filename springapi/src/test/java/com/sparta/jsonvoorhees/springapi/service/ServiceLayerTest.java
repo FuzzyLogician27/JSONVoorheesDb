@@ -378,7 +378,7 @@ public class ServiceLayerTest {
     //endregion
 
     //Still to do:
-    //AddMultiples, bad path deletes, getCommentsWithSpecifiedWords, getAll Theaters/Comments/Schedules/Users,
+    //bad path deletes, getCommentsWithSpecifiedWords, getAll Theaters/Comments/Schedules/Users,
     //getTheaterByTheaterId, getCommentsByUser, getCommentsByMovie, getSchedulesForTheaters, getAllMoviesWithTitle
 
     //region BulkAdds
@@ -443,7 +443,7 @@ public class ServiceLayerTest {
 
         serviceLayer.addMovies(objsToAdd);
 
-        var result = serviceLayer.getAllSchedules();
+        var result = serviceLayer.getAllMoviesWithTitle(null);
         assertEquals(result,objsToAdd);
     }
     @Test
@@ -459,7 +459,7 @@ public class ServiceLayerTest {
 
         serviceLayer.addComments(objsToAdd);
 
-        var result = serviceLayer.getAllSchedules();
+        var result = serviceLayer.getAllComments();
         assertEquals(result,objsToAdd);
     }
     //endregion
