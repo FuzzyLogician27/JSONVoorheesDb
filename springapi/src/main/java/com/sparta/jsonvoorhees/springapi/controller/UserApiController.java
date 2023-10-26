@@ -8,6 +8,7 @@ import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
 import com.sparta.jsonvoorhees.springapi.model.entities.User;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,11 +24,13 @@ public class UserApiController {
     }
 
     @GetMapping("/api/users/getUsers")
+    @ResponseStatus(HttpStatus.OK)
     public List<User> getUsers() {
         return serviceLayer.getAllUsers();
     }
 
     @GetMapping("/api/users/getUser/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Optional<User> getUserById(@PathVariable String id) throws UserNotFoundException {
         Optional<User> userById = serviceLayer.getUserById(id);
         if (userById.isEmpty()){
@@ -37,6 +40,7 @@ public class UserApiController {
     }
 
     @PostMapping("/api/users")
+    @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody User user) throws UserBodyNotFoundException {
         if(user.getName().isEmpty() || user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
             throw new UserBodyNotFoundException();
@@ -45,6 +49,7 @@ public class UserApiController {
     }
 
     @DeleteMapping("/api/users/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@PathVariable String id) throws  UserNotFoundException{
         Optional<User> userById = serviceLayer.getUserById(id);
         if (userById.isEmpty()){
@@ -54,6 +59,7 @@ public class UserApiController {
     }
 
     @PatchMapping("/api/users/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public User updateUser(@RequestBody User user, @PathVariable String id) throws UserNotFoundException{
         Optional<User> userById = serviceLayer.getUserById(id);
         if (userById.isEmpty()){

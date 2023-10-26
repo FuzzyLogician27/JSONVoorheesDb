@@ -9,6 +9,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Book;
@@ -25,6 +26,7 @@ public class MovieApiController {
     }
 
     @GetMapping("/api/movies/getMovies")
+    @ResponseStatus(HttpStatus.OK)
     public List<Movie> getMovies(@RequestParam(name = "query", required = false)String query) throws MovieTitleNotFoundException{
         List<Movie> allMoviesWithTitle = serviceLayer.getAllMoviesWithTitle(query);
         if (allMoviesWithTitle.isEmpty()){
@@ -33,7 +35,8 @@ public class MovieApiController {
         return allMoviesWithTitle;
     }
 
-    @GetMapping("/api/movies/getMovie/{id}" )
+    @GetMapping("/api/movies/getMovie/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Optional<Movie> getMovieById(@PathVariable String id) throws MovieNotFoundException {
         Optional<Movie> movieById = serviceLayer.getMovieById(id);
         if (movieById.isEmpty()){
@@ -43,6 +46,7 @@ public class MovieApiController {
     }
 
     @PostMapping("/api/movies")
+    @ResponseStatus(HttpStatus.CREATED)
     public Movie createMovie(@RequestBody Movie movie) throws MovieBodyNotFoundException {
         if(movie.getTitle().isEmpty()) {
             throw new MovieBodyNotFoundException();
@@ -51,6 +55,7 @@ public class MovieApiController {
     }
 
     @DeleteMapping("/api/movies/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public String deleteMovie(@PathVariable String id) throws MovieNotFoundException{
         Optional<Movie> movieById = serviceLayer.getMovieById(id);
         if (movieById.isEmpty()){
@@ -60,6 +65,7 @@ public class MovieApiController {
     }
 
     @PatchMapping("/api/movies/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Movie updateMovie(@RequestBody Movie movie, @PathVariable String id) throws MovieNotFoundException{
         Optional<Movie> movieById = serviceLayer.getMovieById(id);
         if (movieById.isEmpty()){
@@ -69,6 +75,7 @@ public class MovieApiController {
     }
 
     @GetMapping("/api/movies/getMovies/filter")
+    @ResponseStatus(HttpStatus.OK)
     public Page<Movie> filterBooks(@RequestParam(name = "query", required = false) String query, @ParameterObject Pageable pageable) throws MovieTitleNotFoundException {
         Page<Movie> allMoviesWithTitle = serviceLayer.getAllMoviesWithTitle(query, pageable);
         if (allMoviesWithTitle.isEmpty()) {
