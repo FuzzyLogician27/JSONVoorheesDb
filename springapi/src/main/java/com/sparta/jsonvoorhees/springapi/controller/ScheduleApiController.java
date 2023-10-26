@@ -62,6 +62,4 @@ public class ScheduleApiController {
         }
         return serviceLayer.updateSchedule(schedule);
     }
-    
-
 }
