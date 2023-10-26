@@ -39,7 +39,6 @@
                 <tr>
                     <th>Id</th>
                     <th>Date</th>
-                    <th>Movie ID</th>
                     <th>Movie Title</th>
                     <th>Theater ID</th>
                 </tr>
@@ -47,8 +46,11 @@
             <tr th:each="scheduleVM : ${scheduleVMs}">
                 <td th:text="${scheduleVM.schedule.id}"></td>
                 <td th:text="${scheduleVM.schedule.date}"></td>
-                <td th:text="${scheduleVM.schedule.movieId}"></td>
-                <td th:text="${scheduleVM.movie.title}"></td>
+                <td>
+                    <a th:href="@{'/web/movie/' + ${scheduleVM.movie.id}}">
+                        <th:block th:text="${scheduleVM.movie.title}"></th:block>
+                    </a>
+                </td>
                 <td th:text="${scheduleVM.schedule.theaterId}"></td>
             </tr>
         </table>
