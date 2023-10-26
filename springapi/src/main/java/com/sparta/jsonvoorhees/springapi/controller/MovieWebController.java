@@ -4,12 +4,14 @@ import com.sparta.jsonvoorhees.springapi.model.entities.Comment;
 import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.Optional;
 
 @Controller
 public class MovieWebController {
@@ -20,9 +22,16 @@ public class MovieWebController {
     }
 
     @GetMapping("/web/movies")
-    public String getAllMovies(Model model, @RequestParam(name = "title", required = false) String title) {
-        model.addAttribute("movies", serviceLayer.getAllMoviesWithTitle(title));
-        return "movies/movies";
+    public String getAllMovies(Model model,
+                               @RequestParam(name = "title", required = false) String title,
+                               @RequestParam(name="page", required = false) Optional<Integer> page,
+                               @RequestParam(name="pageSize", required = false) Optional<Integer> pageSize) {
+
+        model.addAttribute("movies", serviceLayer.getAllMoviesWithTitle(title,
+                PageRequest.of(
+                        page.orElse(1)-1,
+                        pageSize.orElse(50))));
+        return "/movies/movies";
     }
 
     @GetMapping("/web/movie/{id}")
@@ -39,7 +48,8 @@ public class MovieWebController {
 
     @PostMapping("/web/movie/createComment/{movieId}")
     public String createComment(Model model, @PathVariable String movieId, @ModelAttribute("commentToCreate") Comment comment) {
-        model.addAttribute("movie", serviceLayer.getMovieById(movieId));
+        model.addAttribute("movie", serviceLayer.getMovieById(movieId).get());
+        comment.setDate(Date.from(Instant.now()));
         serviceLayer.addComment(comment);
         return "movies/comment-added";
     }

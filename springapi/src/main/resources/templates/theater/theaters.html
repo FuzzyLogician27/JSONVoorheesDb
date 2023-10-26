@@ -7,6 +7,16 @@
 </head>
 <body>
 <h1>Theaters</h1>
+<a href="/web/home">Back to home</a>
+<form th:action="@{/web/theaters(page='page',pageSize='pageSize')}">
+
+    <label for="pageSize">Show</label>
+    <input type="number" id="pageSize" name="pageSize" min="1", th:value="${theaters.size}" size="2">
+    <label for="page">Page </label>
+    <input type="number" id="page" name="page" min="1" th:max="${theaters.totalPages}" th:value="${theaters.number} + 1" size="4">
+    <input type="submit" value="Go">
+    <label th:text="'of '+${theaters.totalPages}"></label>
+</form>
 <a href="theater/create">Create New Theater</a>
 <table>
     <thead>
@@ -20,7 +30,11 @@
     </tr>
     </thead>
     <tr th:each="theater : ${theaters}">
-        <td th:text="${theater.id}"></td>
+        <td>
+            <a th:href="@{'/web/theater/' + ${theater.id}}">
+                <th:block th:text="${theater.id}"></th:block>
+            </a>
+        </td>
         <td th:text="${theater.getLocation().address}"></td>
         <td th:text="${theater.getLocation().geo}"></td>
         <td th:text="${theater.theaterId}"></td>
