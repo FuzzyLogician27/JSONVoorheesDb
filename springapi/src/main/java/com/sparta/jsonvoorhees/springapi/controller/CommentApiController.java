@@ -1,14 +1,14 @@
 package com.sparta.jsonvoorhees.springapi.controller;
 
-import com.sparta.jsonvoorhees.springapi.exceptions.CommentBodyNotFoundException;
-import com.sparta.jsonvoorhees.springapi.exceptions.CommentNotFoundException;
-import com.sparta.jsonvoorhees.springapi.exceptions.MovieNotFoundException;
-import com.sparta.jsonvoorhees.springapi.exceptions.UserNotFoundException;
+import com.sparta.jsonvoorhees.springapi.exceptions.*;
 import com.sparta.jsonvoorhees.springapi.model.entities.Comment;
 import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
 import com.sparta.jsonvoorhees.springapi.model.entities.User;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +24,7 @@ public class CommentApiController {
         this.serviceLayer = serviceLayer;
     }
 
-    @GetMapping("/api/comments/getAllCommentsByMovieId/{movieId}")
+    @GetMapping("/api/comments/movie/{movieId}")
     @ResponseStatus(HttpStatus.OK)
     public List<Comment> getAllCommentsByMovieId(@PathVariable String movieId) throws MovieNotFoundException {
         Optional<Movie> movieById = serviceLayer.getMovieById(movieId);
@@ -34,7 +34,7 @@ public class CommentApiController {
         return serviceLayer.getCommentsByMovie(movieId);
     }
 
-    @GetMapping("/api/comments/getAllCommentsByUserId/{userId}")
+    @GetMapping("/api/comments/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public List<Comment> getAllCommentsByUserId(@PathVariable String userId) throws UserNotFoundException{
         Optional<User> userById = serviceLayer.getUserById(userId);
@@ -44,7 +44,7 @@ public class CommentApiController {
         return serviceLayer.getCommentsByUser(userId);
     }
 
-    @GetMapping("/api/comments/getComment/{id}")
+    @GetMapping("/api/comments/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<Comment> getCommentById(@PathVariable String id) throws CommentNotFoundException
     {

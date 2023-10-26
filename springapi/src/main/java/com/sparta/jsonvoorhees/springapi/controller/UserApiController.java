@@ -23,13 +23,13 @@ public class UserApiController {
         this.serviceLayer = serviceLayer;
     }
 
-    @GetMapping("/api/users/getUsers")
+    @GetMapping("/api/users")
     @ResponseStatus(HttpStatus.OK)
     public List<User> getUsers() {
         return serviceLayer.getAllUsers();
     }
 
-    @GetMapping("/api/users/getUser/{id}")
+    @GetMapping("/api/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<User> getUserById(@PathVariable String id) throws UserNotFoundException {
         Optional<User> userById = serviceLayer.getUserById(id);

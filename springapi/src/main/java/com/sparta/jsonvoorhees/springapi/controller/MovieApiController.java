@@ -25,7 +25,7 @@ public class MovieApiController {
         this.serviceLayer = serviceLayer;
     }
 
-    @GetMapping("/api/movies/getMovies")
+    @GetMapping("/api/movies")
     @ResponseStatus(HttpStatus.OK)
     public List<Movie> getMovies(@RequestParam(name = "query", required = false)String query) throws MovieTitleNotFoundException{
         List<Movie> allMoviesWithTitle = serviceLayer.getAllMoviesWithTitle(query);
@@ -35,7 +35,7 @@ public class MovieApiController {
         return allMoviesWithTitle;
     }
 
-    @GetMapping("/api/movies/getMovie/{id}")
+    @GetMapping("/api/movies/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<Movie> getMovieById(@PathVariable String id) throws MovieNotFoundException {
         Optional<Movie> movieById = serviceLayer.getMovieById(id);
@@ -74,9 +74,9 @@ public class MovieApiController {
         return serviceLayer.updateMovie(movie);
     }
 
-    @GetMapping("/api/movies/getMovies/filter")
+    @GetMapping("/api/movies/filter")
     @ResponseStatus(HttpStatus.OK)
-    public Page<Movie> filterBooks(@RequestParam(name = "query", required = false) String query, @ParameterObject Pageable pageable) throws MovieTitleNotFoundException {
+    public Page<Movie> filterMovies(@RequestParam(name = "query", required = false) String query, @ParameterObject Pageable pageable) throws MovieTitleNotFoundException {
         Page<Movie> allMoviesWithTitle = serviceLayer.getAllMoviesWithTitle(query, pageable);
         if (allMoviesWithTitle.isEmpty()) {
             throw new MovieTitleNotFoundException(query);

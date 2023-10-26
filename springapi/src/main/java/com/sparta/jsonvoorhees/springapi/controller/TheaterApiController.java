@@ -11,21 +11,21 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class TheatreApiController {
+public class TheaterApiController {
     private final ServiceLayer serviceLayer;
 
     @Autowired
-    public TheatreApiController(ServiceLayer serviceLayer) {
+    public TheaterApiController(ServiceLayer serviceLayer) {
         this.serviceLayer = serviceLayer;
     }
 
-    @GetMapping("/api/theatres/getTheatres")
+    @GetMapping("/api/theatres")
     @ResponseStatus(HttpStatus.OK)
     public List<Theater> getAllTheatres() {
         return serviceLayer.getAllTheaters();
     }
 
-    @GetMapping("/api/theatres/getTheatre/{id}")
+    @GetMapping("/api/theatres/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<Theater> getTheaterById(@PathVariable String id) throws TheaterNotFoundException {
         Optional<Theater> theaterById = serviceLayer.getTheaterById(id);

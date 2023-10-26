@@ -24,7 +24,7 @@ public class ScheduleApiController {
         this.serviceLayer = serviceLayer;
     }
 
-    @GetMapping("/api/schedules/getSchedule/{theaterId}")
+    @GetMapping("/api/schedules/{theaterId}")
     @ResponseStatus(HttpStatus.OK)
     public List<Schedule> getSchedulesByTheaterId(@PathVariable String theaterId) throws TheaterNotFoundException {
         Optional<Theater> theaterById = serviceLayer.getTheaterById(theaterId);
@@ -62,4 +62,6 @@ public class ScheduleApiController {
         }
         return serviceLayer.updateSchedule(schedule);
     }
+    
+
 }
