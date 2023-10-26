@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Movies</h1>
-
+<a href="/web/home">Back to home</a>
 <form th:action="@{/web/movies(page='page',pageSize='pageSize')}">
 
     <label for="pageSize">Show</label>
@@ -33,7 +33,11 @@
     </tr>
     </thead>
     <tr th:each="movie : ${movies}">
-        <td th:text="${movie.id}"></td>
+        <td>
+            <a th:href="@{'/web/movie/' + ${movie.id}}">
+                <th:block th:text="${movie.id}"></th:block>
+            </a>
+        </td>
         <td th:text="${movie.title}"></td>
         <td th:text="${movie.fullplot}"></td>
         <td th:text="${movie.genres}"></td>

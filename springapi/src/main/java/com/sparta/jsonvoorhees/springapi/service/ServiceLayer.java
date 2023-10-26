@@ -127,11 +127,8 @@ public class ServiceLayer {
     {
         return commentRepository.findAll(pageRequest);
     }
+    public List<Theater> getAllTheaters() { return theaterRepository.findAll();}
 
-    public List<Theater> getAllTheaters()
-    {
-        return theaterRepository.findAll();
-    }
     public Page<Theater> getAllTheaters(Pageable pageRequest)
     {
         return theaterRepository.findAll(pageRequest);

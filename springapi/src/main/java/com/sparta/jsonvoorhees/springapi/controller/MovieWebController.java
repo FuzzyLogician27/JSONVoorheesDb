@@ -48,7 +48,7 @@ public class MovieWebController {
 
     @PostMapping("/web/movie/createComment/{movieId}")
     public String createComment(Model model, @PathVariable String movieId, @ModelAttribute("commentToCreate") Comment comment) {
-        model.addAttribute("movie", serviceLayer.getMovieById(movieId));
+        model.addAttribute("movie", serviceLayer.getMovieById(movieId).get());
         comment.setDate(Date.from(Instant.now()));
         serviceLayer.addComment(comment);
         return "movies/comment-added";

@@ -8,12 +8,12 @@ import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Address;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Geo;
 import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.Location;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 public class TheaterWebController {
@@ -24,9 +24,15 @@ public class TheaterWebController {
     }
 
     @GetMapping("/web/theaters")
-    public String getAllTheaters(Model model) {
-        model.addAttribute("theaters", serviceLayer.getAllTheaters());
-        return "theater/theaters";
+    public String getAllTheaters(Model model,
+                               @RequestParam(name="page", required = false) Optional<Integer> page,
+                               @RequestParam(name="pageSize", required = false) Optional<Integer> pageSize) {
+
+        model.addAttribute("theaters", serviceLayer.getAllTheaters(
+                PageRequest.of(
+                        page.orElse(1)-1,
+                        pageSize.orElse(50))));
+        return "/theater/theaters";
     }
 
     @GetMapping("/web/theater/{id}")

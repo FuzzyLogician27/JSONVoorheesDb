@@ -7,6 +7,9 @@
 </head>
 <body>
 <h1>Theater</h1>
+
+<a href="/web/theaters">Back to all theaters</a>
+
 <span th:if="${theater==null}">Theater not found</span>
 <span th:unless="${theater==null}">
 <div>
@@ -29,39 +32,52 @@
 </div>
 
 <h2>Schedule</h2>
+<div>
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Movie ID</th>
+                <th>Theater ID</th>
+            </tr>
+            </thead>
+            <tr th:each="schedule : ${schedules}">
+                <td th:text="${schedule.id}"></td>
+                <td th:text="${schedule.date}"></td>
+                <td th:text="${schedule.movieId}"></td>
+                <td th:text="${schedule.theaterId}"></td>
+            </tr>
+        </table>
+    </div>
+    <div>
+            <br/>
+            <button id="toggleButton" class="btn">Toggle Schedule Form</button>
+            <form id="displayForm" th:action="@{'/web/theater/createSchedule/' + ${theater.id}}" th:object="${scheduleToCreate}" method="post">
 
+                <input type="hidden" id="theaterId" name="id" th:field="*{theaterId}"/>
+                <input type="hidden" id="movieId" name="id" th:field="*{movieId}"/>
+
+                <label for="date">Date</label>
+                <input type="text" id="date" name="id" th:field="*{date}"/><br/>
+
+                <input class="inputSubmit" style="margin: 10px auto 10px" type="submit" value="Create"/>
+            </form>
+    </div>
+</div>
+
+<h2>Movie Details</h2>
 <div>
     <table>
         <thead>
-        <tr>
-            <th>Id</th>
-            <th>Date</th>
-            <th>Movie ID</th>
-            <th>Theater ID</th>
-        </tr>
+            <tr>
+            </tr>
         </thead>
-        <tr th:each="schedule : ${schedules}">
-            <td th:text="${schedule.id}"></td>
-            <td th:text="${schedule.date}"></td>
-            <td th:text="${schedule.movieId}"></td>
-            <td th:text="${schedule.theaterId}"></td>
-        </tr>
+            <tr>
+            </tr>
     </table>
 </div>
-        <div>
-        <br/>
-        <button id="toggleButton" class="btn">Toggle Schedule Form</button>
-        <form id="displayForm" th:action="@{'/web/theater/createSchedule/' + ${theater.id}}" th:object="${scheduleToCreate}" method="post">
-
-            <input type="hidden" id="theaterId" name="id" th:field="*{theaterId}"/>
-            <input type="hidden" id="movieId" name="id" th:field="*{movieId}"/>
-
-            <label for="date">Date</label>
-            <input type="text" id="date" name="id" th:field="*{date}"/><br/>
-
-            <input class="inputSubmit" style="margin: 10px auto 10px" type="submit" value="Create"/>
-        </form>
-    </div>
         </span>
 <script>
     const toggleButton = document.getElementById('toggleButton');
