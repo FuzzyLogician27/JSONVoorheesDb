@@ -66,10 +66,12 @@
             <form id="displayForm" th:action="@{'/web/theater/createSchedule/' + ${theater.id}}" th:object="${scheduleToCreate}" method="post">
 
                 <input type="hidden" id="theaterId" name="id" th:field="*{theaterId}"/>
-                <input type="hidden" id="movieId" name="id" th:field="*{movieId}"/>
 
                 <label for="date">Date</label>
                 <input type="text" id="date" name="id" th:field="*{date}"/><br/>
+
+                <label for="movieId">Movie Id</label>
+                <input type="text" id="movieId" name="id" th:field="*{movieId}"/>
 
                 <input class="inputSubmit" style="margin: 10px auto 10px" type="submit" value="Create"/>
             </form>
