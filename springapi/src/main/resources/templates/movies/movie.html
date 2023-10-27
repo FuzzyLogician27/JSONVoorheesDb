@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Movie</title>
@@ -61,12 +61,16 @@
                 <th>Id</th>
                 <th>Text</th>
                 <th>Date</th>
+                <th sec:authorize="hasRole('ROLE_ADMIN')">Delete</th>
             </tr>
         </thead>
             <tr th:each="comment : ${comments}">
                 <td th:text="${comment.id}"></td>
                 <td th:text="${comment.text}"></td>
                 <td th:text="${comment.date}"></td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/web/comment/delete/{id}(id=${comment.id})}">Delete</a>
+                </td>
             </tr>
     </table>
         <br/>
