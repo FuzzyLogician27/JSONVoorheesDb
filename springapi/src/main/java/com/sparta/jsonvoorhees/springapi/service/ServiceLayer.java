@@ -239,9 +239,10 @@ public class ServiceLayer implements IServiceLayer {
     }
 
     //@Todo This is still up for debate
-    public void deleteUserById(String id)
+    public String deleteUserById(String id)
     {
         userRepository.deleteById(id);
+        return "User Deleted";
     }
     //endregion
 
