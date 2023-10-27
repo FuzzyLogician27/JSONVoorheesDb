@@ -30,7 +30,6 @@ import java.util.List;
 
 import java.util.Optional;
 
-
 @Controller
 public class TheaterWebController {
     private final ServiceLayer serviceLayer;
@@ -80,9 +79,14 @@ public class TheaterWebController {
         return "theater/theater";
     }
 
-    @PostMapping("/web/theater/createSchedule/{theaterId}")
-    public String createSchedule(Model model, @PathVariable String theaterId, @ModelAttribute("scheduleToCreate") Schedule schedule) {
-        model.addAttribute("theater", serviceLayer.getTheaterById(theaterId));
+    @PostMapping("/web/theater/createSchedule/{id}")
+    public String createSchedule(Model model, @PathVariable String id,
+                                 @ModelAttribute("scheduleToCreate") Schedule schedule) throws TheaterNotFoundException{
+        Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
+        if (theaterById.isEmpty()){
+            throw new TheaterNotFoundException(id);
+        }
+        model.addAttribute("theater", serviceLayer.getTheaterById(id));
         serviceLayer.addSchedule(schedule);
         return "theater/schedule-added";
     }
@@ -90,7 +94,8 @@ public class TheaterWebController {
     @GetMapping("/web/theater/create")
     @ResponseStatus(HttpStatus.OK)
     public String getCreateForm(Model model) {
-        Location location = new Location(new Address(null,null,null,null),new Geo(null,null));
+        Location location = new Location(new Address(null,null,null,null),
+                new Geo(null,null));
         Theater theater = new Theater();
         theater.setLocation(location);
         model.addAttribute("theaterToCreate",theater);
@@ -99,9 +104,10 @@ public class TheaterWebController {
 
     @PostMapping("/web/createTheater")
     @ResponseStatus(HttpStatus.OK)
-    public String createTheater(@ModelAttribute("theaterToCreate") Theater theater) throws TheaterBodyNotFoundException, TheaterExistsException {
+    public String createTheater(@ModelAttribute("theaterToCreate") Theater theater) throws TheaterBodyNotFoundException,
+            TheaterExistsException {
         String theaterIdString = "" + theater.getTheaterId();
-        if (theaterIdString.isEmpty()){ //todo just check for 0
+        if (theaterIdString.equals("0")){
             throw new TheaterBodyNotFoundException();
         } else if (serviceLayer.getTheaterByTheaterId(theater.getTheaterId()).isPresent()) {
             throw new TheaterExistsException(theaterIdString);
@@ -112,7 +118,11 @@ public class TheaterWebController {
 
     @GetMapping("/web/theater/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String getEditForm(Model model, @PathVariable String id) {
+    public String getEditForm(Model model, @PathVariable String id) throws TheaterNotFoundException{
+        Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
+        if (theaterById.isEmpty()){
+            throw new TheaterNotFoundException(id);
+        }
         model.addAttribute("theaterToEdit", serviceLayer.getTheaterById(id).orElse(null));
         return "theater/theater-edit-form";
     }
@@ -131,7 +141,11 @@ public class TheaterWebController {
 
     @GetMapping("/web/theater/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String getDeleteForm(Model model, @PathVariable String id) {
+    public String getDeleteForm(Model model, @PathVariable String id) throws TheaterNotFoundException{
+        Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
+        if (theaterById.isEmpty()){
+            throw new TheaterNotFoundException(id);
+        }
         model.addAttribute("theaterToDelete", serviceLayer.getTheaterById(id).orElse(null));
         return "theater/theater-delete-form";
     }
