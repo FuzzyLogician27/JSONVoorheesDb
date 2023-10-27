@@ -6,9 +6,16 @@
     <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
-<h1>User</h1>
 
-<a href="/web/users">Back to all users</a>
+<div class="center">
+    <img width="80%" src="/images/bloodbar_e0.gif" alt="blood bar">
+    <div id="homeContainer">
+        <img src="/images/pump2-16.gif" alt="dancing pumpkins">
+        <h1>User</h1>
+        <img src="/images/SPGhalloweensetsig2.gif" alt="cat email spooky">
+    </div>
+    <a class="button" href="/web/users">Back to all users</a>
+</div>
 
 <span th:if="${user==null}">Film not found</span>
 <span th:unless="${user==null}">

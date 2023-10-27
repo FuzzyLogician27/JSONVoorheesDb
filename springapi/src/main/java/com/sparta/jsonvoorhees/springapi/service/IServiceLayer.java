@@ -55,8 +55,6 @@ public interface IServiceLayer {
 
     public User updateUser(User newUser);
 
-    public List<Comment> getCommentsWithSpecifiedWords(List<String> wordsToSearchFor);
-
     public String deleteCommentById(String id);
 
     public String deleteMovieById(String id);

@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Theater</title>
     <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
-<h1>Theater</h1>
-
-<a href="/web/theaters">Back to all theaters</a>
+<a class="button" href="/web/theaters">Back to all theaters</a>
+<div id="homeContainer">
+    <img src="/images/greenweb.gif" alt="green web">
+    <h1>Theater</h1>
+    <img src="/images/anibat2.gif" alt="flying bat">
+</div>
 
 <span th:if="${theater==null}">Theater not found</span>
 <span th:unless="${theater==null}">
@@ -41,6 +44,7 @@
                     <th>Date</th>
                     <th>Movie Title</th>
                     <th>Theater ID</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Delete</th>
                 </tr>
             </thead>
             <tr th:each="scheduleVM : ${scheduleVMs}">
@@ -52,33 +56,51 @@
                     </a>
                 </td>
                 <td th:text="${scheduleVM.schedule.theaterId}"></td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/web/schedule/delete/{id}(id=${scheduleVM.schedule.id})}">Delete</a></td>
             </tr>
         </table>
     </div>
-    <div>
-            <br/>
-            <button id="toggleButton" class="btn">Toggle Schedule Form</button>
+        <br/>
+        <div class="center" sec:authorize="hasRole('ROLE_ADMIN')">
+            <button id="toggleButton" class="button" style="margin-bottom: 25px">Toggle Schedule Form</button>
             <form id="displayForm" th:action="@{'/web/theater/createSchedule/' + ${theater.id}}" th:object="${scheduleToCreate}" method="post">
 
                 <input type="hidden" id="theaterId" name="id" th:field="*{theaterId}"/>
-                <input type="hidden" id="movieId" name="id" th:field="*{movieId}"/>
 
                 <label for="date">Date</label>
                 <input type="text" id="date" name="id" th:field="*{date}"/><br/>
 
+                <label for="movieId">Movie Id</label>
+                <input type="text" id="movieId" name="id" th:field="*{movieId}"/>
+
                 <input class="inputSubmit" style="margin: 10px auto 10px" type="submit" value="Create"/>
             </form>
-    </div>
+        </div>
 </div>
 
 <h2>Movie Details</h2>
-<div>
+<div class="center">
     <table>
         <thead>
             <tr>
+                <th>Title</th>
+                <th>Full Plot</th>
+                <th>Genres</th>
+                <th>Rating</th>
+                <th>Year</th>
             </tr>
         </thead>
             <tr>
+                <tr th:each="scheduleVM : ${scheduleVMs}">
+                <td>
+                    <a th:href="@{'/web/movie/' + ${scheduleVM.movie.id}}">
+                        <th:block th:text="${scheduleVM.movie.title}"></th:block>
+                    </a>
+                </td>
+                <td th:text="${scheduleVM.movie.fullplot}"></td>
+                <td th:text="${scheduleVM.movie.genres}"></td>
+                <td th:text="${scheduleVM.movie.rated}"></td>
+                <td th:text="${scheduleVM.movie.year}"></td>
             </tr>
     </table>
 </div>

@@ -8,6 +8,7 @@ import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
 import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class MovieWebController {
 
     @GetMapping("/web/movies")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String getAllMovies(Model model,
                                @RequestParam(name = "title", required = false) String title,
                                @RequestParam(name="page", required = false) Optional<Integer> page,
@@ -41,6 +43,7 @@ public class MovieWebController {
 
     @GetMapping("/web/movie/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String getMovieById(Model model, @PathVariable String id) throws MovieNotFoundException {
         Optional<Movie> movieById = serviceLayer.getMovieById(id);
         if (movieById.isEmpty()){
@@ -58,6 +61,7 @@ public class MovieWebController {
 
     @PostMapping("/web/movie/createComment/{id}")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String createComment(Model model, @PathVariable String id,
                                 @ModelAttribute("commentToCreate") Comment comment) throws MovieNotFoundException{
         Optional<Movie> movieById = serviceLayer.getMovieById(id);
@@ -72,6 +76,7 @@ public class MovieWebController {
 
     @GetMapping("/web/movie/create")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getCreateForm(Model model) {
         model.addAttribute("movieToCreate",new Movie());
         return "movies/movie-create-form";
@@ -79,6 +84,7 @@ public class MovieWebController {
 
     @PostMapping("/web/createMovie")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String createMovie(@ModelAttribute("movieToCreate") Movie movie) throws MovieBodyNotFoundException {
         if(movie.getTitle().isEmpty()) {
             throw new MovieBodyNotFoundException();
@@ -89,6 +95,7 @@ public class MovieWebController {
 
     @GetMapping("/web/movie/edit/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getEditForm(Model model, @PathVariable String id) throws MovieNotFoundException{
         Optional<Movie> movieById = serviceLayer.getMovieById(id);
         if (movieById.isEmpty()){
@@ -100,6 +107,7 @@ public class MovieWebController {
 
     @PostMapping("/web/updateMovie")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateMovie(@ModelAttribute("movieToEdit") Movie movie) {
         Movie existingMovie = serviceLayer.getMovieById(movie.getId()).get();
         existingMovie.setTitle(movie.getTitle());
@@ -113,6 +121,7 @@ public class MovieWebController {
 
     @GetMapping("/web/movie/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getDeleteForm(Model model, @PathVariable String id) throws MovieNotFoundException{
         Optional<Movie> movieById = serviceLayer.getMovieById(id);
         if (movieById.isEmpty()){
@@ -124,6 +133,7 @@ public class MovieWebController {
 
     @PostMapping("/web/deleteMovie")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteMovie(@ModelAttribute("movieToDelete") Movie movie) {
         serviceLayer.deleteMovieById(movie.getId());
         return "delete-success";

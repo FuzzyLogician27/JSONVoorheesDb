@@ -75,7 +75,6 @@
             <form id="displayForm" th:action="@{'/web/movie/createComment/' + ${movie.id}}" th:object="${commentToCreate}" method="post">
 
                 <input type="hidden" id="movieId" name="id" th:field="*{movieId}"/>
-                <!--<input type="hidden" id="date" name="id" th:field="*{date}"/>-->
 
                 <label for="text">Text: </label>
                 <textarea type="text" id="text" name="id" th:field="*{text}" placeholder="Write something.."></textarea>

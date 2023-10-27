@@ -6,6 +6,7 @@ import com.sparta.jsonvoorhees.springapi.model.entities.User;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class UserWebController {
 
     @GetMapping("/web/user/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getUserById(Model model, @PathVariable String id) throws UserNotFoundException {
         Optional<User> userById = serviceLayer.getUserById(id);
         if (userById.isEmpty()){
@@ -40,6 +42,7 @@ public class UserWebController {
 
     @GetMapping("/web/users")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getAllUsers(Model model,
                                @RequestParam(name="name", required = false) String name,
                                @RequestParam(name="page", required = false) Optional<Integer> page,
@@ -54,6 +57,7 @@ public class UserWebController {
 
     @GetMapping("/web/user/create")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getCreateForm(Model model) {
         model.addAttribute("userToCreate",new User());
         return "users/user-create-form";
@@ -61,6 +65,7 @@ public class UserWebController {
 
     @PostMapping("/web/createUser")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String createUser(@ModelAttribute("userToCreate") User user) throws UserBodyNotFoundException {
         if (user.getName().isEmpty() || user.getEmail().isEmpty() || user.getPassword().isEmpty()){
             throw new UserBodyNotFoundException();
@@ -71,6 +76,7 @@ public class UserWebController {
 
     @GetMapping("/web/user/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getDeleteForm(Model model, @PathVariable String id) throws UserNotFoundException{
         Optional<User> userById = serviceLayer.getUserById(id);
         if (userById.isEmpty()){
@@ -82,6 +88,7 @@ public class UserWebController {
 
     @PostMapping("/web/deleteUser")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteUser(@ModelAttribute("userToDelete") User user) {
         serviceLayer.deleteUserById(user.getId());
         return "delete-success";
