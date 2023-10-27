@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Movies</title>
@@ -29,7 +29,7 @@
             <input type="submit" value="Search" />
         </form>
     </div>
-    <a class="button" href="movie/create">Create New Movie</a>
+    <a sec:authorize="hasRole('ROLE_ADMIN')" class="button" href="movie/create">Create New Movie</a>
 </div>
 
 
@@ -41,8 +41,8 @@
         <th>Genres</th>
         <th>Rating</th>
         <th>Year</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')">Edit</th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')">Delete</th>
     </tr>
     </thead>
     <tr th:each="movie : ${movies}">
@@ -55,8 +55,12 @@
         <td th:text="${movie.genres}"></td>
         <td th:text="${movie.rated}"></td>
         <td th:text="${movie.year}"></td>
-        <td><a th:href="@{/web/movie/edit/{id}(id=${movie.id})}">Edit</a></td>
-        <td><a th:href="@{/web/movie/delete/{id}(id=${movie.id})}">Delete</a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:href="@{/web/movie/edit/{id}(id=${movie.id})}">Edit</a>
+        </td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:href="@{/web/movie/delete/{id}(id=${movie.id})}">Delete</a>
+        </td>
     </tr>
 </table>
 

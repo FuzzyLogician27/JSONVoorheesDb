@@ -1,5 +1,6 @@
 package com.sparta.jsonvoorhees.springapi.controller;
 
+import com.sparta.jsonvoorhees.springapi.exceptions.ScheduleNotFoundException;
 import com.sparta.jsonvoorhees.springapi.exceptions.TheaterBodyNotFoundException;
 import com.sparta.jsonvoorhees.springapi.exceptions.TheaterExistsException;
 import com.sparta.jsonvoorhees.springapi.exceptions.TheaterNotFoundException;
@@ -93,6 +94,26 @@ public class TheaterWebController {
         model.addAttribute("theater", serviceLayer.getTheaterById(id));
         serviceLayer.addSchedule(schedule);
         return "theater/schedule-added";
+    }
+
+    @GetMapping("/web/schedule/delete/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String getDeleteScheduleForm(Model model, @PathVariable String id) throws ScheduleNotFoundException {
+        Optional<Schedule> scheduleById = serviceLayer.getScheduleById(id);
+        if (scheduleById.isEmpty()){
+            throw new ScheduleNotFoundException(id);
+        }
+        model.addAttribute("scheduleToDelete", serviceLayer.getScheduleById(id).orElse(null));
+        return "theater/schedule-delete-form";
+    }
+
+    @PostMapping("/web/deleteSchedule")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteSchedule(@ModelAttribute("scheduleToDelete") Schedule schedule) {
+        serviceLayer.deleteScheduleById(schedule.getId());
+        return "delete-success";
     }
 
     @GetMapping("/web/theater/create")
