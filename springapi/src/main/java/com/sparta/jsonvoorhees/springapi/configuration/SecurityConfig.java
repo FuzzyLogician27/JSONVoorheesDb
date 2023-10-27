@@ -27,8 +27,9 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated())
+                        .requestMatchers("/swagger-ui").permitAll().anyRequest().authenticated())
                 .userDetailsService(mongoRoleUserService)
                 .headers(headers -> headers.frameOptions().sameOrigin())
                 .httpBasic(Customizer.withDefaults())
