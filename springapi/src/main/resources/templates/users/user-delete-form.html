@@ -6,7 +6,9 @@
     <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
-<div>
+<h1>Delete a User</h1>
+<div class="center">
+    <a class="button" href="/web/users">Back to all users</a>
     <table class="container">
         <thead>
         <tr>
@@ -26,8 +28,12 @@
     <input type="hidden" id="id" name="id" th:field="*{id}"/>
 
     <input type="hidden" name="_method" value="DELETE">
-    <input class="btn" style="margin: 10px 45% 10px;" type="submit" value="Delete"/>
+    <input class="inputSubmit" style="margin: 10px 47% 10px;" type="submit" value="Delete"/>
 </form>
+<br/>
+<div class="center">
+    <img src="/images/bat-line.gif" alt="bat line">
+</div>
 <script>
     document.getElementById("delete-form").onsubmit = function(event) {
         if (!confirm("Are you sure you want to delete this resource?")) {

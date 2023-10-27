@@ -7,6 +7,7 @@
 <body>
 <h1>Schedule Added Succesfully!</h1>
 
+<a class="button" th:href="@{'/web/theater/' + ${scheduleToCreate.theaterId}}">Back to Theater</a>
 <!--
 <a th:href="@{'/web/movie/' + ${movie.id}}">Back to Movie</a>
 <table>
@@ -25,5 +26,9 @@
          <td th:text="${commentToCreate.movieId}"></td>
      </tr>
  </table> -->
+<br/>
+<div class="center">
+    <img src="/images/bat-line.gif" alt="bat line">
+</div>
 </body>
 </html>
