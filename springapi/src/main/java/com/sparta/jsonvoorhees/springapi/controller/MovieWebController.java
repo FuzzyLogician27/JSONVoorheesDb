@@ -1,9 +1,12 @@
 package com.sparta.jsonvoorhees.springapi.controller;
 
+import com.sparta.jsonvoorhees.springapi.exceptions.CommentNotFoundException;
 import com.sparta.jsonvoorhees.springapi.exceptions.MovieBodyNotFoundException;
 import com.sparta.jsonvoorhees.springapi.exceptions.MovieNotFoundException;
+import com.sparta.jsonvoorhees.springapi.exceptions.ScheduleNotFoundException;
 import com.sparta.jsonvoorhees.springapi.model.entities.Comment;
 import com.sparta.jsonvoorhees.springapi.model.entities.Movie;
+import com.sparta.jsonvoorhees.springapi.model.entities.Schedule;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
 import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
@@ -80,6 +83,26 @@ public class MovieWebController {
     public String getCreateForm(Model model) {
         model.addAttribute("movieToCreate",new Movie());
         return "movies/movie-create-form";
+    }
+
+    @GetMapping("/web/comment/delete/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String getDeleteCommentForm(Model model, @PathVariable String id) throws CommentNotFoundException {
+        Optional<Comment> commentById = serviceLayer.getCommentById(id);
+        if (commentById.isEmpty()){
+            throw new CommentNotFoundException(id);
+        }
+        model.addAttribute("commentToDelete", serviceLayer.getCommentById(id).orElse(null));
+        return "movies/comment-delete-form";
+    }
+
+    @PostMapping("/web/deleteComment")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteSchedule(@ModelAttribute("commentToDelete") Comment comment) {
+        serviceLayer.deleteCommentById(comment.getId());
+        return "delete-success";
     }
 
     @PostMapping("/web/createMovie")
