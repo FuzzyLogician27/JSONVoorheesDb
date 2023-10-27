@@ -178,3 +178,19 @@ body {
         margin-top: 0;
     }
 }
+
+/*Error Pages*/
+
+.e400 {
+    max-width: 100%;
+    height: auto;
+}
+
+.eHomeButton {
+    border: solid 5px transparent;
+    border-radius: 5px;
+}
+
+.eHomeButton:hover {
+    border-color: orangered;
+}
