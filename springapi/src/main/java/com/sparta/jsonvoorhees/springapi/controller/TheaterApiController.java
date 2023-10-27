@@ -5,6 +5,7 @@ import com.sparta.jsonvoorhees.springapi.model.entities.Theater;
 import com.sparta.jsonvoorhees.springapi.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,14 +20,16 @@ public class TheaterApiController {
         this.serviceLayer = serviceLayer;
     }
 
-    @GetMapping("/api/theatres")
+    @GetMapping("/api/theaters")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<Theater> getAllTheatres() {
         return serviceLayer.getAllTheaters();
     }
 
-    @GetMapping("/api/theatres/{id}")
+    @GetMapping("/api/theaters/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Optional<Theater> getTheaterById(@PathVariable String id) throws TheaterNotFoundException {
         Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
         if (theaterById.isEmpty()){
@@ -37,6 +40,7 @@ public class TheaterApiController {
 
     @PostMapping("/api/theaters")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Theater createTheater(@RequestBody Theater theater) throws TheaterBodyNotFoundException, TheaterExistsException {
         String theaterIdString = "" + theater.getTheaterId();
         if (theaterIdString.isEmpty()){
@@ -50,6 +54,7 @@ public class TheaterApiController {
 
     @DeleteMapping("/api/theaters/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteTheater(@PathVariable String id) throws TheaterNotFoundException{
         Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
         if (theaterById.isEmpty()){
@@ -60,6 +65,7 @@ public class TheaterApiController {
 
     @PatchMapping("/api/theaters/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Theater updateTheater(@RequestBody Theater theater, @PathVariable String id)  throws TheaterNotFoundException{
         Optional<Theater> theaterById = serviceLayer.getTheaterById(id);
         if (theaterById.isEmpty()){

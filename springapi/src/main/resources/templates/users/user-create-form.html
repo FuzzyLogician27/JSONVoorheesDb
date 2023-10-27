@@ -5,15 +5,54 @@
     <title>Create User</title>
     <link href="/css/style.css" rel="stylesheet">
 </head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    input[type=text], select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+
+    label {
+        padding: 12px 12px 12px 0;
+        display: inline-block;
+    }
+</style>
 <body>
+<h1>Create a User</h1>
+<a class="button" href="/web/users">Back to all users</a>
+
+<div class="container" style="margin-top: 20px">
 <form th:action="@{/web/createUser}" th:object="${userToCreate}" method="post">
-    <label for="name">Name</label>
-    <input type="text" id="name" name="id" th:field="*{name}"/><br/>
-
+    <div class="row">
+        <div class="col-25">
+            <label for="name">Name</label>
+        </div>
+        <div class="col-75">
+            <input type="text" id="name" name="id" th:field="*{name}"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-25">
     <label for="email">Email</label>
+        </div>
+        <div class="col-75">
     <input type="text" id="email" name="id" th:field="*{email}"/><br/>
-
-    <input class="inputSubmit" style="margin: 10px auto 10px" type="submit" value="Create"/>
+        </div>
+    </div>
+    <div class="row">
+    <input class="inputSubmit" style="margin: 10px auto 10px; float:right" type="submit" value="Create"/>
+    </div>
 </form>
+</div>
+<br/>
+<div class="center">
+    <img src="/images/bat-line.gif" alt="bat line">
+</div>
 </body>
 </html>

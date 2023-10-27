@@ -1,56 +1,72 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Movies</title>
     <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
-<h1>Movies</h1>
-<a href="/web/home">Back to home</a>
-<form th:action="@{/web/movies(page='page',pageSize='pageSize')}">
+<div id="homeContainer">
+    <img src="/images/halloweenjason.gif" alt="jason voorhees">
+    <h1>Movies</h1>
+    <img src="/images/halloweenjason.gif" alt="jason voorhees">
+</div>
 
-    <label for="pageSize">Show</label>
-    <input type="number" id="pageSize" name="pageSize" min="1", th:value="${movies.size}" size="2">
-    <label for="page">Page </label>
-    <input type="number" id="page" name="page" min="1" th:max="${movies.totalPages}" th:value="${movies.number} + 1" size="4">
-    <input type="submit" value="Go">
-    <label th:text="'of '+${movies.totalPages}"></label>
-</form> <br/>
-<form method="get" th:action="@{/web/movies(title = 'title')}">
-    <label for="title">Search by Title</label>
-    <input type="text" id="title" name="title" value="" />
-    <input type="submit" value="Search" />
-</form>
+<div class="center">
+    <a class="button" href="/web/home">Back to home</a>
+    <div id="searchForm">
+        <form th:action="@{/web/movies(page='page',pageSize='pageSize')}">
+            <label for="pageSize">Show</label>
+            <input type="number" id="pageSize" name="pageSize" min="1", th:value="${movies.size}" size="2">
+            <label for="page">Page </label>
+            <input type="number" id="page" name="page" min="1" th:max="${movies.totalPages}" th:value="${movies.number} + 1" size="4">
+            <input type="submit" value="Go">
+            <label th:text="'of '+${movies.totalPages}"></label>
+        </form> <br/>
+        <form method="get" th:action="@{/web/movies(title = 'title')}">
+            <label for="title">Search by Title</label>
+            <input type="text" id="title" name="title" value="" />
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+    <a sec:authorize="hasRole('ROLE_ADMIN')" class="button" href="movie/create">Create New Movie</a>
+</div>
 
-<a href="movie/create">Create New Movie</a>
+
 <table>
     <thead>
     <tr>
-        <th>ID</th>
         <th>Title</th>
         <th>Full Plot</th>
         <th>Genres</th>
         <th>Rating</th>
         <th>Year</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')">Edit</th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')">Delete</th>
     </tr>
     </thead>
     <tr th:each="movie : ${movies}">
         <td>
             <a th:href="@{'/web/movie/' + ${movie.id}}">
-                <th:block th:text="${movie.id}"></th:block>
+                <th:block th:text="${movie.title}"></th:block>
             </a>
         </td>
-        <td th:text="${movie.title}"></td>
         <td th:text="${movie.fullplot}"></td>
         <td th:text="${movie.genres}"></td>
         <td th:text="${movie.rated}"></td>
         <td th:text="${movie.year}"></td>
-        <td><a th:href="@{/web/movie/edit/{id}(id=${movie.id})}">Edit</a></td>
-        <td><a th:href="@{/web/movie/delete/{id}(id=${movie.id})}">Delete</a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:href="@{/web/movie/edit/{id}(id=${movie.id})}">Edit</a>
+        </td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:href="@{/web/movie/delete/{id}(id=${movie.id})}">Delete</a>
+        </td>
     </tr>
 </table>
+
+<div class="center">
+    <img src="/images/bat-line.gif" alt="bat line">
+</div>
+
 </body>
 </html>

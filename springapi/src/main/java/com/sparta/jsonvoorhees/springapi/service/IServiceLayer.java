@@ -55,8 +55,6 @@ public interface IServiceLayer {
 
     public User updateUser(User newUser);
 
-    public List<Comment> getCommentsWithSpecifiedWords(List<String> wordsToSearchFor);
-
     public String deleteCommentById(String id);
 
     public String deleteMovieById(String id);
@@ -65,7 +63,7 @@ public interface IServiceLayer {
 
     public String deleteTheaterById(String id);
 
-    public void deleteUserById(String id);
+    public String deleteUserById(String id);
 
     public Comment addComment(Comment newComment);
 

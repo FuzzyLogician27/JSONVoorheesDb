@@ -1,0 +1,854 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ServiceLayerTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.sparta.jsonvoorhees.springapi.service</a>
+</div>
+
+<h1>Coverage Summary for Class: ServiceLayerTest (com.sparta.jsonvoorhees.springapi.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ServiceLayerTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (62/62)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (24/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (311/311)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.sparta.jsonvoorhees.springapi.service;
+&nbsp;
+&nbsp;import com.sparta.jsonvoorhees.springapi.model.entities.*;
+&nbsp;import com.sparta.jsonvoorhees.springapi.model.entities.embeddedObjects.*;
+&nbsp;import com.sparta.jsonvoorhees.springapi.model.repositories.*;
+&nbsp;
+&nbsp;import org.bson.types.ObjectId;
+&nbsp;import org.junit.jupiter.api.BeforeEach;
+&nbsp;import org.junit.jupiter.api.Test;
+&nbsp;import org.mockito.ArgumentMatchers;
+&nbsp;import org.mockito.InjectMocks;
+&nbsp;import org.mockito.Mock;
+&nbsp;import org.mockito.Mockito;
+&nbsp;import org.springframework.boot.test.context.SpringBootTest;
+&nbsp;import org.springframework.data.domain.Page;
+&nbsp;import org.springframework.data.domain.PageImpl;
+&nbsp;import org.springframework.data.domain.PageRequest;
+&nbsp;
+&nbsp;import java.awt.*;
+&nbsp;import java.awt.print.Pageable;
+&nbsp;import java.util.*;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import static org.junit.jupiter.api.Assertions.*;
+&nbsp;import static org.mockito.ArgumentMatchers.*;
+&nbsp;
+&nbsp;@SpringBootTest
+<b class="fc">&nbsp;public class ServiceLayerTest {</b>
+&nbsp;    @Mock
+&nbsp;    private static MovieRepository movieRepository;
+&nbsp;    @Mock
+&nbsp;    private static UserRepository userRepository;
+&nbsp;    @Mock
+&nbsp;    private static CommentRepository commentRepository;
+&nbsp;    @Mock
+&nbsp;    private static TheaterRepository theaterRepository;
+&nbsp;    @Mock
+&nbsp;    private static ScheduleRepository scheduleRepository;
+&nbsp;    @InjectMocks
+&nbsp;    private ServiceLayer serviceLayer;
+&nbsp;
+&nbsp;    @BeforeEach
+&nbsp;    void setUp()
+&nbsp;    {
+<b class="fc">&nbsp;        serviceLayer = new ServiceLayer(commentRepository,</b>
+&nbsp;                movieRepository,scheduleRepository,theaterRepository,
+&nbsp;                userRepository);
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    //region Test Data Creation
+&nbsp;    private static User createTestUser() {
+<b class="fc">&nbsp;        User dummyUser = new User();</b>
+<b class="fc">&nbsp;        dummyUser.setName(&quot;Just a guy&quot;);</b>
+<b class="fc">&nbsp;        dummyUser.setEmail(&quot;name@domain.com&quot;);</b>
+<b class="fc">&nbsp;        dummyUser.setId(&quot;9999&quot;);</b>
+<b class="fc">&nbsp;        return dummyUser;</b>
+&nbsp;    }
+&nbsp;    private static Theater createTestTheater() {
+<b class="fc">&nbsp;        Theater dummyTheater = new Theater();</b>
+<b class="fc">&nbsp;        dummyTheater.setTheaterId(9999);</b>
+<b class="fc">&nbsp;        Address dummyAddress = new Address(&quot;Somewhere&quot;,&quot;Someplace&quot;,&quot;Nowhere&quot;,&quot;Maybe&quot;);</b>
+<b class="fc">&nbsp;        var coordinates = new ArrayList&lt;Double&gt;();</b>
+<b class="fc">&nbsp;        coordinates.add(0,(double)0);</b>
+<b class="fc">&nbsp;        Geo dummyGeo = new Geo(&quot;Point&quot;,coordinates);</b>
+<b class="fc">&nbsp;        Location dummyLocation = new Location(dummyAddress,dummyGeo);</b>
+<b class="fc">&nbsp;        dummyTheater.setLocation(dummyLocation);</b>
+<b class="fc">&nbsp;        return dummyTheater;</b>
+&nbsp;    }
+&nbsp;    private static Schedule createTestSchedule() {
+<b class="fc">&nbsp;        Schedule dummySchedule = new Schedule();</b>
+<b class="fc">&nbsp;        dummySchedule.setMovieId(&quot;1010&quot;);</b>
+<b class="fc">&nbsp;        dummySchedule.setTheaterId(&quot;0101&quot;);</b>
+<b class="fc">&nbsp;        dummySchedule.setId(&quot;0000&quot;);</b>
+<b class="fc">&nbsp;        return dummySchedule;</b>
+&nbsp;    }
+&nbsp;    private static Movie createTestMovie() {
+<b class="fc">&nbsp;        Movie dummyMovie = new Movie();</b>
+<b class="fc">&nbsp;        dummyMovie.setTitle(&quot;A grand adventure in mongo&quot;);</b>
+<b class="fc">&nbsp;        dummyMovie.setPlot(&quot;A thrilling tail of the loss of hope&quot;);</b>
+<b class="fc">&nbsp;        dummyMovie.setId(&quot;0000&quot;);</b>
+<b class="fc">&nbsp;        return dummyMovie;</b>
+&nbsp;    }
+&nbsp;    private static Comment createTestComment() {
+<b class="fc">&nbsp;        Comment dummyComment = new Comment();</b>
+<b class="fc">&nbsp;        dummyComment.setId(&quot;0000&quot;);</b>
+<b class="fc">&nbsp;        dummyComment.setEmail(&quot;name@domain.com&quot;);</b>
+<b class="fc">&nbsp;        dummyComment.setText(&quot;(?°?°??? ???&quot;);</b>
+<b class="fc">&nbsp;        dummyComment.setName(&quot;Joe Bloggs&quot;);</b>
+<b class="fc">&nbsp;        dummyComment.setMovieId(new ObjectId(&quot;000000000000000000000000&quot;));</b>
+<b class="fc">&nbsp;        return dummyComment;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private static String randomString()
+&nbsp;    {
+<b class="fc">&nbsp;        var randomGenerator = new Random();</b>
+<b class="fc">&nbsp;        return randomGenerator.ints(97,123).limit(10).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private static User createRandomTestUser() {
+&nbsp;
+<b class="fc">&nbsp;        User dummyUser = new User();</b>
+<b class="fc">&nbsp;        dummyUser.setName(randomString());</b>
+<b class="fc">&nbsp;        dummyUser.setEmail(randomString());</b>
+<b class="fc">&nbsp;        dummyUser.setId(randomString());</b>
+<b class="fc">&nbsp;        return dummyUser;</b>
+&nbsp;    }
+&nbsp;    private static Theater createRandomTestTheater() {
+<b class="fc">&nbsp;        Theater dummyTheater = new Theater();</b>
+<b class="fc">&nbsp;        dummyTheater.setTheaterId(9999);</b>
+<b class="fc">&nbsp;        Address dummyAddress = new Address(randomString(),randomString(),randomString(),randomString());</b>
+<b class="fc">&nbsp;        var coordinates = new ArrayList&lt;Double&gt;();</b>
+<b class="fc">&nbsp;        coordinates.add(0,(double)0);</b>
+<b class="fc">&nbsp;        Geo dummyGeo = new Geo(&quot;Point&quot;,coordinates);</b>
+<b class="fc">&nbsp;        Location dummyLocation = new Location(dummyAddress,dummyGeo);</b>
+<b class="fc">&nbsp;        dummyTheater.setLocation(dummyLocation);</b>
+<b class="fc">&nbsp;        return dummyTheater;</b>
+&nbsp;    }
+&nbsp;    private static Schedule createRandomTestSchedule() {
+<b class="fc">&nbsp;        Schedule dummySchedule = new Schedule();</b>
+<b class="fc">&nbsp;        dummySchedule.setMovieId(randomString());</b>
+<b class="fc">&nbsp;        dummySchedule.setTheaterId(randomString());</b>
+<b class="fc">&nbsp;        dummySchedule.setId(randomString());</b>
+<b class="fc">&nbsp;        return dummySchedule;</b>
+&nbsp;    }
+&nbsp;    private static Movie createRandomTestMovie() {
+<b class="fc">&nbsp;        Movie dummyMovie = new Movie();</b>
+<b class="fc">&nbsp;        dummyMovie.setTitle(randomString());</b>
+<b class="fc">&nbsp;        dummyMovie.setPlot(randomString());</b>
+<b class="fc">&nbsp;        dummyMovie.setId(randomString());</b>
+<b class="fc">&nbsp;        return dummyMovie;</b>
+&nbsp;    }
+&nbsp;    private static Comment createRandomTestComment() {
+<b class="fc">&nbsp;        Comment dummyComment = new Comment();</b>
+<b class="fc">&nbsp;        dummyComment.setId(randomString());</b>
+<b class="fc">&nbsp;        dummyComment.setEmail(randomString());</b>
+<b class="fc">&nbsp;        dummyComment.setText(randomString());</b>
+<b class="fc">&nbsp;        return dummyComment;</b>
+&nbsp;    }
+&nbsp;    //endregion
+&nbsp;
+&nbsp;    //region Test Create
+&nbsp;    @Test
+&nbsp;    public void testCreateComment()
+&nbsp;    {
+<b class="fc">&nbsp;        Comment dummyComment = createTestComment();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(commentRepository.save(dummyComment)).thenReturn(dummyComment);</b>
+&nbsp;
+<b class="fc">&nbsp;        Comment testCommentToAdd = serviceLayer.addComment(dummyComment);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(dummyComment, testCommentToAdd);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testCreateMovie()
+&nbsp;    {
+<b class="fc">&nbsp;        Movie dummyMovie = createTestMovie();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(movieRepository.save(dummyMovie)).thenReturn(dummyMovie);</b>
+&nbsp;
+<b class="fc">&nbsp;        Movie testMovieToAdd = serviceLayer.addMovie(dummyMovie);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(dummyMovie,testMovieToAdd);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testCreateSchedule()
+&nbsp;    {
+<b class="fc">&nbsp;        Schedule dummySchedule = createTestSchedule();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(scheduleRepository.save(dummySchedule)).thenReturn(dummySchedule);</b>
+&nbsp;
+<b class="fc">&nbsp;        Schedule testObjToAdd = serviceLayer.addSchedule(dummySchedule);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(dummySchedule,testObjToAdd);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testCreateTheater()
+&nbsp;    {
+<b class="fc">&nbsp;        Theater dummyTheater = createTestTheater();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(theaterRepository.save(dummyTheater)).thenReturn(dummyTheater);</b>
+&nbsp;
+<b class="fc">&nbsp;        Theater testObjToAdd = serviceLayer.addTheater(dummyTheater);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(dummyTheater,testObjToAdd);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testCreateUser()
+&nbsp;    {
+<b class="fc">&nbsp;        User dummyObj = createTestUser();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(userRepository.save(dummyObj)).thenReturn(dummyObj);</b>
+&nbsp;
+<b class="fc">&nbsp;        User testObjToAdd = serviceLayer.addUser(dummyObj);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(dummyObj,testObjToAdd);</b>
+&nbsp;    }
+&nbsp;    //endregion
+&nbsp;
+&nbsp;    //region Test Read
+&nbsp;    @Test
+&nbsp;    public void testGetAllUsers()
+&nbsp;    {
+<b class="fc">&nbsp;        assertEquals(serviceLayer.getAllUsers(), new ArrayList&lt;User&gt;());</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetUser()
+&nbsp;    {
+<b class="fc">&nbsp;        User dummyUser = createTestUser();</b>
+<b class="fc">&nbsp;        Mockito.when(userRepository.findUserById(&quot;9999&quot;)).thenReturn(Optional.of(dummyUser));</b>
+&nbsp;
+<b class="fc">&nbsp;        User testUserToRetrieve = serviceLayer.getUserById(&quot;9999&quot;).get();</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(dummyUser,testUserToRetrieve);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetTheater()
+&nbsp;    {
+<b class="fc">&nbsp;        Theater dummyTheater = createTestTheater();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(theaterRepository.findTheaterById(&quot;9999&quot;)).thenReturn(Optional.of(dummyTheater));</b>
+&nbsp;
+<b class="fc">&nbsp;        Theater testTheaterToRetrieve = serviceLayer.getTheaterById(&quot;9999&quot;).get();</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(dummyTheater,testTheaterToRetrieve);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetSchedules()
+&nbsp;    {
+<b class="fc">&nbsp;        Schedule dummySchedule = createTestSchedule();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(scheduleRepository.findScheduleById(&quot;0000&quot;)).thenReturn(Optional.of(dummySchedule));</b>
+&nbsp;
+<b class="fc">&nbsp;        Schedule testScheduleToRetrieve = serviceLayer.getScheduleById(&quot;0000&quot;).get();</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(dummySchedule,testScheduleToRetrieve);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetMovie()
+&nbsp;    {
+<b class="fc">&nbsp;        Movie dummyMovie = createTestMovie();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(movieRepository.findMovieById(&quot;0000&quot;)).thenReturn(Optional.of(dummyMovie));</b>
+&nbsp;
+<b class="fc">&nbsp;        Movie testMovieToRetrieve = serviceLayer.getMovieById(&quot;0000&quot;).get();</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(dummyMovie,testMovieToRetrieve);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetComment()
+&nbsp;    {
+<b class="fc">&nbsp;        Comment dummyComment = createTestComment();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(commentRepository.findCommentById(&quot;0000&quot;)).thenReturn(Optional.of(dummyComment));</b>
+&nbsp;
+<b class="fc">&nbsp;        Comment testCommentToRetrieve = serviceLayer.getCommentById(&quot;0000&quot;).get();</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(dummyComment, testCommentToRetrieve);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetAllUsersByNameProvided()
+&nbsp;    {
+<b class="fc">&nbsp;        ArrayList&lt;User&gt; objsToAdd = new ArrayList&lt;User&gt;();</b>
+<b class="fc">&nbsp;        var targetUser = createTestUser();</b>
+<b class="fc">&nbsp;        objsToAdd.add(targetUser);</b>
+<b class="fc">&nbsp;        var pageRequest = PageRequest.of(0,10);</b>
+&nbsp;
+<b class="fc">&nbsp;        Page&lt;User&gt; pageObj = new PageImpl&lt;&gt;(objsToAdd,pageRequest,5);</b>
+<b class="fc">&nbsp;        Mockito.when(userRepository.findUsersByNameContainingIgnoreCase(&quot;Just a guy&quot;, pageRequest)).thenReturn(pageObj);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getAllUsersByName(&quot;Just a guy&quot;,pageRequest);</b>
+<b class="fc">&nbsp;        assertEquals(targetUser.getName(),result.getContent().get(0).getName());</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetAllUsersByNameNotProvided()
+&nbsp;    {
+<b class="fc">&nbsp;        ArrayList&lt;User&gt; objsToAdd = new ArrayList&lt;User&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+&nbsp;
+<b class="fc">&nbsp;            objsToAdd.add(createRandomTestUser());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        var pageRequest = PageRequest.of(0,10);</b>
+&nbsp;
+<b class="fc">&nbsp;        Page&lt;User&gt; pageObj = new PageImpl&lt;&gt;(objsToAdd,pageRequest,10);</b>
+<b class="fc">&nbsp;        Mockito.when(userRepository.findAll(pageRequest)).thenReturn(pageObj);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getAllUsersByName(null,pageRequest);</b>
+<b class="fc">&nbsp;        assertEquals(result.getContent().size(),5);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetAllTheatersByCityProvided()
+&nbsp;    {
+<b class="fc">&nbsp;        ArrayList&lt;Theater&gt; objsToAdd = new ArrayList&lt;Theater&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+&nbsp;
+<b class="fc">&nbsp;            objsToAdd.add(createRandomTestTheater());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        var targetUser = createTestTheater();</b>
+<b class="fc">&nbsp;        objsToAdd.add(targetUser);</b>
+<b class="fc">&nbsp;        var pageRequest = PageRequest.of(0,10);</b>
+&nbsp;
+<b class="fc">&nbsp;        Page&lt;Theater&gt; pageObj = new PageImpl&lt;&gt;(objsToAdd,pageRequest,10);</b>
+<b class="fc">&nbsp;        Mockito.when(theaterRepository.findTheatersByLocationAddressCityContainsIgnoreCase(&quot;Someplace&quot;, pageRequest)).thenReturn(pageObj);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getAllTheatersByCity(&quot;Someplace&quot;,pageRequest);</b>
+<b class="fc">&nbsp;        assertEquals(result.getContent().get(0).getTheaterId(),targetUser.getTheaterId());</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetAllTheatersByCityNotProvided()
+&nbsp;    {
+<b class="fc">&nbsp;        ArrayList&lt;Theater&gt; objsToAdd = new ArrayList&lt;Theater&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+&nbsp;
+<b class="fc">&nbsp;            objsToAdd.add(createRandomTestTheater());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        var pageRequest = PageRequest.of(0,10);</b>
+&nbsp;
+<b class="fc">&nbsp;        Page&lt;Theater&gt; pageObj = new PageImpl&lt;&gt;(objsToAdd,pageRequest,10);</b>
+<b class="fc">&nbsp;        Mockito.when(theaterRepository.findAll(pageRequest)).thenReturn(pageObj);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getAllTheatersByCity(null,pageRequest);</b>
+<b class="fc">&nbsp;        assertEquals(result.getContent().size(),5);</b>
+&nbsp;    }
+&nbsp;    //endregion
+&nbsp;
+&nbsp;    //region Test Update
+&nbsp;    @Test
+&nbsp;    public void testUpdateUser()
+&nbsp;    {
+<b class="fc">&nbsp;        User testUser = createTestUser();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(userRepository.save(isA(User.class)))</b>
+<b class="fc">&nbsp;                .thenReturn(testUser);</b>
+&nbsp;
+<b class="fc">&nbsp;        User response = serviceLayer.updateUser(testUser);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(testUser,response);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testUpdateComment()
+&nbsp;    {
+<b class="fc">&nbsp;        Comment testComment = createTestComment();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(commentRepository.save(isA(Comment.class)))</b>
+<b class="fc">&nbsp;                .thenReturn(testComment);</b>
+&nbsp;
+<b class="fc">&nbsp;        Comment response = serviceLayer.updateComment(testComment);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(testComment,response);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testUpdateFilm()
+&nbsp;    {
+<b class="fc">&nbsp;        Movie testFilm = createTestMovie();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(movieRepository.save(isA(Movie.class)))</b>
+<b class="fc">&nbsp;                .thenReturn(testFilm);</b>
+&nbsp;
+<b class="fc">&nbsp;        Movie response = serviceLayer.updateMovie(testFilm);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(testFilm,response);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testUpdateTheater()
+&nbsp;    {
+<b class="fc">&nbsp;        Theater testTheater = createTestTheater();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(theaterRepository.save(isA(Theater.class)))</b>
+<b class="fc">&nbsp;                .thenReturn(testTheater);</b>
+&nbsp;
+<b class="fc">&nbsp;        Theater response = serviceLayer.updateTheater(testTheater);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(testTheater,response);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testUpdateSchedule()
+&nbsp;    {
+<b class="fc">&nbsp;        Schedule testSchedule = createTestSchedule();</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(scheduleRepository.save(isA(Schedule.class)))</b>
+<b class="fc">&nbsp;                .thenReturn(testSchedule);</b>
+&nbsp;
+<b class="fc">&nbsp;        Schedule response = serviceLayer.updateSchedule(testSchedule);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(testSchedule,response);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //endregion
+&nbsp;
+&nbsp;    //region Test Delete
+&nbsp;    @Test
+&nbsp;    public void TestDeleteComment()
+&nbsp;    {
+<b class="fc">&nbsp;        Mockito.when(commentRepository.findCommentById(&quot;0000&quot;)).thenReturn(Optional.of(new Comment()));</b>
+<b class="fc">&nbsp;        Mockito.doNothing().when(commentRepository).deleteById(isA(String.class));</b>
+&nbsp;
+<b class="fc">&nbsp;        String response = serviceLayer.deleteCommentById(&quot;0000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(&quot;Comment Deleted&quot;,response);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void TestDeleteMovie()
+&nbsp;    {
+<b class="fc">&nbsp;        Mockito.when(movieRepository.findMovieById(&quot;0000&quot;)).thenReturn(Optional.of(new Movie()));</b>
+<b class="fc">&nbsp;        Mockito.doNothing().when(movieRepository).deleteById(isA(String.class));</b>
+&nbsp;
+<b class="fc">&nbsp;        String response = serviceLayer.deleteMovieById(&quot;0000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(&quot;Movie Deleted&quot;,response);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void TestDeleteSchedule()
+&nbsp;    {
+<b class="fc">&nbsp;        Mockito.when(scheduleRepository.findScheduleById(&quot;0000&quot;)).thenReturn(Optional.of(new Schedule()));</b>
+<b class="fc">&nbsp;        Mockito.doNothing().when(scheduleRepository).deleteById(isA(String.class));</b>
+&nbsp;
+<b class="fc">&nbsp;        String response = serviceLayer.deleteScheduleById(&quot;0000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(&quot;Schedule Deleted&quot;,response);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void TestDeleteTheater()
+&nbsp;    {
+<b class="fc">&nbsp;        Mockito.when(theaterRepository.findTheaterById(&quot;0000&quot;)).thenReturn(Optional.of(new Theater()));</b>
+<b class="fc">&nbsp;        Mockito.doNothing().when(theaterRepository).deleteById(isA(String.class));</b>
+&nbsp;
+<b class="fc">&nbsp;        String response = serviceLayer.deleteTheaterById(&quot;0000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(&quot;Theater Deleted&quot;,response);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void TestDeleteUser()
+&nbsp;    {
+<b class="fc">&nbsp;        Mockito.when(userRepository.findUserById(&quot;0000&quot;)).thenReturn(Optional.empty());</b>
+<b class="fc">&nbsp;        Mockito.doNothing().when(userRepository).deleteById(isA(String.class));</b>
+&nbsp;
+<b class="fc">&nbsp;        serviceLayer.deleteUserById(&quot;0000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getUserById(&quot;0000&quot;);</b>
+<b class="fc">&nbsp;        assertFalse(result.isPresent());</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void TestDeleteCommentBad()
+&nbsp;    {
+<b class="fc">&nbsp;        String response = serviceLayer.deleteCommentById(&quot;0000&quot;);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Comment Not Found&quot;,response);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void TestDeleteMovieBad()
+&nbsp;    {
+<b class="fc">&nbsp;        String response = serviceLayer.deleteMovieById(&quot;0000&quot;);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Movie Not Found&quot;,response);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void TestDeleteScheduleBad()
+&nbsp;    {
+<b class="fc">&nbsp;        String response = serviceLayer.deleteScheduleById(&quot;0000&quot;);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Schedule Not Found&quot;,response);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void TestDeleteTheaterBad()
+&nbsp;    {
+<b class="fc">&nbsp;        String response = serviceLayer.deleteTheaterById(&quot;0000&quot;);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Theater Not Found&quot;,response);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //No TestDeleteUserBad as it doesn&#39;t have any error checking in
+&nbsp;
+&nbsp;    //endregion
+&nbsp;
+&nbsp;    //region BulkAdds
+&nbsp;    @Test
+&nbsp;    public void TestAddUsers()
+&nbsp;    {
+<b class="fc">&nbsp;        var objsToAdd = new ArrayList&lt;User&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+<b class="fc">&nbsp;            objsToAdd.add(createRandomTestUser());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(userRepository.insert(objsToAdd)).thenReturn(objsToAdd);</b>
+<b class="fc">&nbsp;        Mockito.when(userRepository.findAll()).thenReturn(objsToAdd);</b>
+&nbsp;
+<b class="fc">&nbsp;        serviceLayer.addUsers(objsToAdd);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getAllUsers();</b>
+<b class="fc">&nbsp;        assertEquals(result,objsToAdd);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void TestAddTheaters()
+&nbsp;    {
+<b class="fc">&nbsp;        var objsToAdd = new ArrayList&lt;Theater&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+<b class="fc">&nbsp;            objsToAdd.add(createTestTheater());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(theaterRepository.insert(objsToAdd)).thenReturn(objsToAdd);</b>
+<b class="fc">&nbsp;        Mockito.when(theaterRepository.findAll()).thenReturn(objsToAdd);</b>
+&nbsp;
+<b class="fc">&nbsp;        serviceLayer.addTheaters(objsToAdd);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getAllTheaters();</b>
+<b class="fc">&nbsp;        assertEquals(result,objsToAdd);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void TestAddSchedules()
+&nbsp;    {
+<b class="fc">&nbsp;        var objsToAdd = new ArrayList&lt;Schedule&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+<b class="fc">&nbsp;            objsToAdd.add(createRandomTestSchedule());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(scheduleRepository.insert(objsToAdd)).thenReturn(objsToAdd);</b>
+<b class="fc">&nbsp;        Mockito.when(scheduleRepository.findAll()).thenReturn(objsToAdd);</b>
+&nbsp;
+<b class="fc">&nbsp;        serviceLayer.addSchedules(objsToAdd);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getAllSchedules();</b>
+<b class="fc">&nbsp;        assertEquals(result,objsToAdd);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void TestAddMovies()
+&nbsp;    {
+<b class="fc">&nbsp;        var objsToAdd = new ArrayList&lt;Movie&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+<b class="fc">&nbsp;            objsToAdd.add(createRandomTestMovie());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(movieRepository.insert(objsToAdd)).thenReturn(objsToAdd);</b>
+<b class="fc">&nbsp;        Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);</b>
+&nbsp;
+<b class="fc">&nbsp;        serviceLayer.addMovies(objsToAdd);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getAllMoviesWithTitle(null);</b>
+<b class="fc">&nbsp;        assertEquals(result,objsToAdd);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void TestAddComments()
+&nbsp;    {
+<b class="fc">&nbsp;        var objsToAdd = new ArrayList&lt;Comment&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+<b class="fc">&nbsp;            objsToAdd.add(createRandomTestComment());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(commentRepository.insert(objsToAdd)).thenReturn(objsToAdd);</b>
+<b class="fc">&nbsp;        Mockito.when(commentRepository.findAll()).thenReturn(objsToAdd);</b>
+&nbsp;
+<b class="fc">&nbsp;        serviceLayer.addComments(objsToAdd);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getAllComments();</b>
+<b class="fc">&nbsp;        assertEquals(result,objsToAdd);</b>
+&nbsp;    }
+&nbsp;    //endregion
+&nbsp;
+&nbsp;    //region BulkGets
+&nbsp;    @Test
+&nbsp;    public void testGetAllTheatersNonPaged()
+&nbsp;    {
+<b class="fc">&nbsp;        assertEquals(serviceLayer.getAllTheaters(), new ArrayList&lt;Theater&gt;());</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetAllCommentsNonPaged()
+&nbsp;    {
+<b class="fc">&nbsp;        assertEquals(serviceLayer.getAllComments(), new ArrayList&lt;Comment&gt;());</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetAllSchedulesNonPaged()
+&nbsp;    {
+<b class="fc">&nbsp;        assertEquals(serviceLayer.getAllSchedules(), new ArrayList&lt;Schedule&gt;());</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetAllTheatersPaged()
+&nbsp;    {
+<b class="fc">&nbsp;        PageRequest request = PageRequest.of(0,20);</b>
+<b class="fc">&nbsp;        Page&lt;Theater&gt; pageObj = new PageImpl&lt;&gt;(new ArrayList&lt;Theater&gt;(),request,10);</b>
+<b class="fc">&nbsp;        Mockito.when(theaterRepository.findAll(isA(PageRequest.class))).thenReturn(pageObj);</b>
+<b class="fc">&nbsp;        var result = serviceLayer.getAllTheaters(request);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(result.getContent(), new ArrayList&lt;Theater&gt;());</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetAllCommentsPaged()
+&nbsp;    {
+<b class="fc">&nbsp;        PageRequest request = PageRequest.of(0,20);</b>
+<b class="fc">&nbsp;        Page&lt;Comment&gt; pageObj = new PageImpl&lt;&gt;(new ArrayList&lt;Comment&gt;(),request,10);</b>
+<b class="fc">&nbsp;        Mockito.when(commentRepository.findAll(isA(PageRequest.class))).thenReturn(pageObj);</b>
+<b class="fc">&nbsp;        var result = serviceLayer.getAllComments(request);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(result.getContent(), new ArrayList&lt;Comment&gt;());</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetAllSchedulesPaged()
+&nbsp;    {
+<b class="fc">&nbsp;        PageRequest request = PageRequest.of(0,20);</b>
+<b class="fc">&nbsp;        Page&lt;Schedule&gt; pageObj = new PageImpl&lt;&gt;(new ArrayList&lt;Schedule&gt;(),request,10);</b>
+<b class="fc">&nbsp;        Mockito.when(scheduleRepository.findAll(isA(PageRequest.class))).thenReturn(pageObj);</b>
+<b class="fc">&nbsp;        var result = serviceLayer.getAllSchedules(request);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(result.getContent(), new ArrayList&lt;Schedule&gt;());</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetAllUsersPaged()
+&nbsp;    {
+<b class="fc">&nbsp;        PageRequest request = PageRequest.of(0,20);</b>
+<b class="fc">&nbsp;        Page&lt;User&gt; pageObj = new PageImpl&lt;&gt;(new ArrayList&lt;User&gt;(),request,10);</b>
+<b class="fc">&nbsp;        Mockito.when(userRepository.findAll(isA(PageRequest.class))).thenReturn(pageObj);</b>
+<b class="fc">&nbsp;        var result = serviceLayer.getAllUsers(request);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(result.getContent(), new ArrayList&lt;User&gt;());</b>
+&nbsp;    }
+&nbsp;    //endregion
+&nbsp;
+&nbsp;    //region ExtraComments
+&nbsp;    //getCommentsWithSpecifiedWords
+&nbsp;    @Test
+&nbsp;    public void testGetCommentsByUser()
+&nbsp;    {
+<b class="fc">&nbsp;        var comments = new ArrayList&lt;Comment&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        comments.add(createTestComment()); //Joe Bloggs</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(commentRepository.findCommentsByNameContains(&quot;Joe Bloggs&quot;)).thenReturn(comments);</b>
+<b class="fc">&nbsp;        var result = serviceLayer.getCommentsByUser(&quot;Joe Bloggs&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(result,comments);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testGetCommentsByMovie()
+&nbsp;    {
+<b class="fc">&nbsp;        var comments = new ArrayList&lt;Comment&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        comments.add(createTestComment()); //0000</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(commentRepository.findCommentsByMovieId(isA(String.class))).thenReturn(comments);</b>
+<b class="fc">&nbsp;        var result = serviceLayer.getCommentsByMovie(&quot;0000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(result,comments);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //endregion
+&nbsp;
+&nbsp;    //region TheaterExtras
+&nbsp;    @Test
+&nbsp;    public void getTheaterByTheaterId()
+&nbsp;    {
+<b class="fc">&nbsp;        Theater testTheater = createTestTheater(); //9999</b>
+<b class="fc">&nbsp;        Mockito.when(theaterRepository.findTheaterByTheaterId(9999L)).thenReturn(Optional.of(testTheater));</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getTheaterByTheaterId(9999l).get();</b>
+<b class="fc">&nbsp;        assertEquals(result,testTheater);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void getSchedulesForTheaters()
+&nbsp;    {
+<b class="fc">&nbsp;        ArrayList&lt;Schedule&gt; schedules = new ArrayList&lt;Schedule&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+<b class="fc">&nbsp;            Schedule dummySchedule = new Schedule();</b>
+<b class="fc">&nbsp;            dummySchedule.setMovieId(String.valueOf(i));</b>
+<b class="fc">&nbsp;            dummySchedule.setTheaterId(&quot;0000&quot;);</b>
+<b class="fc">&nbsp;            dummySchedule.setId(&quot;0000&quot;);</b>
+<b class="fc">&nbsp;            schedules.add(dummySchedule);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        Mockito.when(scheduleRepository.findSchedulesByTheaterId(isA(String.class))).thenReturn(schedules);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getSchedulesForTheaters(&quot;0000&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(result,schedules);</b>
+&nbsp;    }
+&nbsp;    //endregion
+&nbsp;
+&nbsp;    //region MovieSpecialGetters
+&nbsp;    @Test
+&nbsp;    public void getAllMoviesWithTitleNotProvided()
+&nbsp;    {
+<b class="fc">&nbsp;        var objsToAdd = new ArrayList&lt;Movie&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+<b class="fc">&nbsp;            objsToAdd.add(createRandomTestMovie());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getAllMoviesWithTitle(null);</b>
+<b class="fc">&nbsp;        assertEquals(result,objsToAdd);</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void getAllMoviesWithTitleProvided()
+&nbsp;    {
+<b class="fc">&nbsp;        var objsToAdd = new ArrayList&lt;Movie&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+<b class="fc">&nbsp;            objsToAdd.add(createRandomTestMovie());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        Movie actualMovie = createTestMovie();//&quot;A grand adventure in mongo&quot;</b>
+<b class="fc">&nbsp;        objsToAdd.add(actualMovie);</b>
+&nbsp;
+<b class="fc">&nbsp;        Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getAllMoviesWithTitle(&quot;A grand adventure in mongo&quot;);</b>
+<b class="fc">&nbsp;        assertEquals(actualMovie,result.get(0));</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void getAllMoviesWithTitleProvidedPageable()
+&nbsp;    {
+<b class="fc">&nbsp;        var objsToAdd = new ArrayList&lt;Movie&gt;();</b>
+<b class="fc">&nbsp;        Movie actualMovie = createTestMovie();//&quot;A grand adventure in mongo&quot;</b>
+<b class="fc">&nbsp;        objsToAdd.add(actualMovie);</b>
+&nbsp;
+<b class="fc">&nbsp;        PageRequest request = PageRequest.of(0,20);</b>
+<b class="fc">&nbsp;        Page&lt;Movie&gt; pageObj = new PageImpl&lt;&gt;(objsToAdd,request,10);</b>
+<b class="fc">&nbsp;        Mockito.when(movieRepository.findMoviesByTitleContainsIgnoreCase</b>
+<b class="fc">&nbsp;                (&quot;A grand adventure in mongo&quot;,request)).thenReturn(pageObj);</b>
+<b class="fc">&nbsp;        var result = serviceLayer.getAllMoviesWithTitle(&quot;A grand adventure in mongo&quot;,request);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(actualMovie.getTitle(),result.getContent().get(0).getTitle());</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void getAllMoviesWithTitleNotProvidedPagable()
+&nbsp;    {
+<b class="fc">&nbsp;        ArrayList&lt;Movie&gt; objsToAdd = new ArrayList&lt;Movie&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; 5; i++) {</b>
+&nbsp;
+<b class="fc">&nbsp;            objsToAdd.add(createRandomTestMovie());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        var pageRequest = PageRequest.of(0,10);</b>
+&nbsp;
+<b class="fc">&nbsp;        Page&lt;Movie&gt; pageObj = new PageImpl&lt;&gt;(objsToAdd,pageRequest,5);</b>
+<b class="fc">&nbsp;        Mockito.when(movieRepository.findAll(isA(PageRequest.class))).thenReturn(pageObj);</b>
+&nbsp;
+<b class="fc">&nbsp;        var result = serviceLayer.getAllMoviesWithTitle(null,pageRequest);</b>
+<b class="fc">&nbsp;        assertEquals(result.getContent(),objsToAdd);</b>
+&nbsp;    }
+&nbsp;    //endregion
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-27 10:59</div>
+</div>
+</body>
+</html>

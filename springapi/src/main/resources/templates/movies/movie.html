@@ -5,15 +5,23 @@
     <title>Movie</title>
     <link href="/css/style.css" rel="stylesheet">
 </head>
-<body>
-<a href="/web/movies">Back to all movies</a>
 
-<h1 th:text="${movie.title}"></h1>
+<a class=button href="/web/movies">Back to all movies</a>
 
-<span th:if="${movie==null}">Film not found</span>
+<span th:if="${movie==null}">
+    <h1 th:text="${movie.title}"></h1>
+    Film not found
+</span>
 <span th:unless="${movie==null}">
-
+<div id="homeContainer">
+    <img src="/images/leftspiderweb.gif" alt="left spider web">
+    <h1 th:text="${movie.title}"></h1>
+    <img src="/images/pumpkin2.gif" alt="pumpkin cat">
+</div>
+<div class="center">
 <img style="width: 200px; height: 300px;" th:src="${movie.poster}" alt="poster of movie">
+</div>
+
 <div>
     <table>
         <thead>
@@ -62,20 +70,22 @@
             </tr>
     </table>
         <br/>
-        <button id="toggleButton" class="btn">Toggle Comments Form</button>
-        <form id="displayForm" th:action="@{'/web/movie/createComment/' + ${movie.id}}" th:object="${commentToCreate}" method="post">
+        <div class="center">
+            <button id="toggleButton" class="button" style="margin-bottom: 25px">Toggle Comments Form</button>
+            <form id="displayForm" th:action="@{'/web/movie/createComment/' + ${movie.id}}" th:object="${commentToCreate}" method="post">
 
-            <input type="hidden" id="movieId" name="id" th:field="*{movieId}"/>
-            <!--<input type="hidden" id="date" name="id" th:field="*{date}"/>-->
+                <input type="hidden" id="movieId" name="id" th:field="*{movieId}"/>
 
-            <label for="text">Text</label>
-            <input type="text" id="text" name="id" th:field="*{text}"/><br/>
+                <label for="text">Text: </label>
+                <textarea type="text" id="text" name="id" th:field="*{text}" placeholder="Write something.."></textarea>
+            <br/>
 
-            <input class="inputSubmit" style="margin: 10px auto 10px" type="submit" value="Create"/>
-        </form>
+                <input class="inputSubmit" type="submit" value="Create"/>
+            </form>
+        </div>
 </div>
 
-    <span th:if="${movie.awards==null}">No Awards Data</span>
+    <span th:if="${movie.awards==null}"><h4>No Awards Data</h4></span>
 <span th:unless="${movie.awards==null}">
 <h2>Awards</h2>
 <div>
@@ -96,7 +106,7 @@
 </div>
 </span>
 
-    <span th:if="${movie.imdb==null}">No IMDB Data</span>
+    <span th:if="${movie.imdb==null}"><h4>No IMDB Data</h4></span>
 <span th:unless="${movie.imdb==null}">
 <h2>IMDB</h2>
 <div>
@@ -116,12 +126,12 @@
 <br/>
 </span>
 
-    <span th:if="${movie.tomatoes==null}">No Tomatoes Data</span>
+    <span th:if="${movie.tomatoes==null}"><h4>No Tomatoes Data</h4></span>
 <span th:unless="${movie.tomatoes==null}">
 <h2>Tomatoes</h2>
 <div>
     <div>
-            <span th:if="${movie.tomatoes.viewer==null}">No Tomatoes Viewer Data</span>
+        <span th:if="${movie.tomatoes.viewer==null}"><h4>No Tomatoes Viewer Data</h4></span>
         <span th:unless="${movie.tomatoes.viewer==null}">
             <table>
             <thead>
@@ -141,7 +151,7 @@
     </div>
     <br/>
     <div>
-            <span th:if="${movie.tomatoes.critic==null}">No Tomatoes Critic Data</span>
+            <span th:if="${movie.tomatoes.critic==null}"><h4>No Tomatoes Critics Data</h4></span>
         <span th:unless="${movie.tomatoes.critic==null}">
             <table>
                 <thead>
@@ -184,6 +194,9 @@
     </span>
 
 <br/>
+<div class="center">
+    <img src="/images/bat-line.gif" alt="bat line">
+</div>
 </span>
 <script>
     const toggleButton = document.getElementById('toggleButton');
