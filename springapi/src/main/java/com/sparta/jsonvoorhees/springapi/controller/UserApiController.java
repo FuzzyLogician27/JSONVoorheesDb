@@ -50,12 +50,12 @@ public class UserApiController {
 
     @DeleteMapping("/api/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUser(@PathVariable String id) throws  UserNotFoundException{
+    public String deleteUser(@PathVariable String id) throws  UserNotFoundException{
         Optional<User> userById = serviceLayer.getUserById(id);
         if (userById.isEmpty()){
             throw new UserNotFoundException(id);
         }
-        serviceLayer.deleteUserById(id);
+        return serviceLayer.deleteUserById(id);
     }
 
     @PatchMapping("/api/users/{id}")
