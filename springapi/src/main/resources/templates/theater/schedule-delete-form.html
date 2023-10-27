@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Theater Delete</title>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    input[type=text], select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+
+    label {
+        padding: 12px 12px 12px 0;
+        display: inline-block;
+    }
+</style>
+<body>
+<h1>Delete a Theater</h1>
+<div class="center">
+    <a class="button" href="/web/theaters">Back to all theaters</a>
+    <table class="container">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Movie ID</th>
+            <th>Theater ID</th>
+        </tr>
+        </thead>
+        <tr>
+            <td th:text="${scheduleToDelete.id}"></td>
+            <td th:text="${scheduleToDelete.date}"></td>
+            <td th:text="${scheduleToDelete.movieId}"></td>
+            <td th:text="${scheduleToDelete.theaterId}"></td>
+        </tr>
+    </table>
+</div>
+<form id="delete-form" th:action="@{/web/deleteSchedule}" th:object="${scheduleToDelete}" method="post">
+    <input type="hidden" id="id" name="id" th:field="*{id}"/>
+
+    <input type="hidden" name="_method" value="DELETE">
+    <input class="inputSubmit" style="margin: 10px 47% 10px;" type="submit" value="Delete"/>
+</form>
+<br/>
+<div class="center">
+    <img src="/images/bat-line.gif" alt="bat line">
+</div>
+<script>
+    document.getElementById("delete-form").onsubmit = function(event) {
+        if (!confirm("Are you sure you want to delete this resource?")) {
+            event.preventDefault(); // Prevent the form from being submitted
+        }
+    };
+</script>
+</body>
+</html>

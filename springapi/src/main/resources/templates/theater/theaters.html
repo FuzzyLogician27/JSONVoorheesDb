@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Theaters</title>
@@ -31,7 +31,7 @@
     <input type="submit" value="Search" />
 </form>
     </div>
-<a class="button" href="theater/create">Create New Theater</a>
+<a sec:authorize="hasRole('ROLE_ADMIN')" class="button" href="theater/create">Create New Theater</a>
 </div>
 <table>
     <thead>
@@ -39,8 +39,8 @@
         <th>Theater Id</th>
         <th>Address</th>
         <th>Geo</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')">Edit</th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')">Delete</th>
     </tr>
     </thead>
     <tr th:each="theater : ${theaters}">
@@ -51,8 +51,8 @@
         </td>
         <td th:text="${theater.getLocation().address}"></td>
         <td th:text="${theater.getLocation().geo}"></td>
-        <td><a th:href="@{/web/theater/edit/{id}(id=${theater.id})}">Edit</a></td>
-        <td><a th:href="@{/web/theater/delete/{id}(id=${theater.id})}">Delete</a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/web/theater/edit/{id}(id=${theater.id})}">Edit</a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/web/theater/delete/{id}(id=${theater.id})}">Delete</a></td>
     </tr>
 </table>
 
