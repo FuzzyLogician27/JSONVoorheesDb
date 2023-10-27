@@ -7,7 +7,11 @@
 </head>
 <body>
 <a class="button" href="/web/theaters">Back to all theaters</a>
-<h1>Theater</h1>
+<div id="homeContainer">
+    <img src="/images/greenweb.gif" alt="green web">
+    <h1>Theater</h1>
+    <img src="/images/anibat2.gif" alt="flying bat">
+</div>
 
 <span th:if="${theater==null}">Theater not found</span>
 <span th:unless="${theater==null}">
