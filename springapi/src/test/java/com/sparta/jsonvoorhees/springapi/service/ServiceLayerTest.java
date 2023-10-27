@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.awt.*;
@@ -245,7 +247,6 @@ public class ServiceLayerTest {
 
         assertEquals(dummyMovie,testMovieToRetrieve);
     }
-
     @Test
     public void testGetComment()
     {
@@ -256,6 +257,72 @@ public class ServiceLayerTest {
         Comment testCommentToRetrieve = serviceLayer.getCommentById("0000").get();
 
         assertEquals(dummyComment, testCommentToRetrieve);
+    }
+    @Test
+    public void testGetAllUsersByNameProvided()
+    {
+        ArrayList<User> objsToAdd = new ArrayList<User>();
+        var targetUser = createTestUser();
+        objsToAdd.add(targetUser);
+        var pageRequest = PageRequest.of(0,10);
+
+        Page<User> pageObj = new PageImpl<>(objsToAdd,pageRequest,5);
+        Mockito.when(userRepository.findUsersByNameContainingIgnoreCase("Just a guy", pageRequest)).thenReturn(pageObj);
+
+        var result = serviceLayer.getAllUsersByName("Just a guy",pageRequest);
+        assertEquals(targetUser.getName(),result.getContent().get(0).getName());
+    }
+    @Test
+    public void testGetAllUsersByNameNotProvided()
+    {
+        ArrayList<User> objsToAdd = new ArrayList<User>();
+        for (int i = 0; i < 5; i++) {
+
+            objsToAdd.add(createRandomTestUser());
+        }
+
+        var pageRequest = PageRequest.of(0,10);
+
+        Page<User> pageObj = new PageImpl<>(objsToAdd,pageRequest,10);
+        Mockito.when(userRepository.findAll(pageRequest)).thenReturn(pageObj);
+
+        var result = serviceLayer.getAllUsersByName(null,pageRequest);
+        assertEquals(result.getContent().size(),5);
+    }
+    @Test
+    public void testGetAllTheatersByCityProvided()
+    {
+        ArrayList<Theater> objsToAdd = new ArrayList<Theater>();
+        for (int i = 0; i < 5; i++) {
+
+            objsToAdd.add(createRandomTestTheater());
+        }
+        var targetUser = createTestTheater();
+        objsToAdd.add(targetUser);
+        var pageRequest = PageRequest.of(0,10);
+
+        Page<Theater> pageObj = new PageImpl<>(objsToAdd,pageRequest,10);
+        Mockito.when(theaterRepository.findTheatersByLocationAddressCityContainsIgnoreCase("Someplace", pageRequest)).thenReturn(pageObj);
+
+        var result = serviceLayer.getAllTheatersByCity("Someplace",pageRequest);
+        assertEquals(result.getContent().get(0).getTheaterId(),targetUser.getTheaterId());
+    }
+    @Test
+    public void testGetAllTheatersByCityNotProvided()
+    {
+        ArrayList<Theater> objsToAdd = new ArrayList<Theater>();
+        for (int i = 0; i < 5; i++) {
+
+            objsToAdd.add(createRandomTestTheater());
+        }
+
+        var pageRequest = PageRequest.of(0,10);
+
+        Page<Theater> pageObj = new PageImpl<>(objsToAdd,pageRequest,10);
+        Mockito.when(theaterRepository.findAll(pageRequest)).thenReturn(pageObj);
+
+        var result = serviceLayer.getAllTheatersByCity(null,pageRequest);
+        assertEquals(result.getContent().size(),5);
     }
     //endregion
 
@@ -509,22 +576,42 @@ public class ServiceLayerTest {
     @Test
     public void testGetAllTheatersPaged()
     {
-        assertEquals(serviceLayer.getAllTheaters(PageRequest.of(0,20)).getContent(), new ArrayList<Theater>());
+        PageRequest request = PageRequest.of(0,20);
+        Page<Theater> pageObj = new PageImpl<>(new ArrayList<Theater>(),request,10);
+        Mockito.when(theaterRepository.findAll(isA(PageRequest.class))).thenReturn(pageObj);
+        var result = serviceLayer.getAllTheaters(request);
+
+        assertEquals(result.getContent(), new ArrayList<Theater>());
     }
     @Test
     public void testGetAllCommentsPaged()
     {
-        assertEquals(serviceLayer.getAllComments(PageRequest.of(0,20)).getContent(), new ArrayList<Comment>());
+        PageRequest request = PageRequest.of(0,20);
+        Page<Comment> pageObj = new PageImpl<>(new ArrayList<Comment>(),request,10);
+        Mockito.when(commentRepository.findAll(isA(PageRequest.class))).thenReturn(pageObj);
+        var result = serviceLayer.getAllComments(request);
+
+        assertEquals(result.getContent(), new ArrayList<Comment>());
     }
     @Test
     public void testGetAllSchedulesPaged()
     {
-        assertEquals(serviceLayer.getAllSchedules(PageRequest.of(0,20)).getContent(), new ArrayList<Schedule>());
+        PageRequest request = PageRequest.of(0,20);
+        Page<Schedule> pageObj = new PageImpl<>(new ArrayList<Schedule>(),request,10);
+        Mockito.when(scheduleRepository.findAll(isA(PageRequest.class))).thenReturn(pageObj);
+        var result = serviceLayer.getAllSchedules(request);
+
+        assertEquals(result.getContent(), new ArrayList<Schedule>());
     }
     @Test
     public void testGetAllUsersPaged()
     {
-        assertEquals(serviceLayer.getAllUsers(PageRequest.of(0,20)).getContent(), new ArrayList<Schedule>());
+        PageRequest request = PageRequest.of(0,20);
+        Page<User> pageObj = new PageImpl<>(new ArrayList<User>(),request,10);
+        Mockito.when(userRepository.findAll(isA(PageRequest.class))).thenReturn(pageObj);
+        var result = serviceLayer.getAllUsers(request);
+
+        assertEquals(result.getContent(), new ArrayList<User>());
     }
     //endregion
 
@@ -555,26 +642,6 @@ public class ServiceLayerTest {
         assertEquals(result,comments);
     }
 
-    @Test
-    public void testGetCommentsWithSpecifiedWords()
-    {
-        ArrayList<String> searchTerms = new ArrayList<String>();
-        searchTerms.add("Test");
-
-        var comments = new ArrayList<Comment>();
-        var targetComment = new Comment();
-        targetComment.setText("A Test Comment");
-        comments.add(targetComment);
-
-        for (int i = 0; i < 5; i++) {
-            comments.add(createRandomTestComment());
-        }
-        Mockito.when(commentRepository.findAll()).thenReturn(comments);
-
-        var result = serviceLayer.getCommentsWithSpecifiedWords(searchTerms);
-
-        assertEquals(1, result.size());
-    }
     //endregion
 
     //region TheaterExtras
@@ -634,34 +701,35 @@ public class ServiceLayerTest {
         Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);
 
         var result = serviceLayer.getAllMoviesWithTitle("A grand adventure in mongo");
-        assertEquals(result,objsToAdd);
+        assertEquals(actualMovie,result.get(0));
     }
     @Test
     public void getAllMoviesWithTitleProvidedPageable()
     {
         var objsToAdd = new ArrayList<Movie>();
-        for (int i = 0; i < 5; i++) {
-            objsToAdd.add(createRandomTestMovie());
-        }
         Movie actualMovie = createTestMovie();//"A grand adventure in mongo"
         objsToAdd.add(actualMovie);
 
-        var pageRequest = PageRequest.of(0,10);
-        Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);
+        PageRequest request = PageRequest.of(0,20);
+        Page<Movie> pageObj = new PageImpl<>(objsToAdd,request,10);
+        Mockito.when(movieRepository.findMoviesByTitleContainsIgnoreCase
+                ("A grand adventure in mongo",request)).thenReturn(pageObj);
+        var result = serviceLayer.getAllMoviesWithTitle("A grand adventure in mongo",request);
 
-        var result = serviceLayer.getAllMoviesWithTitle("A grand adventure in mongo",pageRequest);
-        assertEquals(result.getContent(),objsToAdd);
+        assertEquals(actualMovie.getTitle(),result.getContent().get(0).getTitle());
     }
     @Test
     public void getAllMoviesWithTitleNotProvidedPagable()
     {
-        var objsToAdd = new ArrayList<Movie>();
+        ArrayList<Movie> objsToAdd = new ArrayList<Movie>();
         for (int i = 0; i < 5; i++) {
+
             objsToAdd.add(createRandomTestMovie());
         }
-
-        Mockito.when(movieRepository.findAll()).thenReturn(objsToAdd);
         var pageRequest = PageRequest.of(0,10);
+
+        Page<Movie> pageObj = new PageImpl<>(objsToAdd,pageRequest,5);
+        Mockito.when(movieRepository.findAll(isA(PageRequest.class))).thenReturn(pageObj);
 
         var result = serviceLayer.getAllMoviesWithTitle(null,pageRequest);
         assertEquals(result.getContent(),objsToAdd);

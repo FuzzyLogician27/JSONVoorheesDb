@@ -115,9 +115,6 @@ public class ServiceLayer implements IServiceLayer {
         return userRepository.findAll(pageRequest);
     }
 
-    public List<User> getAllUsersByName(String name) {
-        return userRepository.findUsersByNameContainingIgnoreCase(name);
-    }
     public Page<User> getAllUsersByName(String name, Pageable pageRequest ) {
         if (name == null)
             return userRepository.findAll(pageRequest);
@@ -189,26 +186,6 @@ public class ServiceLayer implements IServiceLayer {
     }
     //endregion
 
-    //region Special Getters
-    public List<Comment> getCommentsWithSpecifiedWords(List<String> wordsToSearchFor)
-    {
-        List<Comment> selectedComments = new ArrayList<Comment>();
-        List<Comment> allComments = commentRepository.findAll();
-        for (Comment comment:allComments)
-        {
-            String contents = comment.getText().toLowerCase();
-            String[] wordsInContent = contents.trim().split("\\s+");
-            for (String word: wordsInContent)
-            {
-                if (wordsToSearchFor.contains(word) && !selectedComments.contains(comment))
-                {
-                    selectedComments.add(comment);
-                }
-            }
-        }
-        return selectedComments;
-    }
-    //endregion
 
     //region Deleters
     public String deleteCommentById(String id)
