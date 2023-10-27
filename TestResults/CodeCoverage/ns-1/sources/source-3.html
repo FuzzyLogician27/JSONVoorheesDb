@@ -1,0 +1,155 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > IServiceLayer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.sparta.jsonvoorhees.springapi.service</a>
+</div>
+
+<h1>Coverage Summary for Class: IServiceLayer (com.sparta.jsonvoorhees.springapi.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IServiceLayer</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.sparta.jsonvoorhees.springapi.service;
+&nbsp;
+&nbsp;import com.sparta.jsonvoorhees.springapi.model.entities.*;
+&nbsp;import com.sparta.jsonvoorhees.springapi.model.repositories.*;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.data.domain.Page;
+&nbsp;import org.springframework.data.domain.Pageable;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;public interface IServiceLayer {
+&nbsp;
+&nbsp;    public List&lt;Movie&gt; getAllMoviesWithTitle(String title);
+&nbsp;    public Page&lt;Movie&gt; getAllMoviesWithTitle(String title, Pageable pageRequest);
+&nbsp;
+&nbsp;    public List&lt;Schedule&gt; getSchedulesForTheaters(String theaterId);
+&nbsp;
+&nbsp;    public List&lt;Comment&gt; getCommentsByMovie(String movieId);
+&nbsp;
+&nbsp;    public List&lt;Comment&gt; getCommentsByUser(String name);
+&nbsp;
+&nbsp;    public Optional&lt;Movie&gt; getMovieById(String movieId);
+&nbsp;
+&nbsp;    public Optional&lt;Theater&gt; getTheaterById(String theaterId);
+&nbsp;    public Optional&lt;Theater&gt; getTheaterByTheaterId(Long theaterId);
+&nbsp;
+&nbsp;    public Optional&lt;Schedule&gt; getScheduleById(String scheduleId);
+&nbsp;
+&nbsp;    public Optional&lt;User&gt; getUserById(String userId);
+&nbsp;
+&nbsp;    public Optional&lt;Comment&gt; getCommentById(String commentId);
+&nbsp;
+&nbsp;    public List&lt;User&gt; getAllUsers();
+&nbsp;    public Page&lt;User&gt; getAllUsers(Pageable pageRequest );
+&nbsp;
+&nbsp;    public List&lt;Schedule&gt; getAllSchedules();
+&nbsp;    public Page&lt;Schedule&gt; getAllSchedules(Pageable pageRequest);
+&nbsp;
+&nbsp;    public List&lt;Comment&gt; getAllComments();
+&nbsp;    public Page&lt;Comment&gt; getAllComments(Pageable pageRequest);
+&nbsp;
+&nbsp;    public List&lt;Theater&gt; getAllTheaters();
+&nbsp;    public Page&lt;Theater&gt; getAllTheaters(Pageable pageRequest);
+&nbsp;
+&nbsp;    public Comment updateComment(Comment newComment);
+&nbsp;
+&nbsp;    public Movie updateMovie(Movie newMovie);
+&nbsp;
+&nbsp;    public Schedule updateSchedule(Schedule newSchedule);
+&nbsp;
+&nbsp;    public Theater updateTheater(Theater newTheater);
+&nbsp;
+&nbsp;    public User updateUser(User newUser);
+&nbsp;
+&nbsp;    public String deleteCommentById(String id);
+&nbsp;
+&nbsp;    public String deleteMovieById(String id);
+&nbsp;
+&nbsp;    public String deleteScheduleById(String id);
+&nbsp;
+&nbsp;    public String deleteTheaterById(String id);
+&nbsp;
+&nbsp;    public String deleteUserById(String id);
+&nbsp;
+&nbsp;    public Comment addComment(Comment newComment);
+&nbsp;
+&nbsp;    public Movie addMovie(Movie newMovie);
+&nbsp;
+&nbsp;    public Schedule addSchedule(Schedule newSchedule);
+&nbsp;
+&nbsp;    public Theater addTheater(Theater newTheater);
+&nbsp;
+&nbsp;    public User addUser(User newUser);
+&nbsp;
+&nbsp;    public void addComments(List&lt;Comment&gt; newComments);
+&nbsp;
+&nbsp;    public void addMovies(List&lt;Movie&gt; newMovies);
+&nbsp;
+&nbsp;    public void addSchedules(List&lt;Schedule&gt; newSchedules);
+&nbsp;
+&nbsp;    public void addTheaters(List&lt;Theater&gt; newTheaters);
+&nbsp;
+&nbsp;    public void addUsers(List&lt;User&gt; newUsers);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-27 10:59</div>
+</div>
+</body>
+</html>

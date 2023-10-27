@@ -115,9 +115,6 @@ public class ServiceLayer implements IServiceLayer {
         return userRepository.findAll(pageRequest);
     }
 
-    public List<User> getAllUsersByName(String name) {
-        return userRepository.findUsersByNameContainingIgnoreCase(name);
-    }
     public Page<User> getAllUsersByName(String name, Pageable pageRequest ) {
         if (name == null)
             return userRepository.findAll(pageRequest);
@@ -189,26 +186,6 @@ public class ServiceLayer implements IServiceLayer {
     }
     //endregion
 
-    //region Special Getters
-    public List<Comment> getCommentsWithSpecifiedWords(List<String> wordsToSearchFor)
-    {
-        List<Comment> selectedComments = new ArrayList<Comment>();
-        List<Comment> allComments = commentRepository.findAll();
-        for (Comment comment:allComments)
-        {
-            String contents = comment.getText().toLowerCase();
-            String[] wordsInContent = contents.trim().split("\\s+");
-            for (String word: wordsInContent)
-            {
-                if (wordsToSearchFor.contains(word) && !selectedComments.contains(comment))
-                {
-                    selectedComments.add(comment);
-                }
-            }
-        }
-        return selectedComments;
-    }
-    //endregion
 
     //region Deleters
     public String deleteCommentById(String id)
@@ -225,7 +202,7 @@ public class ServiceLayer implements IServiceLayer {
     {
         if (movieRepository.findMovieById(id).isEmpty()) {
             //Exception
-            return "Movie not Found";
+            return "Movie Not Found";
         }
         movieRepository.deleteById(id);
         return "Movie Deleted";
@@ -235,7 +212,7 @@ public class ServiceLayer implements IServiceLayer {
     {
         if (scheduleRepository.findScheduleById(id).isEmpty()) {
             //Exception
-            return "Movie not Found";
+            return "Schedule Not Found";
         }
         scheduleRepository.deleteById(id);
         return "Schedule Deleted";
@@ -245,12 +222,11 @@ public class ServiceLayer implements IServiceLayer {
     //Theater id is a Long...? Check this
     public String deleteTheaterById(String id)
     {
-        Theater theaterToDelete = theaterRepository.findTheaterById(id).get();
         if (theaterRepository.findTheaterById(id).isEmpty()) {
             //Throw Exception
             return "Theater Not Found";
         }
-        theaterRepository.delete(theaterToDelete);
+        theaterRepository.deleteById(id);
         return "Theater Deleted";
     }
 

@@ -1,0 +1,410 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ServiceLayer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.sparta.jsonvoorhees.springapi.service</a>
+</div>
+
+<h1>Coverage Summary for Class: ServiceLayer (com.sparta.jsonvoorhees.springapi.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ServiceLayer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (42/42)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (20/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (74/74)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.sparta.jsonvoorhees.springapi.service;
+&nbsp;
+&nbsp;import com.sparta.jsonvoorhees.springapi.model.entities.*;
+&nbsp;import com.sparta.jsonvoorhees.springapi.model.repositories.*;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.data.domain.Page;
+&nbsp;import org.springframework.data.domain.Pageable;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class ServiceLayer implements IServiceLayer {
+&nbsp;    private final CommentRepository commentRepository;
+&nbsp;    private final MovieRepository movieRepository;
+&nbsp;    private final TheaterRepository theaterRepository;
+&nbsp;    private final ScheduleRepository scheduleRepository;
+&nbsp;    private final UserRepository userRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    public ServiceLayer(CommentRepository commentRepository,
+&nbsp;                             MovieRepository movieRepository,
+&nbsp;                             ScheduleRepository scheduleRepository,
+&nbsp;                             TheaterRepository theaterRepository,
+<b class="fc">&nbsp;                             UserRepository userRepository) {</b>
+<b class="fc">&nbsp;        this.commentRepository = commentRepository;</b>
+<b class="fc">&nbsp;        this.movieRepository = movieRepository;</b>
+<b class="fc">&nbsp;        this.scheduleRepository = scheduleRepository;</b>
+<b class="fc">&nbsp;        this.theaterRepository = theaterRepository;</b>
+<b class="fc">&nbsp;        this.userRepository = userRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //region Getters
+&nbsp;
+&nbsp;    public List&lt;Movie&gt; getAllMoviesWithTitle(String title) {
+<b class="fc">&nbsp;        List&lt;Movie&gt; fullMovieList = movieRepository.findAll();</b>
+<b class="fc">&nbsp;        if (title == null) {</b>
+<b class="fc">&nbsp;            return movieRepository.findAll();</b>
+&nbsp;        }
+&nbsp;        else {
+<b class="fc">&nbsp;            List&lt;Movie&gt; filteredMovies = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;            for (Movie movie : fullMovieList) {</b>
+<b class="fc">&nbsp;                if (movie.getTitle().toLowerCase().contains(title.toLowerCase())) {</b>
+<b class="fc">&nbsp;                    filteredMovies.add(movie);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            return filteredMovies;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    public Page&lt;Movie&gt; getAllMoviesWithTitle(String title, Pageable pageRequest) {
+<b class="fc">&nbsp;        if (title == null)</b>
+<b class="fc">&nbsp;           return movieRepository.findAll(pageRequest);</b>
+&nbsp;        else
+<b class="fc">&nbsp;            return movieRepository.findMoviesByTitleContainsIgnoreCase(title, pageRequest);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Schedule&gt; getSchedulesForTheaters(String theaterId)
+&nbsp;    {
+<b class="fc">&nbsp;        return scheduleRepository.findSchedulesByTheaterId(theaterId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Comment&gt; getCommentsByMovie(String movieId)
+&nbsp;    {
+<b class="fc">&nbsp;        return commentRepository.findCommentsByMovieId(movieId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Comment&gt; getCommentsByUser(String name)
+&nbsp;    {
+<b class="fc">&nbsp;        return commentRepository.findCommentsByNameContains(name);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    //region Basic Getters
+&nbsp;    public Optional&lt;Movie&gt; getMovieById(String movieId)
+&nbsp;    {
+<b class="fc">&nbsp;        return movieRepository.findMovieById(movieId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;Theater&gt; getTheaterById(String theaterId)
+&nbsp;    {
+&nbsp;        //@TODO: Check this one
+<b class="fc">&nbsp;        return theaterRepository.findTheaterById(theaterId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;Theater&gt; getTheaterByTheaterId(Long theaterId)
+&nbsp;    {
+&nbsp;        //@TODO: Check this one
+<b class="fc">&nbsp;        return theaterRepository.findTheaterByTheaterId(theaterId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;Schedule&gt; getScheduleById(String scheduleId)
+&nbsp;    {
+<b class="fc">&nbsp;        return scheduleRepository.findScheduleById(scheduleId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;User&gt; getUserById(String userId)
+&nbsp;    {
+<b class="fc">&nbsp;        return userRepository.findUserById(userId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;Comment&gt; getCommentById(String commentId)
+&nbsp;    {
+<b class="fc">&nbsp;        return commentRepository.findCommentById(commentId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;User&gt; getAllUsers()
+&nbsp;    {
+<b class="fc">&nbsp;        return  userRepository.findAll();</b>
+&nbsp;    }
+&nbsp;    public Page&lt;User&gt; getAllUsers(Pageable pageRequest )
+&nbsp;    {
+<b class="fc">&nbsp;        return userRepository.findAll(pageRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Page&lt;User&gt; getAllUsersByName(String name, Pageable pageRequest ) {
+<b class="fc">&nbsp;        if (name == null)</b>
+<b class="fc">&nbsp;            return userRepository.findAll(pageRequest);</b>
+&nbsp;        else
+<b class="fc">&nbsp;            return userRepository.findUsersByNameContainingIgnoreCase(name, pageRequest);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    public List&lt;Schedule&gt; getAllSchedules()
+&nbsp;    {
+<b class="fc">&nbsp;        return scheduleRepository.findAll();</b>
+&nbsp;    }
+&nbsp;    public Page&lt;Schedule&gt; getAllSchedules(Pageable pageRequest)
+&nbsp;    {
+<b class="fc">&nbsp;        return scheduleRepository.findAll(pageRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Comment&gt; getAllComments()
+&nbsp;    {
+<b class="fc">&nbsp;        return commentRepository.findAll();</b>
+&nbsp;    }
+&nbsp;    public Page&lt;Comment&gt; getAllComments(Pageable pageRequest)
+&nbsp;    {
+<b class="fc">&nbsp;        return commentRepository.findAll(pageRequest);</b>
+&nbsp;    }
+<b class="fc">&nbsp;    public List&lt;Theater&gt; getAllTheaters() { return theaterRepository.findAll();}</b>
+&nbsp;
+&nbsp;    public Page&lt;Theater&gt; getAllTheaters(Pageable pageRequest)
+&nbsp;    {
+<b class="fc">&nbsp;        return theaterRepository.findAll(pageRequest);</b>
+&nbsp;    }
+&nbsp;    public Page&lt;Theater&gt; getAllTheatersByCity(String city, Pageable pageRequest)
+&nbsp;    {
+<b class="fc">&nbsp;        if (city == null)</b>
+<b class="fc">&nbsp;            return theaterRepository.findAll(pageRequest);</b>
+&nbsp;        else
+<b class="fc">&nbsp;            return theaterRepository.findTheatersByLocationAddressCityContainsIgnoreCase(city, pageRequest);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //endregion
+&nbsp;
+&nbsp;    //region Savers
+&nbsp;    //These DO return the object that is saved
+&nbsp;    //This can be either a new object if it doesn&#39;t exist, or the existing one if it&#39;s an update
+&nbsp;
+&nbsp;    public Comment updateComment(Comment newComment)
+&nbsp;    {
+&nbsp;        // Save creates new entity if it doesn&#39;t exist, updates existing one if it does
+<b class="fc">&nbsp;        return commentRepository.save(newComment);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Movie updateMovie(Movie newMovie)
+&nbsp;    {
+<b class="fc">&nbsp;        return movieRepository.save(newMovie);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Schedule updateSchedule(Schedule newSchedule)
+&nbsp;    {
+<b class="fc">&nbsp;        return scheduleRepository.save(newSchedule);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Theater updateTheater(Theater newTheater)
+&nbsp;    {
+<b class="fc">&nbsp;        return theaterRepository.save(newTheater);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public User updateUser(User newUser)
+&nbsp;    {
+<b class="fc">&nbsp;        return userRepository.save(newUser);</b>
+&nbsp;    }
+&nbsp;    //endregion
+&nbsp;
+&nbsp;
+&nbsp;    //region Deleters
+&nbsp;    public String deleteCommentById(String id)
+&nbsp;    {
+<b class="fc">&nbsp;        if (commentRepository.findCommentById(id).isEmpty()) {</b>
+&nbsp;            //Throw an exception here
+<b class="fc">&nbsp;             return &quot;Comment Not Found&quot;;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        commentRepository.deleteById(id);</b>
+<b class="fc">&nbsp;        return &quot;Comment Deleted&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String deleteMovieById(String id)
+&nbsp;    {
+<b class="fc">&nbsp;        if (movieRepository.findMovieById(id).isEmpty()) {</b>
+&nbsp;            //Exception
+<b class="fc">&nbsp;            return &quot;Movie Not Found&quot;;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        movieRepository.deleteById(id);</b>
+<b class="fc">&nbsp;        return &quot;Movie Deleted&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String deleteScheduleById(String id)
+&nbsp;    {
+<b class="fc">&nbsp;        if (scheduleRepository.findScheduleById(id).isEmpty()) {</b>
+&nbsp;            //Exception
+<b class="fc">&nbsp;            return &quot;Schedule Not Found&quot;;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        scheduleRepository.deleteById(id);</b>
+<b class="fc">&nbsp;        return &quot;Schedule Deleted&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //@Todo Discuss this with team, having to delete by the object itself
+&nbsp;    //Theater id is a Long...? Check this
+&nbsp;    public String deleteTheaterById(String id)
+&nbsp;    {
+<b class="fc">&nbsp;        if (theaterRepository.findTheaterById(id).isEmpty()) {</b>
+&nbsp;            //Throw Exception
+<b class="fc">&nbsp;            return &quot;Theater Not Found&quot;;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        theaterRepository.deleteById(id);</b>
+<b class="fc">&nbsp;        return &quot;Theater Deleted&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //@Todo This is still up for debate
+&nbsp;    public String deleteUserById(String id)
+&nbsp;    {
+<b class="fc">&nbsp;        userRepository.deleteById(id);</b>
+<b class="fc">&nbsp;        return &quot;User Deleted&quot;;</b>
+&nbsp;    }
+&nbsp;    //endregion
+&nbsp;
+&nbsp;    //region Creators
+&nbsp;    //Some of these are the same as the savers, as a save with new data adds it
+&nbsp;
+&nbsp;    public Comment addComment(Comment newComment)
+&nbsp;    {
+<b class="fc">&nbsp;        return commentRepository.save(newComment);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Movie addMovie(Movie newMovie)
+&nbsp;    {
+<b class="fc">&nbsp;        return movieRepository.save(newMovie);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Schedule addSchedule(Schedule newSchedule)
+&nbsp;    {
+<b class="fc">&nbsp;        return scheduleRepository.save(newSchedule);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Theater addTheater(Theater newTheater)
+&nbsp;    {
+<b class="fc">&nbsp;        return theaterRepository.save(newTheater);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public User addUser(User newUser)
+&nbsp;    {
+<b class="fc">&nbsp;        return userRepository.save(newUser);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addComments(List&lt;Comment&gt; newComments)
+&nbsp;    {
+<b class="fc">&nbsp;        commentRepository.insert(newComments);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addMovies(List&lt;Movie&gt; newMovies)
+&nbsp;    {
+<b class="fc">&nbsp;        movieRepository.insert(newMovies);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addSchedules(List&lt;Schedule&gt; newSchedules)
+&nbsp;    {
+<b class="fc">&nbsp;        scheduleRepository.insert(newSchedules);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addTheaters(List&lt;Theater&gt; newTheaters)
+&nbsp;    {
+<b class="fc">&nbsp;        theaterRepository.insert(newTheaters);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addUsers(List&lt;User&gt; newUsers)
+&nbsp;    {
+<b class="fc">&nbsp;        userRepository.insert(newUsers);</b>
+&nbsp;    }
+&nbsp;    //endregion
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-27 10:59</div>
+</div>
+</body>
+</html>
